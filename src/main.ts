@@ -13,5 +13,6 @@ new Results({
   containerId: "container",
   resultText: game1Results,
   hearts: 3,
+  onProceed: () => alert("Proceed clicked!"),
 });
 

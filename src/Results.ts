@@ -1,9 +1,11 @@
 import Konva from "konva";
+import { GAME_CONFIG } from "./config";
 
 interface ResultsOptions {
   containerId: string;
   resultText: string;
   hearts: number;
+  onProceed?: () => void;
 }
 
 export class Results {
@@ -22,10 +24,12 @@ export class Results {
   private scrollLoaded = false;
 
   constructor(private options: ResultsOptions) {
+    const { WIDTH, HEIGHT } = GAME_CONFIG;
+
     this.stage = new Konva.Stage({
       container: options.containerId,
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: WIDTH,
+      height: HEIGHT,
     });
 
     this.layer = new Konva.Layer();
@@ -41,15 +45,14 @@ export class Results {
     this.resultTextValue = options.resultText;
 
     this.loadAssets();
-    window.addEventListener("resize", () => this.resize());
   }
 
   private loadAssets() {
     const bgImage = new Image();
     const scrollImage = new Image();
 
-    bgImage.src = "/bg.png";
-    scrollImage.src = "/scroll.png";
+    bgImage.src = GAME_CONFIG.ASSETS.BACKGROUND;
+    scrollImage.src = GAME_CONFIG.ASSETS.SCROLL;
 
     bgImage.onload = () => {
       this.bg.image(bgImage);
@@ -71,37 +74,33 @@ export class Results {
   }
 
   private drawScene() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const { WIDTH, HEIGHT } = GAME_CONFIG;
 
-    this.stage.width(width);
-    this.stage.height(height);
+    this.bg.width(WIDTH);
+    this.bg.height(HEIGHT);
 
-    this.bg.width(width);
-    this.bg.height(height);
+    this.scroll.width(WIDTH);
+    this.scroll.height(HEIGHT);
 
-    this.scroll.width(width);
-    this.scroll.height(height);
-
-    this.layer.destroyChildren(); // clear everything before redraw
+    this.layer.destroyChildren();
     this.layer.add(this.bg);
     this.layer.add(this.scroll);
 
-    // Text on top of scroll
+    // Result text
     this.text = new Konva.Text({
       text: this.resultTextValue,
       fontSize: 28,
       fontFamily: "'Times New Roman', serif",
       fill: "#2b1d0e",
       align: "center",
-      width: width * 0.8,
-      x: width * 0.1,
-      y: height * 0.4,
+      width: WIDTH * 0.8,
+      x: WIDTH * 0.1,
+      y: HEIGHT * 0.3,
     });
     this.layer.add(this.text);
 
-    // Hearts (top-right)
-    this.drawHearts(width, height);
+    // Hearts
+    this.drawHearts(WIDTH, HEIGHT);
 
     // Proceed button
     const btnWidth = 160;
@@ -114,8 +113,8 @@ export class Results {
       fill: "#422d1a",
       stroke: "#2b1d0e",
       strokeWidth: 3,
-      x: width / 2 - btnWidth / 2,
-      y: height * 0.75,
+      x: WIDTH / 2 - btnWidth / 2,
+      y: HEIGHT * 0.7,
     });
 
     this.buttonText = new Konva.Text({
@@ -123,16 +122,16 @@ export class Results {
       fontFamily: "'Times New Roman', serif",
       fontSize: 24,
       fill: "#fff",
-      x: width / 2 - btnWidth / 2 + 35,
-      y: height * 0.75 + 12,
+      x: WIDTH / 2 - btnWidth / 2 + 35,
+      y: HEIGHT * 0.7 + 12,
     });
 
-    this.button.on("click", () => {
-	    alert("Clicked");
-    });
-    this.buttonText.on("click", () => {
-	    alert("Clicked");
-    });
+    const handleClick = () => {
+      if (this.options.onProceed) this.options.onProceed();
+    };
+
+    this.button.on("click", handleClick);
+    this.buttonText.on("click", handleClick);
 
     this.button.on("mouseover", () => (document.body.style.cursor = "pointer"));
     this.button.on("mouseout", () => (document.body.style.cursor = "default"));
@@ -171,10 +170,6 @@ export class Results {
       this.hearts.push(heart);
       this.layer.add(heart);
     }
-  }
-
-  private resize() {
-    this.drawScene();
   }
 
   public setHearts(count: number) {
