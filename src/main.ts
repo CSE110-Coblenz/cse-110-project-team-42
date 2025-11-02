@@ -1,40 +1,49 @@
-import { Results } from "./Results";
-import { TryAgain } from "./TryAgain";
+import Konva from "konva";
+import type { ScreenSwitcher } from "./types.ts";
+import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants.ts";
 
-const containerId = "container";
+class App implements ScreenSwitcher {
+	private stage: Konva.Stage;
+	private layer: Konva.Layer;
 
-function showTryAgain() {
-  // clear previous Konva stage
-  document.getElementById(containerId)!.innerHTML = "";
+	private resultsController: ResultsScreenController;
 
-  new TryAgain({
-    containerId,
-    hearts: 3,
-    onRestart: () => alert("Restart clicked!"),
-  });
+	constructor(container: string) {
+		// make stage 
+		this.stage = new Konva.Stage({
+			container,
+			width: STAGE_WIDTH,
+			height: STAGE_HEIGHT,
+		});
+
+		this.layer = new Konva.Layer();
+		this.stage.add(this.layer);
+
+		// Initialize controllers
+		this.resultsController = new ResultsScreenController(this);
+
+		// Add view groups to the layer
+		this.layer.add(this.resultsController.getView().getGroup());
+
+		this.layer.draw();
+
+		// Start (results for now)
+		this.switchToScreen("results");
+	}
+
+	switchToScreen(screen: string): void {
+		// Hide everything 
+		this.resultsController.hide();
+
+		if (screen === "results") {
+			this.resultsController.getView().show();
+			let resultText = GAME1RESULTSTEXT.replace("{0}", "-406")
+						     .replace("{1}", "+545")
+					       	     .replace("{2}", "-120");
+			this.resultsController.showResults(resultText, 3);
+		}
+	}
 }
 
-function showResults() {
-  const game1Results =
-    "RESULTS\n\n\n\n" +
-    "🔴Red ➡️ -$406\n" +
-    "🟢Green ➡️ +$545\n" +
-    "🔵Blue ➡️ -$120.8\n\n" +
-    "Your choice of green won!";
-
-  // clear container before drawing results
-  document.getElementById(containerId)!.innerHTML = "";
-
-  new Results({
-    containerId,
-    resultText: game1Results,
-    hearts: 3,
-    onProceed: () => {
-      console.log("Proceed clicked — moving to Try Again screen");
-      showTryAgain();
-    },
-  });
-}
-
-// Start by showing the Results page
-showResults();
+new App("container");
