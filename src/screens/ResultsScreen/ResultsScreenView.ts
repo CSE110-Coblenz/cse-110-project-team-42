@@ -2,10 +2,6 @@ import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
 
-/**
- * ResultsScreenView - Draws a fixed-size results screen (no responsive layout).
- * Renders background, scroll, message, hearts, and a Proceed button.
- */
 export class ResultsScreenView implements View {
 	private group: Konva.Group;
 	private messageText: Konva.Text;
