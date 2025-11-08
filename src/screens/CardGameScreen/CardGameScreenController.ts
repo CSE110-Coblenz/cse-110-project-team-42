@@ -19,7 +19,7 @@ export class CardGameScreenController extends ScreenController {
   }
 
   private handleOptionClick(option: CardGameOption): void {
-    const result = this.model.simulate(option, 1000);
+    const result = this.model.simulate(option, 1000000);
     
     // For now, let's just log the result to the console.
     // Integration with ResultsScreen will happen later.

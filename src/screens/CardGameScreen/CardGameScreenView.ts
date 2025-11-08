@@ -39,15 +39,35 @@ export class CardGameScreenView implements View {
 
     const rules = new Konva.Text({
       x: 0,
-      y: 80,
+      y: 90,
       width: STAGE_WIDTH,
       align: "center",
-      text: "Draw a card from the deck.\nIf you get a face card, you win!\nChoose one option to run 1000 times.",
-      fontSize: 18,
+      text: "Draw a card from a standard 52-card deck.\nIf you get a face card, you win!\nChoose one option to run 1000 times.",
+      fontSize: 26,
+      fontFamily: "serif",
       fill: "#f7e3c3",
-      lineHeight: 1.4,
+      lineHeight: 1.5,
     });
     this.group.add(rules);
+
+    // Add the new deck spread image
+    const deckImage = new Image();
+    deckImage.src = "/deck-spread.png";
+    deckImage.onload = () => {
+        const desiredWidth = 350;
+        const scale = desiredWidth / deckImage.naturalWidth;
+        const scaledHeight = deckImage.naturalHeight * scale;
+
+        const deck = new Konva.Image({
+            image: deckImage,
+            x: STAGE_WIDTH / 2 - desiredWidth / 2,
+            y: 240,
+            width: desiredWidth,
+            height: scaledHeight,
+        });
+        this.group.add(deck);
+        this.group.getLayer()?.draw();
+    };
 
     options.forEach((opt, i) => {
       const optionGroup = this.createOptionPanel(opt, i);
@@ -65,37 +85,16 @@ export class CardGameScreenView implements View {
 
   private createOptionPanel(opt: CardGameOption, index: number): Konva.Group {
     const groupWidth = 200;
-    const totalWidth = groupWidth * 3 + 100;
+    const spacing = 100;
+    const totalWidth = groupWidth * 3 + spacing * 2;
     const startX = (STAGE_WIDTH - totalWidth) / 2;
-    const panelX = startX + index * (groupWidth + 50);
+    const panelX = startX + index * (groupWidth + spacing);
 
-    const optionGroup = new Konva.Group({ x: panelX, y: 170 });
-
-    const cardPlaceholder = new Konva.Rect({
-      x: 30,
-      y: 0,
-      width: 140,
-      height: 200,
-      fill: "#fff",
-      cornerRadius: 10,
-      stroke: "#000",
-      strokeWidth: 3,
-    });
-
-    const cardText = new Konva.Text({
-      x: 30,
-      y: 70,
-      width: 140,
-      align: "center",
-      text: `${opt.card} ♠`,
-      fontSize: 60,
-      fontFamily: "serif",
-      fill: "#000",
-    });
+    const optionGroup = new Konva.Group({ x: panelX, y: 540 });
 
     const button = new Konva.Rect({
       x: 0,
-      y: 220,
+      y: 0,
       width: 200,
       height: 80,
       fill: "#26492b",
@@ -107,7 +106,7 @@ export class CardGameScreenView implements View {
 
     const buttonText = new Konva.Text({
       x: 0,
-      y: 235,
+      y: 15,
       width: 200,
       align: "center",
       text: opt.label,
@@ -118,7 +117,7 @@ export class CardGameScreenView implements View {
       lineHeight: 1.2,
     });
 
-    optionGroup.add(cardPlaceholder, cardText, button, buttonText);
+    optionGroup.add(button, buttonText);
 
     optionGroup.on("click", () => {
       this.onOptionClick(opt);
