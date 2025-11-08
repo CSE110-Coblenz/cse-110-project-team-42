@@ -13,8 +13,7 @@ export class CardGameScreenModel {
   }
 
   simulate(option: CardGameOption, runs: number): SimulationResult {
-    const deckSize = 52;
-    const faceCards = 12; // Jack, Queen, King for each of 4 suits
+    const { faceCards, deckSize } = option;
     const winProbability = faceCards / deckSize;
 
     let wins = 0;

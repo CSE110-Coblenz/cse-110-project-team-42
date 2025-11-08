@@ -27,7 +27,8 @@ export interface CardGameOption {
   label: string;
   buyIn: number;
   payoff: number;
-  card: string;
+  faceCards: number;
+  deckSize: number;
 }
 
 export interface SimulationResult {
