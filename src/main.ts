@@ -1,49 +1,75 @@
 import Konva from "konva";
 import type { ScreenSwitcher } from "./types.ts";
 import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants.ts";
+import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController.ts";
+import {
+  STAGE_WIDTH,
+  STAGE_HEIGHT,
+  GAME1RESULTSTEXT,
+  ITERATIONS,
+  type GraphDataConfig,
+} from "./constants.ts";
 
 class App implements ScreenSwitcher {
-	private stage: Konva.Stage;
-	private layer: Konva.Layer;
+  private stage: Konva.Stage;
+  private layer: Konva.Layer;
 
-	private resultsController: ResultsScreenController;
+  private resultsController: ResultsScreenController;
+  private graphController: GraphScreenController;
 
-	constructor(container: string) {
-		// make stage 
-		this.stage = new Konva.Stage({
-			container,
-			width: STAGE_WIDTH,
-			height: STAGE_HEIGHT,
-		});
+  constructor(container: string) {
+    // Create stage
+    this.stage = new Konva.Stage({
+      container,
+      width: STAGE_WIDTH,
+      height: STAGE_HEIGHT,
+    });
 
-		this.layer = new Konva.Layer();
-		this.stage.add(this.layer);
+    this.layer = new Konva.Layer();
+    this.stage.add(this.layer);
 
-		// Initialize controllers
-		this.resultsController = new ResultsScreenController(this);
+    // FOR TESTING
+    const simulateA = () => Math.random() * 15 - 7; // Option 1
+    const simulateB = () => Math.random() * 1 - 3;  // Option 2
+    const simulateC = () => Math.random() - 1; // Option 3
+    const graphData: GraphDataConfig = {
+      currentGame: 1,
+      selectedOption: 2,
+      simulateFns: [simulateA, simulateB, simulateC],
+    };
 
-		// Add view groups to the layer
-		this.layer.add(this.resultsController.getView().getGroup());
+    // Initialize controllers
+    this.graphController = new GraphScreenController(this, graphData);
+    this.resultsController = new ResultsScreenController(this);
 
-		this.layer.draw();
+    // Add both to layer
+    this.layer.add(this.graphController.getView().getGroup());
+    this.layer.add(this.resultsController.getView().getGroup());
 
-		// Start (results for now)
-		this.switchToScreen("results");
-	}
+    this.layer.draw();
 
-	switchToScreen(screen: string): void {
-		// Hide everything 
-		this.resultsController.hide();
+    // Start on graph for now
+    this.switchToScreen("graph");
+  }
 
-		if (screen === "results") {
-			this.resultsController.getView().show();
-			let resultText = GAME1RESULTSTEXT.replace("{0}", "-406")
-						     .replace("{1}", "+545")
-					       	     .replace("{2}", "-120");
-			this.resultsController.showResults(resultText, 3);
-		}
-	}
+  switchToScreen(screen: string): void {
+    // Hide all
+    this.resultsController.hide();
+    this.graphController.hide();
+
+    if (screen === "graph") {
+      this.graphController.getView().show();
+    }
+
+    if (screen === "results") {
+      this.resultsController.getView().show();
+      const resultText = GAME1RESULTSTEXT.replace("{0}", "-406")
+        .replace("{1}", "+545")
+        .replace("{2}", "-120");
+      this.resultsController.showResults(resultText, 3);
+    }
+  }
 }
 
 new App("container");
+

@@ -1,6 +1,6 @@
 // Stage dimensions
-export const STAGE_WIDTH = 800;
-export const STAGE_HEIGHT = 600;
+export const STAGE_WIDTH = 1200;
+export const STAGE_HEIGHT = 700;
 
 export const GAME1RESULTSTEXT =
 	"RESULTS\n\n\n\n\
@@ -9,3 +9,12 @@ export const GAME1RESULTSTEXT =
 	🔵Blue ➡️ {2}\n\n\
 	Your choice of green won!";
 
+// For simulation 
+export const ITERATIONS = 1000;
+
+// Type for Graph Screen input
+export interface GraphDataConfig {
+  currentGame: number;
+  selectedOption: number;
+  simulateFns: (() => number)[];
+}
