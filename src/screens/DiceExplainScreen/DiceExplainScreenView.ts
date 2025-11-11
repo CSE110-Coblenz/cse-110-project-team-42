@@ -3,7 +3,7 @@ import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
 
 
-export class WinScreenView implements View {
+export class DiceExplainScreenView implements View {
   private group: Konva.Group;
   private background: Konva.Image;
   private congratsText: Konva.Text;
@@ -22,7 +22,7 @@ export class WinScreenView implements View {
     });
 
     // ✅ directly load win.png from /public
-    Konva.Image.fromURL("/win.jpg", (imgNode) => {
+    Konva.Image.fromURL("/scroll.png", (imgNode) => {
       imgNode.setAttrs({
         width: STAGE_WIDTH,
         height: STAGE_HEIGHT,
@@ -33,16 +33,16 @@ export class WinScreenView implements View {
 
     // === "Congratulations!" Text (upper middle) ===
     this.congratsText = new Konva.Text({
-      text: "Congratulations!",
-      fontSize: 48,
-      fill: "white",
+      text: "The expected value of choice A is 1/2 * 5 * 3 - 10 = -2.5, The expected value of choice B is 1/6 * 5 * 5 -3 = 1.16 ",
+      fontSize: 38,
+      fill: "black",
       x: 0,
-      y: STAGE_HEIGHT * 0.2,
+      y: STAGE_HEIGHT * 0.3,
       width: STAGE_WIDTH,
       align: "center",
       fontStyle: "bold",
-      shadowColor: "black",
-      shadowBlur: 10,
+      //shadowColor: "black",
+      //shadowBlur: 10,
     });
 
     // === Restart Button (bottom middle) ===

@@ -1,20 +1,20 @@
 import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
-import { WinScreenView } from "./WinScreenView";
+import { DiceExplainScreenView } from "./DiceExplainScreenView";
 
 
 
-export class WinScreenController extends ScreenController {
-  private view: WinScreenView;
+export class DiceExplainScreenController extends ScreenController {
+  private view: DiceExplainScreenView;
   private screenSwitcher: ScreenSwitcher;
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.view = new WinScreenView(); // no callback needed
+    this.view = new DiceExplainScreenView(); // no callback needed
   }
 
-  getView(): WinScreenView {
+  getView(): DiceExplainScreenView {
     return this.view;
   }
 }

@@ -4,6 +4,8 @@ export const GAME_CONFIG = {
   ASSETS: {
     BACKGROUND: "/bg.png",
     SCROLL: "/scroll.png",
+    WIN: "/win.jpg",
+    
   },
 };
 

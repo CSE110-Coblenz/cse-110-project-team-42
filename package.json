@@ -1,7 +1,7 @@
 {
   "name": "mockupdesigns",
   "version": "1.0.0",
-  "description": "",
+  "description": "Fresh repository with main branch.",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -13,10 +13,17 @@
   "type": "commonjs",
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^7.2.2"
   },
   "dependencies": {
     "konva": "^10.0.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSE110-Coblenz/cse-110-project-team-42.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CSE110-Coblenz/cse-110-project-team-42/issues"
+  },
+  "homepage": "https://github.com/CSE110-Coblenz/cse-110-project-team-42#readme"
 }
-
