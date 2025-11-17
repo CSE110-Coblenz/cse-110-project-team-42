@@ -13,15 +13,15 @@ export class TryAgainController extends ScreenController {
     this.screenSwitcher = screenSwitcher;
 
     // default placeholder
-    this.model = new TryAgainScreenModel("Loading TryAgainScreen...", 0);
-    this.view = new TryAgainScreenView("Loading TryAgainScreen...", 0, () => this.handleRestart());
+    this.model = new TryAgainScreenModel("Loading TryAgainScreen...");
+    this.view = new TryAgainScreenView("Loading TryAgainScreen...", () => this.handleRestart());
   }
 
   // Inject hearts and show the screen 
-  showTryAgain(message: string, hearts: number): void {
-    this.view.updateMessage(message);
-    this.model.updateHearts(hearts);
-    this.view.updateHearts(this.model.getHearts());
+  showTryAgain(message: string): void {
+    this.model.updateMessage(message);
+    this.view.updateMessage(this.model.getMessage());
+    this.view.refreshHearts();
     this.view.show();
   }
 
