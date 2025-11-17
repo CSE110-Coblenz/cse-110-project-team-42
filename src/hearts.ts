@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { STAGE_WIDTH } from "/constants";
+import { STAGE_WIDTH } from "./constants";
 
 export class Hearts {
   private static heartsCount = 3;
