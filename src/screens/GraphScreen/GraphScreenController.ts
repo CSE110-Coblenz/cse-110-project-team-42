@@ -15,7 +15,7 @@ export class GraphScreenController {
     this.switcher = switcher;
     this.model = new GraphScreenModel(data);
     this.view = new GraphScreenView(() => this.handleNext());
-    this.view.updateGraph(this.model.getHistory());
+    this.view.updateGraph(this.model.getRunningAverages());
   }
 
   private handleNext(): void {
@@ -35,7 +35,7 @@ export class GraphScreenController {
 
   updateData(newData: GraphDataConfig): void {
     this.model.updateData(newData);
-    this.view.updateGraph(this.model.getHistory());
+    this.view.updateGraph(this.model.getRunningAverages());
   }
 
   getView(): GraphScreenView {
