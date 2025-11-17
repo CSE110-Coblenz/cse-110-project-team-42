@@ -1,5 +1,6 @@
 import Konva from "konva";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { Hearts } from "../../hearts";
 
 export class GraphScreenView {
   private group: Konva.Group;
@@ -22,6 +23,7 @@ export class GraphScreenView {
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
+      image: bgImage,
     });
     bgImage.onload = () => {
       this.bg.image(bgImage);
@@ -31,6 +33,8 @@ export class GraphScreenView {
 
     this.drawAxes();
     this.drawLegend();
+    // Draw hearts using the Hearts helper
+    Hearts.draw(this.group);
 
     const btnW = 180;
     const btnH = 50;
@@ -153,7 +157,7 @@ export class GraphScreenView {
     const yTitle = new Konva.Text({
       x: margin - 40,
       y: 20,
-      text: "Profit",
+      text: "Running Avg Profit",
       fontSize: 18,
       fontFamily: "Arial",
       fill: labelColor,
@@ -181,25 +185,34 @@ export class GraphScreenView {
   }
 
   updateGraph(data: number[][]): void {
+    // Data is expected to be running-average series from the model
     const margin = 60;
     const graphW = STAGE_WIDTH - margin * 2;
     const graphH = STAGE_HEIGHT - 180;
     const allVals = data.flat();
-    const minY = Math.min(...allVals);
-    const maxY = Math.max(...allVals);
+    let minY = allVals.length ? Math.min(...allVals) : 0;
+    let maxY = allVals.length ? Math.max(...allVals) : 1;
     const numPoints = data[0]?.length || 0;
     const colors = ["red", "green", "blue"];
 
     this.lines.forEach((l) => l.destroy());
     this.lines = [];
 
+    // Guard against flat range
+    let adjustedMinY = minY;
+    let adjustedMaxY = maxY;
+    if (adjustedMaxY === adjustedMinY) {
+      adjustedMaxY = adjustedMinY + 1;
+      adjustedMinY = adjustedMinY - 1;
+    }
+
     // Compute scaling
     const scaleY = (val: number) =>
-      STAGE_HEIGHT - 120 - ((val - minY) / (maxY - minY)) * graphH;
+      STAGE_HEIGHT - 120 - ((val - adjustedMinY) / (adjustedMaxY - adjustedMinY)) * graphH;
 
     // Calculate y=0 line position
     const zeroY =
-      0 >= minY && 0 <= maxY ? scaleY(0) : scaleY(minY > 0 ? minY : maxY);
+      0 >= adjustedMinY && 0 <= adjustedMaxY ? scaleY(0) : scaleY(adjustedMinY > 0 ? adjustedMinY : adjustedMaxY);
 
     // Update axes
     this.axes.forEach((a) => a.destroy());
@@ -218,9 +231,9 @@ export class GraphScreenView {
     this.axes = [xAxis, yAxis];
 
     // Redraw labels
-    this.drawAxisLabelsDynamic(margin, numPoints, minY, maxY, zeroY);
+    this.drawAxisLabelsDynamic(margin, numPoints, adjustedMinY, adjustedMaxY, zeroY);
 
-    // Draw lines
+    // Draw animated lines using dash animation
     data.forEach((points, idx) => {
       const scaled: number[] = [];
       for (let i = 0; i < points.length; i++) {
@@ -229,16 +242,28 @@ export class GraphScreenView {
         scaled.push(x, y);
       }
 
+      const totalLength = scaled.length * 2;
       const line = new Konva.Line({
         points: scaled,
         stroke: colors[idx],
         strokeWidth: 3,
         lineCap: "round",
         lineJoin: "round",
+        dashEnabled: true,
+        dash: [0, totalLength], // Start fully invisible
       });
 
       this.group.add(line);
       this.lines.push(line);
+
+      // Animate the line by transitioning dash from invisible to visible
+      const delay = idx * 1;
+      setTimeout(() => {
+        line.to({
+          dash: [totalLength, 0], // End fully visible
+          duration: 5,
+        });
+      }, delay * 1000);
     });
 
     this.group.getLayer()?.draw();
