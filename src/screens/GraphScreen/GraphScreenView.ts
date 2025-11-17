@@ -1,6 +1,6 @@
 import Konva from "konva";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import { Hearts } from "../../hearts";
+import { Hearts } from "../../gamestate";
 
 export class GraphScreenView {
   private group: Konva.Group;

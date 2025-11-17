@@ -3,7 +3,7 @@ import type { ScreenSwitcher } from "../../types";
 import { ResultsScreenView } from "./ResultsScreenView";
 import { ResultsScreenModel } from "./ResultsScreenModel";
 import type { ResultsData } from "./ResultsScreenConstants";
-import { Hearts } from "../../hearts";
+import { Hearts } from "../../gamestate";
 
 export class ResultsScreenController extends ScreenController {
   private view: ResultsScreenView;

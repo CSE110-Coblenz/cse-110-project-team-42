@@ -1,4 +1,4 @@
-import { Hearts } from "../../hearts";
+import { currentLevel } from "../../gamestate";
 import { RESULTS_TEMPLATES, type ResultsData } from "./ResultsScreenConstants";
 
 /**
@@ -20,8 +20,7 @@ export class ResultsScreenModel {
 	 */
 	setResultsData(data: ResultsData): void {
 		this.resultsData = data;
-		const currentGame = Hearts.getCurrentGame();
-		const template = RESULTS_TEMPLATES[currentGame] || RESULTS_TEMPLATES[1];
+		const template = RESULTS_TEMPLATES[currentLevel] || RESULTS_TEMPLATES[1];
 		
 		// Format profits
 		// Keep numeric profits and format with three decimal places
