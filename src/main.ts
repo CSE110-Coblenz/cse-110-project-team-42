@@ -5,7 +5,6 @@ import { GraphScreenController } from "./screens/GraphScreen/GraphScreenControll
 import {
   STAGE_WIDTH,
   STAGE_HEIGHT,
-  GAME1RESULTSTEXT,
   ITERATIONS,
   type GraphDataConfig,
 } from "./constants.ts";
@@ -63,10 +62,6 @@ class App implements ScreenSwitcher {
 
     if (screen === "results") {
       this.resultsController.getView().show();
-      const resultText = GAME1RESULTSTEXT.replace("{0}", "-406")
-        .replace("{1}", "+545")
-        .replace("{2}", "-120");
-      this.resultsController.showResults(resultText, 3);
     }
   }
 }

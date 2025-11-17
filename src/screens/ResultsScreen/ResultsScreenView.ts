@@ -50,7 +50,7 @@ export class ResultsScreenView implements View {
 			text: message,
 			fontSize: 28,
 			fontFamily: "Georgia",
-			fill: "#3e2f1c",
+			fill: "#FFFFFF",
 			align: "center",
 		});
 		this.group.add(this.messageText);
