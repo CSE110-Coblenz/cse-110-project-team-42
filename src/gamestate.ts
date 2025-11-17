@@ -1,6 +1,8 @@
 import Konva from "konva";
 import { STAGE_WIDTH } from "./constants";
 
+export let currentLevel: number = 1;
+
 export class Hearts {
   private static heartsCount = 3;
   private static hearts: Konva.Path[] = [];
