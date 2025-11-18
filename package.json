@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run typecheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"lint not yet configured\""
   },
   "keywords": [],
   "author": "",
@@ -13,10 +15,10 @@
   "type": "commonjs",
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^7.1.12",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "konva": "^10.0.8"
   }
 }
-
