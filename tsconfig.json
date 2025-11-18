@@ -17,5 +17,6 @@
         "noImplicitReturns": true,
         "types": ["node"]
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["src/tests"]
 }
