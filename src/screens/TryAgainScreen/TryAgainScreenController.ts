@@ -22,7 +22,6 @@ export class TryAgainController extends ScreenController {
   showTryAgain(message: string): void {
     this.model.updateMessage(message);
     this.view.updateMessage(this.model.getMessage());
-    this.view.refreshHearts();
     this.view.show();
   }
 

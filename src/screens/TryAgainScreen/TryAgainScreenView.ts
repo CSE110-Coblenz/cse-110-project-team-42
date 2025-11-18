@@ -135,13 +135,11 @@ export class TryAgainScreenView implements View {
     this.buttonText.on("mouseover", pointerOn);
     this.buttonText.on("mouseout", pointerOff);
   }
-
-  refreshHearts(): void {
-    Hearts.draw(this.group);
-  }
+  
   
   updateMessage(newMessage: string): void {
     this.hintText.text(newMessage);
+	  this.group.getLayer()?.draw();
 	  this.group.getLayer()?.draw();
   }
 
