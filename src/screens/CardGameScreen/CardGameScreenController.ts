@@ -6,11 +6,9 @@ import { CardGameScreenView } from "./CardGameScreenView";
 export class CardGameScreenController extends ScreenController {
   private view: CardGameScreenView;
   private model: CardGameScreenModel;
-  private screenSwitcher: ScreenSwitcher;
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(_screenSwitcher: ScreenSwitcher) {
     super();
-    this.screenSwitcher = screenSwitcher;
     this.model = new CardGameScreenModel();
     this.view = new CardGameScreenView(
       this.model.getOptions(),
