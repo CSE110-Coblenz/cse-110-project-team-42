@@ -1,8 +1,8 @@
 import Konva from "konva";
-import type { ScreenSwitcher } from "./types.ts";
-import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController.ts";
-import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants.ts";
+import type { ScreenSwitcher } from "./types";
+import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController";
+import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
+import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants";
 
 class App implements ScreenSwitcher {
 	private stage: Konva.Stage;

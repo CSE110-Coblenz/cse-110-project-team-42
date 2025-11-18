@@ -23,6 +23,7 @@ export class CardGameScreenView implements View {
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
+      image: undefined,
     });
     this.group.add(bg);
 

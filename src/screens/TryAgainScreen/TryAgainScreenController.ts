@@ -6,11 +6,9 @@ import { TryAgainScreenModel } from "./TryAgainScreenModel";
 export class TryAgainController extends ScreenController {
   private view: TryAgainScreenView;
   private model: TryAgainScreenModel;
-  private screenSwitcher: ScreenSwitcher;
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(_screenSwitcher: ScreenSwitcher) {
     super();
-    this.screenSwitcher = screenSwitcher;
 
     // default placeholder
     this.model = new TryAgainScreenModel("Loading TryAgainScreen...", 0);

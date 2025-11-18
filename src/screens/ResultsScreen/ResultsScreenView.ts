@@ -20,6 +20,7 @@ export class ResultsScreenView implements View {
 			y: 0,
 			width: STAGE_WIDTH,
 			height: STAGE_HEIGHT,
+			image: undefined,
 		});
 		bgImage.onload = () => {
 			bg.image(bgImage);
@@ -35,6 +36,7 @@ export class ResultsScreenView implements View {
 			y: 0,
 			width: STAGE_WIDTH,
 			height: STAGE_HEIGHT,
+			image: undefined,
 		});
 		scrollImage.onload = () => {
 			scroll.image(scrollImage);
