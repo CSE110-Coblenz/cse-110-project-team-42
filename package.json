@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "test": "npm run typecheck",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "echo \"lint not yet configured\""
   },
