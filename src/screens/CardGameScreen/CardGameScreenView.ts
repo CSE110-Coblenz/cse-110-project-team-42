@@ -1,6 +1,7 @@
 import Konva from "konva";
 import type { View, CardGameOption } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { Hearts } from "../../gamestate";
 
 type OptionClickCallback = (option: CardGameOption) => void;
 
@@ -12,6 +13,7 @@ export class CardGameScreenView implements View {
     this.group = new Konva.Group({ visible: false });
     this.onOptionClick = onOptionClick;
     this.setupUI(options);
+    Hearts.draw(this.group);
   }
 
   private setupUI(options: CardGameOption[]): void {
