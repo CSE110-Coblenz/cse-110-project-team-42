@@ -34,9 +34,8 @@ export interface CardGameOption {
 export interface SimulationResult {
   option: CardGameOption;
   runs: number;
-  wins: number;
-  losses: number;
+  profit: number;
+  loss: number;
   netResult: number;
   expectedValue: number;
-  verdict: string;
 }

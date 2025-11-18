@@ -27,10 +27,10 @@ export class CardGameScreenController extends ScreenController {
 
     alert(`
       Simulation Complete for ${option.label.replace("\n", " -> ")}
-      - Wins: ${result.wins}
-      - Losses: ${result.losses}
+      - Profit: $${result.profit.toFixed(2)}
+      - Loss: $${result.loss.toFixed(2)}
       - Net Result: $${result.netResult.toFixed(2)}
-      - Verdict: ${result.verdict}
+      - Theoretical EV (per play): $${result.expectedValue.toFixed(2)}
     `);
 
     // Here you would switch to the results screen, passing the result data.

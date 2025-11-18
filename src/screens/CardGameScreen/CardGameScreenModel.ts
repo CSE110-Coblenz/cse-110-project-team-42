@@ -12,6 +12,7 @@ export class CardGameScreenModel {
     return this.options;
   }
 
+  /** Core simulation for a single option. */
   simulate(option: CardGameOption, runs: number): SimulationResult {
     const { faceCards, deckSize } = option;
     const winProbability = faceCards / deckSize;
@@ -25,19 +26,27 @@ export class CardGameScreenModel {
 
     const losses = runs - wins;
     const totalPayoff = wins * option.payoff;
-    const totalCost = runs * option.buyIn;
+    const totalCost = losses * option.buyIn;
     const netResult = totalPayoff - totalCost;
-    const expectedValue = netResult / runs;
-    const verdict = netResult >= 0 ? "worth it" : "not worth it";
+    const expectedValue =
+      winProbability * option.payoff - (1 - winProbability) * option.buyIn;
 
     return {
       option,
       runs,
-      wins,
-      losses,
+      profit: totalPayoff,
+      loss: totalCost,
       netResult,
       expectedValue,
-      verdict,
     };
+  }
+
+  /** Index-based helper, roughly analogous to “simulateOp1/2/3”. */
+  simulateByIndex(index: number, runs: number): SimulationResult {
+    const opt = this.options[index];
+    if (!opt) {
+      throw new Error(`No card game option at index ${index}`);
+    }
+    return this.simulate(opt, runs);
   }
 }
