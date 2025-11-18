@@ -6,10 +6,31 @@ export let currentLevel: number = 1;
 export class Hearts {
   private static heartsCount = 3;
   private static hearts: Konva.Path[] = [];
+  private static heartsLayer: Konva.Layer | null = null;
+  private static heartsGroup: Konva.Group | null = null;
 
   /** Draws the hearts in the top-right corner */
-  static draw(group: Konva.Group): void {
-    // Remove existing
+  static draw(_group?: Konva.Group): void {
+    // Ensure we have a top-level hearts layer and group. We create them lazily
+    // and attach them to the first Konva stage so hearts always render above
+    // other layers.
+    const stage = Konva.stages && Konva.stages.length ? Konva.stages[0] : null;
+    if (!stage) {
+      // If stage is not yet created, bail quietly.
+      // Callers typically draw after stage creation, so this should be transient.
+      // eslint-disable-next-line no-console
+      console.warn("Hearts.draw: no Konva stage available yet");
+      return;
+    }
+
+    if (!this.heartsLayer) {
+      this.heartsLayer = new Konva.Layer();
+      this.heartsGroup = new Konva.Group({ x: 0, y: 0 });
+      this.heartsLayer.add(this.heartsGroup);
+      stage.add(this.heartsLayer);
+    }
+
+    // Remove existing heart nodes
     this.hearts.forEach((h) => h.destroy());
     this.hearts = [];
 
@@ -28,6 +49,8 @@ export class Hearts {
     const startX = STAGE_WIDTH - totalWidth - margin;
     const heartY = margin;
 
+    const targetGroup = this.heartsGroup!;
+
     for (let i = 0; i < count; i++) {
       const heart = new Konva.Path({
         x: startX + i * (heartSize + spacing),
@@ -38,11 +61,11 @@ export class Hearts {
         stroke: "#7a0000",
         strokeWidth: 1,
       });
-      group.add(heart);
+      targetGroup.add(heart);
       this.hearts.push(heart);
     }
 
-    group.getLayer()?.draw();
+    this.heartsLayer!.draw();
   }
 
   /** Decrease hearts by one, returns true if any remain, false if none left */
