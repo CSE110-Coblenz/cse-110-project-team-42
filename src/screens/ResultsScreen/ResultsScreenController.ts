@@ -4,11 +4,9 @@ import { ResultsScreenView } from "./ResultsScreenView";
 
 export class ResultsScreenController extends ScreenController {
   private view: ResultsScreenView;
-  private screenSwitcher: ScreenSwitcher;
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(_screenSwitcher: ScreenSwitcher) {
     super();
-    this.screenSwitcher = screenSwitcher;
 
     // default placeholder
     this.view = new ResultsScreenView("Loading results...", 0, () => this.handleProceed());
