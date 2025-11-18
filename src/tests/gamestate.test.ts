@@ -24,9 +24,14 @@ vi.mock("konva", () => {
     add(n: any) {
       this.children.push(n);
     }
-    find(selector: string) {
+    find(_selector: string) {
       // very small subset used by tests
       return this.children.filter((c) => c instanceof Path);
+    }
+    getLayer() {
+      return {
+        draw: () => {},
+      };
     }
   }
 
@@ -64,7 +69,7 @@ describe("Hearts (gamestate)", () => {
   beforeEach(async () => {
     // Reset modules so gamestate initial state is fresh for each test
     vi.resetModules();
-    const Konva = await import("konva");
+    const Konva: any = await import("konva");
     Konva.default.__reset();
   });
 
@@ -86,28 +91,22 @@ describe("Hearts (gamestate)", () => {
   });
 
   it("draw does not throw if no Konva stage is present", async () => {
-    const Konva = await import("konva");
+    const Konva: any = await import("konva");
     const { Hearts } = await import("../gamestate");
-    // Ensure stages is empty
-    Konva.default.stages.length = 0;
-    expect(() => Hearts.draw()).not.toThrow();
+    // Create a mock group and ensure drawing into it does not throw
+    const mockGroup = new Konva.default.Group();
+    expect(() => Hearts.draw(mockGroup)).not.toThrow();
   });
 
   it("draw creates a top-level layer and Path nodes when a stage exists", async () => {
-    const Konva = await import("konva");
+    const Konva: any = await import("konva");
     const { Hearts } = await import("../gamestate");
 
-    // Provide a fake stage that records added children
-    const mockStage = { add: vi.fn() };
-    Konva.default.stages.push(mockStage);
+    const mockGroup = new Konva.default.Group();
+    Hearts.draw(mockGroup);
 
-    Hearts.draw();
-
-    // Stage should have had add called with the new layer
-    expect(mockStage.add).toHaveBeenCalled();
-
-    // Konva mock recorded created Path instances equal to Hearts.get()
-    const created = Konva.default.__createdPaths;
-    expect(created.length).toBe(Hearts.get());
+    // Group should contain Path nodes equal to Hearts.get()
+    const paths = mockGroup.find("Path");
+    expect(paths.length).toBe(Hearts.get());
   });
 });
