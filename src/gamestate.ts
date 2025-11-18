@@ -5,34 +5,13 @@ export let currentLevel: number = 1;
 
 export class Hearts {
   private static heartsCount = 3;
-  private static hearts: Konva.Path[] = [];
-  private static heartsLayer: Konva.Layer | null = null;
-  private static heartsGroup: Konva.Group | null = null;
+  private static heartsByGroup: Map<Konva.Group, Konva.Path[]> = new Map();
 
   /** Draws the hearts in the top-right corner */
-  static draw(_group?: Konva.Group): void {
-    // Ensure we have a top-level hearts layer and group. We create them lazily
-    // and attach them to the first Konva stage so hearts always render above
-    // other layers.
-    const stage = Konva.stages && Konva.stages.length ? Konva.stages[0] : null;
-    if (!stage) {
-      // If stage is not yet created, bail quietly.
-      // Callers typically draw after stage creation, so this should be transient.
-      // eslint-disable-next-line no-console
-      console.warn("Hearts.draw: no Konva stage available yet");
-      return;
-    }
-
-    if (!this.heartsLayer) {
-      this.heartsLayer = new Konva.Layer();
-      this.heartsGroup = new Konva.Group({ x: 0, y: 0 });
-      this.heartsLayer.add(this.heartsGroup);
-      stage.add(this.heartsLayer);
-    }
-
-    // Remove existing heart nodes
-    this.hearts.forEach((h) => h.destroy());
-    this.hearts = [];
+  static draw(group: Konva.Group): void {
+    // Remove existing heart nodes from this specific group only
+    const existing = this.heartsByGroup.get(group);
+    existing?.forEach((h) => h.destroy());
 
     const heartPath =
       "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 " +
@@ -49,8 +28,7 @@ export class Hearts {
     const startX = STAGE_WIDTH - totalWidth - margin;
     const heartY = margin;
 
-    const targetGroup = this.heartsGroup!;
-
+    const newHearts: Konva.Path[] = [];
     for (let i = 0; i < count; i++) {
       const heart = new Konva.Path({
         x: startX + i * (heartSize + spacing),
@@ -61,11 +39,12 @@ export class Hearts {
         stroke: "#7a0000",
         strokeWidth: 1,
       });
-      targetGroup.add(heart);
-      this.hearts.push(heart);
+      group.add(heart);
+      newHearts.push(heart);
     }
 
-    this.heartsLayer!.draw();
+    this.heartsByGroup.set(group, newHearts);
+    group.getLayer()?.draw();
   }
 
   /** Decrease hearts by one, returns true if any remain, false if none left */
@@ -73,6 +52,9 @@ export class Hearts {
     if (this.heartsCount > 0) {
       this.heartsCount--;
     }
+    // Redraw hearts on all registered groups to reflect new count
+    const groups = Array.from(this.heartsByGroup.keys());
+    groups.forEach((group) => this.draw(group));
     return this.heartsCount > 0;
   }
 

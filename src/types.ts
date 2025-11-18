@@ -21,3 +21,21 @@ export abstract class ScreenController {
 export interface ScreenSwitcher {
 	switchToScreen(screen: string): void;
 }
+
+export interface CardGameOption {
+  id: string;
+  label: string;
+  buyIn: number;
+  payoff: number;
+  faceCards: number;
+  deckSize: number;
+}
+
+export interface SimulationResult {
+  option: CardGameOption;
+  runs: number;
+  profit: number;
+  loss: number;
+  netResult: number;
+  expectedValue: number;
+}

@@ -1,20 +1,22 @@
 import Konva from "konva";
 import type { ScreenSwitcher } from "./types.ts";
-import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController.ts";
-import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController.ts";
+import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController";
+import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import {
   STAGE_WIDTH,
   STAGE_HEIGHT,
   ITERATIONS,
   type GraphDataConfig,
-} from "./constants.ts";
+} from "./constants";
+import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
 
-  private resultsController: ResultsScreenController;
-  private graphController: GraphScreenController;
+    private resultsController: ResultsScreenController;
+    private graphController: GraphScreenController;
+	private cardGameController: CardGameScreenController;
 
   constructor(container: string) {
     // Create stage
@@ -40,8 +42,10 @@ class App implements ScreenSwitcher {
     // Initialize controllers
     this.graphController = new GraphScreenController(this, graphData);
     this.resultsController = new ResultsScreenController(this);
+    this.cardGameController = new CardGameScreenController(this);
 
-    // Add both to layer
+    // Add view groups to the layer
+    this.layer.add(this.cardGameController.getView().getGroup());
     this.layer.add(this.graphController.getView().getGroup());
     this.layer.add(this.resultsController.getView().getGroup());
 
@@ -62,6 +66,10 @@ class App implements ScreenSwitcher {
 
     if (screen === "results") {
       this.resultsController.getView().show();
+    }
+
+    if (screen === "cardGame") {
+      this.cardGameController.getView().show();
     }
   }
 }
