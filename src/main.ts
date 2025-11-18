@@ -44,7 +44,7 @@ class App implements ScreenSwitcher {
 
 		// Start (results for now)
 		//needs work here to test for finish screen
-		//this.diceController.start();
+		this.diceController.start();
 		//this.switchToScreen("results");
 		
 		this.switchToScreen("results");

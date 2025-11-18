@@ -1,3 +1,5 @@
+// src/screens/DiceGameScreen/DiceGameScreenView.ts
+
 import Konva from "konva";
 import type { View } from "../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
@@ -13,11 +15,23 @@ export class DiceGameScreenView implements View {
 
   private aButton!: ButtonRefs;
   private bButton!: ButtonRefs;
+  private cButton!: ButtonRefs;
 
-  constructor() {
+  private onChoiceA: () => void;
+  private onChoiceB: () => void;
+  private onChoiceC: () => void;
+
+  constructor(
+    onChoiceA: () => void,
+    onChoiceB: () => void,
+    onChoiceC: () => void
+  ) {
     this.group = new Konva.Group({ visible: false });
+    this.onChoiceA = onChoiceA;
+    this.onChoiceB = onChoiceB;
+    this.onChoiceC = onChoiceC;
 
-    // --- BACKGROUND IMAGE (added first, behind everything) ---
+    // === BACKGROUND ===
     Konva.Image.fromURL("/bg.png", (img) => {
       img.setAttrs({
         x: 0,
@@ -31,129 +45,192 @@ export class DiceGameScreenView implements View {
       this.group.getLayer()?.draw();
     });
 
-    // --- TOP TEXTS ("a" and "b" in upper-left and upper-right middle) ---
-    const topY = STAGE_HEIGHT * 0.12;
-    const margin = 40;
-    const halfWidth = STAGE_WIDTH / 2 - margin;
-
-    // Left (Choice A)
-    const aText = new Konva.Text({
-      x: margin,
-      y: topY,
-      width: halfWidth - margin,
-      align: "left",
-      text: "Choice A: Roll 3 dice — for every even, you get $5 back. Entry cost $10.",
-      fontFamily: "Arial",
-      fontSize: 26,
-      fill: "#fff",
+    // === TITLE (More elegant) ===
+    const title = new Konva.Text({
+      x: 0,
+      y: STAGE_HEIGHT * 0.04,
+      width: STAGE_WIDTH,
+      align: "center",
+      text: "🎲 Dice Strategy Game",
+      fontFamily: "Georgia",
+      fontSize: 46,
+      fill: "#ffffff",
       shadowColor: "black",
-      shadowBlur: 8,
+      shadowBlur: 18,
+      shadowOffsetY: 3,
+      fontStyle: "bold",
+    });
+    this.group.add(title);
+
+    // === SUBTITLE (More elegant) ===
+    const subtitle = new Konva.Text({
+      x: 0,
+      y: STAGE_HEIGHT * 0.13,
+      width: STAGE_WIDTH,
+      align: "center",
+      text:
+        "Choose the best option using probability, intuition, and EV.\nSmall differences matter.",
+      fontFamily: "Georgia",
+      fontSize: 22,
+      fill: "#f6f6f6",
+      lineHeight: 1.35,
+      shadowColor: "black",
+      shadowBlur: 10,
+      shadowOpacity: 0.6,
+    });
+    this.group.add(subtitle);
+
+    // === DICE IMAGE — Bigger ===
+    Konva.Image.fromURL("/dice.jpg", (img) => {
+      const w = 210;
+      const h = 155;
+
+      img.setAttrs({
+        width: w,
+        height: h,
+        x: STAGE_WIDTH / 2 - w / 2,
+        y: STAGE_HEIGHT * 0.30,
+        listening: false,
+        shadowBlur: 18,
+        shadowColor: "black",
+        shadowOpacity: 0.35,
+      });
+
+      this.group.add(img);
+      this.group.getLayer()?.draw();
     });
 
-    // Right (Choice B)
-    const bText = new Konva.Text({
-      x: STAGE_WIDTH / 2 + margin,
-      y: topY,
-      width: halfWidth - margin,
-      align: "right",
-      text: "Choice B: Roll 5 dice — for every '2', you get $5 back. Entry cost $4.",
-      fontFamily: "Arial",
-      fontSize: 26,
-      fill: "#fff",
-      shadowColor: "black",
-      shadowBlur: 8,
-    });
+    // === BUTTONS — Slightly Smaller ===
+    const btnWidth = 185;
+    const btnHeight = 115;
+    const gap = 34;
+    const totalW = btnWidth * 3 + gap * 2;
+    const startX = (STAGE_WIDTH - totalW) / 2;
+    const btnY = STAGE_HEIGHT * 0.72;
 
-    this.group.add(aText);
-    this.group.add(bText);
+    this.aButton = this.createButton(startX, btnY, "", () => this.onChoiceA());
+    this.bButton = this.createButton(startX + btnWidth + gap, btnY, "", () =>
+      this.onChoiceB()
+    );
+    this.cButton = this.createButton(
+      startX + (btnWidth + gap) * 2,
+      btnY,
+      "",
+      () => this.onChoiceC()
+    );
 
-    // --- LOWER-MIDDLE BUTTONS (side-by-side, centered) ---
-    const btnWidth = 120;
-    const btnHeight = 60;
-    const gap = 180;
-    const totalW = btnWidth * 2 + gap;
-    const leftX = (STAGE_WIDTH - totalW) / 2;
-    const y = STAGE_HEIGHT * 0.78;
-
-    this.aButton = this.createButton(leftX, y, "A", "white", "#000", () => this.setAActive());
     this.group.add(this.aButton.group);
-
-    this.bButton = this.createButton(leftX + btnWidth + gap, y, "B", "white", "#000", () => this.setBActive());
     this.group.add(this.bButton.group);
+    this.group.add(this.cButton.group);
 
     this.group.getLayer()?.draw();
   }
 
+  // ------------------------------------------------------------
+  // BUTTON LABEL INJECTION
+  // ------------------------------------------------------------
+  public setButtonLabels(aText: string, bText: string, cText: string): void {
+    this.aButton.label.text(aText);
+    this.bButton.label.text(bText);
+    this.cButton.label.text(cText);
+    this.group.getLayer()?.draw();
+  }
+
+  public resetColorsToDefault(): void {
+    const defaultFill = "#1e5631"; // deeper green
+    this.aButton.rect.fill(defaultFill);
+    this.bButton.rect.fill(defaultFill);
+    this.cButton.rect.fill(defaultFill);
+    this.group.getLayer()?.draw();
+  }
+
+  // ------------------------------------------------------------
+  // BUTTON CREATION — SMALLER + CLEANER STYLE
+  // ------------------------------------------------------------
   private createButton(
     x: number,
     y: number,
-    label: string,
-    fill: string,
-    textColor: string,
+    textValue: string,
     onClick: () => void
   ): ButtonRefs {
     const group = new Konva.Group({ x, y, listening: true });
 
     const rect = new Konva.Rect({
-      width: 120,
-      height: 60,
-      cornerRadius: 10,
-      fill,
-      stroke: "#333",
+      width: 185,
+      height: 115,
+      cornerRadius: 14,
+      fill: "#1e5631",
+      stroke: "#0f2d1c",
       strokeWidth: 2,
-      shadowBlur: 6,
-      shadowOpacity: 0.25,
+      shadowBlur: 12,
+      shadowOpacity: 0.33,
       shadowColor: "black",
     });
 
-    const text = new Konva.Text({
-      text: label,
+    const label = new Konva.Text({
+      text: textValue,
       fontFamily: "Arial",
-      fontSize: 28,
-      fill: textColor,
-      width: rect.width(),
+      fontSize: 13.5,
+      fill: "white",
       align: "center",
+      width: rect.width() - 14,
+      x: 7,
+      y: 8,
+      lineHeight: 1.2,
       shadowColor: "black",
-      shadowBlur: 4,
+      shadowBlur: 2,
     });
-    text.x(0);
-    text.y((rect.height() - text.height()) / 2);
 
-    group.add(rect, text);
-    group.on("pointerdown", onClick);
-    rect.on("pointerdown", onClick);
-    text.on("pointerdown", onClick);
+    group.add(rect, label);
 
-    return { group, rect, label: text };
+    group.on("pointerdown", () => {
+      group.scale({ x: 0.95, y: 0.95 });
+      onClick();
+      this.group.getLayer()?.draw();
+    });
+
+    group.on("pointerup pointerleave", () => {
+      group.scale({ x: 1, y: 1 });
+      this.group.getLayer()?.draw();
+    });
+
+    return { group, rect, label };
   }
 
-  private setAActive(): void {
-    this.aButton.rect.fill("red");
-    this.aButton.label.fill("#fff");
-    this.bButton.rect.fill("white");
-    this.bButton.label.fill("#000");
+  // ------------------------------------------------------------
+  // HIGHLIGHT COLORS
+  // ------------------------------------------------------------
+  public setAActive(): void {
+    this.aButton.rect.fill("#c62828");
+    this.bButton.rect.fill("#1e5631");
+    this.cButton.rect.fill("#1e5631");
     this.group.getLayer()?.draw();
   }
 
-  private setBActive(): void {
-    this.bButton.rect.fill("green");
-    this.bButton.label.fill("#fff");
-    this.aButton.rect.fill("white");
-    this.aButton.label.fill("#000");
+  public setBActive(): void {
+    this.bButton.rect.fill("#7cb342");
+    this.aButton.rect.fill("#1e5631");
+    this.cButton.rect.fill("#1e5631");
     this.group.getLayer()?.draw();
   }
 
-  show(): void {
+  public setCActive(): void {
+    this.cButton.rect.fill("#1e88e5");
+    this.aButton.rect.fill("#1e5631");
+    this.bButton.rect.fill("#1e5631");
+    this.group.getLayer()?.draw();
+  }
+
+  // ------------------------------------------------------------
+  public show(): void {
     this.group.visible(true);
-   // this.group.getLayer()?.draw();
   }
 
-  hide(): void {
+  public hide(): void {
     this.group.visible(false);
-    //this.group.getLayer()?.draw();
   }
 
-  getGroup(): Konva.Group {
+  public getGroup(): Konva.Group {
     return this.group;
   }
 }

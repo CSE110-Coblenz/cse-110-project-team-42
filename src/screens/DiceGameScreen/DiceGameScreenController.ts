@@ -1,43 +1,74 @@
+// src/screens/DiceGameScreen/DiceGameScreenController.ts
+
 import { ScreenController } from "../../types.ts";
+import type { ScreenSwitcher } from "../../types.ts";
 import { DiceGameScreenModel } from "./DiceGameScreenModel.ts";
 import { DiceGameScreenView } from "./DiceGameScreenView.ts";
 
 /**
- * Minimal controller: no calculations.
- * Shows/hides the view; buttons handle their own color changes in the View.
+ * DiceGameScreenController
+ * - asks the Model for a random set of three options
+ * - injects them into the View
+ * - View is responsible only for rendering and simple color highlights
  */
 export class DiceGameScreenController extends ScreenController {
   private model: DiceGameScreenModel;
   private view: DiceGameScreenView;
 
-  constructor() {
+  // screenSwitcher is optional here; you can use it later for navigation
+  constructor(_screenSwitcher?: ScreenSwitcher) {
     super();
     this.model = new DiceGameScreenModel();
-    this.view = new DiceGameScreenView();
-  }
-/* 
-  this.view = new DiceGameScreenView(
-      () => this.handleAClick(),
-      () => this.handleBClick()
+    this.view = new DiceGameScreenView(
+      () => this.handleChoiceA(),
+      () => this.handleChoiceB(),
+      () => this.handleChoiceC()
     );
   }
 
-  // when A clicked → show DiceExplainScreen 
-  private handleAClick(): void {
-    this.screenSwitcher.switchToScreen({ type: "diceExplain" });
+  /**
+   * Called when the screen is entered.
+   * Picks a random set from the model and updates the view.
+   */
+// DiceGameScreenController.ts
+// DiceGameScreenController.ts
+
+start(): void {
+  const [a, b, c] = this.model.getRandomSet();
+  this.view.setButtonLabels(a, b, c); // ⬅ 把整段文字塞进按钮
+  this.view.resetColorsToDefault();
+  this.view.show();
+}
+
+
+
+  // Simple handlers: right now they just highlight in the View.
+  // Later you can add logic here (e.g., go to DiceExplainScreen, record answers, etc.)
+  private handleChoiceA(): void {
+    this.view.setAActive();
   }
 
-  // when B clicked → do nothing 
-  private handleBClick(): void {
-    // intentionally blank
-  }
-  */
-
-  start(): void {
-    this.model.reset(); // no-op
-    this.view.show();
+  private handleChoiceB(): void {
+    this.view.setBActive();
   }
 
+  private handleChoiceC(): void {
+    this.view.setCActive();
+  }
+
+  simulateOpt1(): number {
+    return this.model.simulateOpt1();
+  }
+
+  simulateOpt2(): number {
+    return this.model.simulateOpt2();
+  }
+
+  simulateOpt3(): number {
+    return this.model.simulateOpt3();
+  }
+
+  // Required by ScreenController
   getView(): DiceGameScreenView {
     return this.view;
   }
