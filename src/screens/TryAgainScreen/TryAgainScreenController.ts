@@ -2,6 +2,7 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { TryAgainScreenView } from "./TryAgainScreenView";
 import { TryAgainScreenModel } from "./TryAgainScreenModel";
+import { currentLevel } from "../../gamestate";
 
 export class TryAgainController extends ScreenController {
   private view: TryAgainScreenView;
@@ -14,7 +15,7 @@ export class TryAgainController extends ScreenController {
 
     // default placeholder
     this.model = new TryAgainScreenModel("Loading TryAgainScreen...");
-    this.view = new TryAgainScreenView("Loading TryAgainScreen...", () => this.handleRestart());
+    this.view = new TryAgainScreenView("Hint message will be displayed here", () => this.handleRestart());
   }
 
   // Inject hearts and show the screen 
@@ -33,7 +34,7 @@ export class TryAgainController extends ScreenController {
     return this.view;
   }
 
-  private handleRestart(): void {
+  private handleRestart(): void { 
     alert("Restart clicked!");
   }
 }

@@ -2,6 +2,7 @@ import Konva from "konva";
 import type { ScreenSwitcher } from "./types.ts";
 import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController.ts";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController.ts";
+import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController.js";
 import {
   STAGE_WIDTH,
   STAGE_HEIGHT,
@@ -15,6 +16,7 @@ class App implements ScreenSwitcher {
 
   private resultsController: ResultsScreenController;
   private graphController: GraphScreenController;
+  private tryAgainController : TryAgainController;
 
   constructor(container: string) {
     // Create stage
@@ -40,21 +42,25 @@ class App implements ScreenSwitcher {
     // Initialize controllers
     this.graphController = new GraphScreenController(this, graphData);
     this.resultsController = new ResultsScreenController(this);
+	this.tryAgainController = new TryAgainController(this);
 
     // Add both to layer
     this.layer.add(this.graphController.getView().getGroup());
     this.layer.add(this.resultsController.getView().getGroup());
+	this.layer.add(this.tryAgainController.getView().getGroup());
+
 
     this.layer.draw();
 
-    // Start on graph for now
-    this.switchToScreen("graph");
+    // Start on tryagain for now
+    this.switchToScreen("tryagain");
   }
 
   switchToScreen(screen: string): void {
     // Hide all
     this.resultsController.hide();
     this.graphController.hide();
+	this.tryAgainController.hide();
 
     if (screen === "graph") {
       this.graphController.getView().show();
@@ -63,6 +69,10 @@ class App implements ScreenSwitcher {
     if (screen === "results") {
       this.resultsController.getView().show();
     }
+
+	if (screen === "tryagain") {
+		this.tryAgainController.getView().show();
+	}
   }
 }
 

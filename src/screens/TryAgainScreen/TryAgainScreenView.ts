@@ -1,7 +1,7 @@
 import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import { Hearts } from "../../hearts"; 
+import { Hearts } from "../../gamestate"; 
 
 export class TryAgainScreenView implements View {
   private group: Konva.Group;
@@ -52,7 +52,7 @@ export class TryAgainScreenView implements View {
       text: "OOPS! Try Again!",
       fontSize: 40,
       fontFamily: "Georgia",
-      fill: "#3e2f1c",
+      fill: "#ffffffff",
       align: "center",
       shadowColor: "#2b1d0e",
       shadowBlur: 4,
@@ -68,7 +68,7 @@ export class TryAgainScreenView implements View {
       text: "You chose the wrong option and lost money!",
       fontSize: 24,
       fontFamily: "Georgia",
-      fill: "#3e2f1c",
+      fill: "#ffffffff",
       align: "center",
     });
     this.group.add(this.subtitleText);
@@ -81,7 +81,7 @@ export class TryAgainScreenView implements View {
       text: message, 
       fontSize: 20,
       fontFamily: "Georgia",
-      fill: "#3e2f1c",
+      fill: "#ffffffff",
       align: "center",
       lineHeight: 1.35,
     });
