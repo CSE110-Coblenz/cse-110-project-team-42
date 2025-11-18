@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // CI should be strict and fast; skip lib checks to reduce noise/time
+    "skipLibCheck": true,
+    // Allow imports that include the .ts extension (some files currently use them)
+    "allowImportingTsExtensions": true,
+    // Ensure we don't accidentally emit artifacts in CI runs
+    "noEmit": true
+  },
+  "include": ["src"],
+  "exclude": ["src/tests"]
+}
