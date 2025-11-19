@@ -73,7 +73,6 @@ class App implements ScreenSwitcher {
     } else if (screen === "graph") {
       this.graphController.getView().show();
     }
-	}
   }
 }
 
