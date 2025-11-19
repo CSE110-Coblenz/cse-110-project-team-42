@@ -11,3 +11,31 @@ export interface GraphDataConfig {
   selectedOption: number;
   simulateFns: (() => number)[];
 }
+
+export const CARD_OPTIONS = [
+  { 
+    id: "opt1", 
+    label: "Small Deck (30 Cards)\n10 Face Cards\n$10 Buy-in → +$25 Payoff", 
+    buyIn: 10, 
+    payoff: 25, 
+    faceCards: 10, 
+    deckSize: 30 
+  },
+  { 
+    id: "opt2", 
+    label: "Standard Deck (52 Cards)\n12 Face Cards\n$5 Buy-in → +$20 Payoff", 
+    buyIn: 5, 
+    payoff: 20, 
+    faceCards: 12, 
+    deckSize: 52 
+  },
+  { 
+    id: "opt3", 
+    label: "Stacked Deck (52 Cards)\n8 Face Cards\n$10 Buy-in → +$70 Payoff", 
+    buyIn: 10, 
+    payoff: 70, 
+    faceCards: 8, 
+    deckSize: 52 
+  },
+];
+
