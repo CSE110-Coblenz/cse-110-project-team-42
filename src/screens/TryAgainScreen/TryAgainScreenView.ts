@@ -54,7 +54,7 @@ export class TryAgainScreenView implements View {
       text: "OOPS! Try Again!",
       fontSize: 40,
       fontFamily: "Georgia",
-      fill: "#ffffffff",
+      fill: "#ff3e3eff",
       align: "center",
       shadowColor: "#2b1d0e",
       shadowBlur: 4,
@@ -65,12 +65,12 @@ export class TryAgainScreenView implements View {
     // Subtitle
     this.subtitleText = new Konva.Text({
       x: STAGE_WIDTH / 2 - 320,
-      y: STAGE_HEIGHT * 0.42,
+      y: STAGE_HEIGHT * 0.33,
       width: 640,
       text: "You chose the wrong option and lost money!",
       fontSize: 24,
       fontFamily: "Georgia",
-      fill: "#ffffffff",
+      fill: "#db5757ff",
       align: "center",
     });
     this.group.add(this.subtitleText);
@@ -78,13 +78,13 @@ export class TryAgainScreenView implements View {
     // Hint will take message to display
     this.hintText = new Konva.Text({
       x: STAGE_WIDTH / 2 - 340,
-      y: STAGE_HEIGHT * 0.50,
+      y: STAGE_HEIGHT * 0.40,
       width: 680,
       text: message, 
       fontSize: 20,
       fontFamily: "Georgia",
-      fill: "#ffffffff",
-      align: "center",
+      fill: "#f6fa1cff",
+      align: "left",
       lineHeight: 1.35,
     });
     this.group.add(this.hintText);
@@ -141,7 +141,6 @@ export class TryAgainScreenView implements View {
   
   updateMessage(newMessage: string): void {
     this.hintText.text(newMessage);
-	  this.group.getLayer()?.draw();
 	  this.group.getLayer()?.draw();
   }
 

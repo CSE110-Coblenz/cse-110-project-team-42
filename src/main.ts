@@ -4,7 +4,7 @@ import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenCo
 import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController";
-import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT, GAME1HINTMESSAGE } from "./constants";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -50,7 +50,7 @@ class App implements ScreenSwitcher {
 	  this.layer.add(this.tryAgainController.getView().getGroup());
 
 		// Start with the card game
-		this.switchToScreen("cardGame");
+		this.switchToScreen("tryagain");
 	}
 
 	switchToScreen(screen: string): void {
@@ -69,7 +69,7 @@ class App implements ScreenSwitcher {
 		} else if (screen === "cardGame") {
 			this.cardGameController.getView().show();
 		} else if (screen === "tryagain") {
-		this.tryAgainController.getView().show();
+      this.tryAgainController.showTryAgain();
     } else if (screen === "graph") {
       this.graphController.getView().show();
     }

@@ -3,6 +3,7 @@ import type { ScreenSwitcher } from "../../types";
 import { TryAgainScreenView } from "./TryAgainScreenView";
 import { TryAgainScreenModel } from "./TryAgainScreenModel";
 import { currentLevel } from "../../gamestate";
+import { HINT_BY_LEVEL } from "../../constants";
 
 export class TryAgainController extends ScreenController {
   private view: TryAgainScreenView;
@@ -16,9 +17,10 @@ export class TryAgainController extends ScreenController {
     this.view = new TryAgainScreenView("Hint message will be displayed here", () => this.handleRestart());
   }
 
-  // Inject hearts and show the screen 
-  showTryAgain(message: string): void {
-    this.model.updateMessage(message);
+  showTryAgain(): void {
+    const hint = 
+       HINT_BY_LEVEL[currentLevel] ?? "Hint not assigned correctly"
+    this.model.updateMessage(hint);
     this.view.updateMessage(this.model.getMessage());
     this.view.show();
   }
