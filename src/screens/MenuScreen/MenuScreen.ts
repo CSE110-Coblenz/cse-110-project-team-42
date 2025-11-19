@@ -26,6 +26,7 @@ export class MenuScreen {
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
       listening: false,
+      image: undefined,
     });
     this.group.add(this.bg);
     this.loadBackground("/menu.png");

@@ -20,7 +20,7 @@ export class StoryScreen {
     this.group = new Konva.Group({ visible: false });
 
     // ---- Background ----
-    this.bg = new Konva.Image({ listening: false });
+    this.bg = new Konva.Image({ listening: false, image: undefined });
     this.group.add(this.bg);
     this.loadBackground("/menu.png");
 
