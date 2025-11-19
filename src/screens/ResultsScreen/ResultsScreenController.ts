@@ -12,6 +12,7 @@ export class ResultsScreenController extends ScreenController {
 
   constructor(_screenSwitcher: ScreenSwitcher) {
     super();
+    this.screenSwitcher = _screenSwitcher;
 
     // Initialize model with placeholder
     this.model = new ResultsScreenModel("Loading results...", 0);

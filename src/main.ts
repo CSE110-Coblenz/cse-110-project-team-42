@@ -1,10 +1,12 @@
 import Konva from "konva";
 import type { ScreenSwitcher } from "./types";
 import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController";
+import type { ResultsData } from "./screens/ResultsScreen/ResultsScreenConstants";
 import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController";
 import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT, GAME1HINTMESSAGE } from "./constants";
+import type { GraphDataConfig } from "./constants";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -62,10 +64,11 @@ class App implements ScreenSwitcher {
 
 		if (screen === "results") {
 			this.resultsController.getView().show();
-			let resultText = GAME1RESULTSTEXT.replace("{0}", "-406")
-						     .replace("{1}", "+545")
-					       	     .replace("{2}", "-120");
-			this.resultsController.showResults(resultText, 3);
+			const resultsData: ResultsData = {
+				profits: [-406, 545, -120],
+				selectedOption: 1, // Green
+			};
+			this.resultsController.showResults(resultsData);
 		} else if (screen === "cardGame") {
 			this.cardGameController.getView().show();
 		} else if (screen === "tryagain") {
