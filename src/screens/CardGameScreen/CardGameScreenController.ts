@@ -6,9 +6,11 @@ import { CardGameScreenView } from "./CardGameScreenView";
 export class CardGameScreenController extends ScreenController {
   private view: CardGameScreenView;
   private model: CardGameScreenModel;
+  private screenSwitcher: ScreenSwitcher;
 
-  constructor(_screenSwitcher: ScreenSwitcher) {
+  constructor(screenSwitcher: ScreenSwitcher) {
     super();
+    this.screenSwitcher = screenSwitcher;
     this.model = new CardGameScreenModel();
     this.view = new CardGameScreenView(
       this.model.getOptions(),
@@ -31,8 +33,8 @@ export class CardGameScreenController extends ScreenController {
       - Theoretical EV (per play): $${result.expectedValue.toFixed(2)}
     `);
 
-    // Here you would switch to the results screen, passing the result data.
-    // e.g., this.screenSwitcher.switchToScreen("results", result);
+    // Switch to results screen
+    this.screenSwitcher.switchToScreen("results");
   }
 
   hide(): void {
