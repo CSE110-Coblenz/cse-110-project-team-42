@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "test": "vitest run"
+    "test": "npm run typecheck",
+    "test:unit": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"lint not yet configured\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
     "vitest": "^4.0.10"
