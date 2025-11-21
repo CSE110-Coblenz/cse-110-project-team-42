@@ -33,8 +33,6 @@ export class GraphScreenView {
 
     this.drawAxes();
     this.drawLegend();
-    // Draw hearts using the Hearts helper
-    Hearts.draw(this.group);
 
     const btnW = 180;
     const btnH = 50;
@@ -70,6 +68,9 @@ export class GraphScreenView {
 
     this.nextButton.on("click", onNextClick);
     this.nextText.on("click", onNextClick);
+
+    // Draw hearts last so they appear above other UI elements
+    Hearts.draw(this.group);
   }
 
   private drawAxes(): void {

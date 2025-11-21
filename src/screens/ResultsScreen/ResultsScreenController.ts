@@ -18,7 +18,7 @@ export class ResultsScreenController extends ScreenController {
     this.model = new ResultsScreenModel("Loading results...", 0);
     
     // default placeholder
-    this.view = new ResultsScreenView("Loading results...", 0, () => this.handleProceed());
+    this.view = new ResultsScreenView("Loading results...", () => this.handleProceed());
   }
 
   private handleProceed(): void {
@@ -36,7 +36,7 @@ export class ResultsScreenController extends ScreenController {
     this.model.setHearts(hearts);
     
     this.view.updateMessage(this.model.getMessage());
-    this.view.updateHearts(this.model.getHearts());
+    this.view.updateHearts();
     this.view.show(); 
   }
 
@@ -50,7 +50,7 @@ export class ResultsScreenController extends ScreenController {
     this.model.setHearts(hearts);
 
     this.view.updateMessage(this.model.getMessage());
-    this.view.updateHearts(this.model.getHearts());
+    this.view.updateHearts();
   }
 
   hide(): void {
