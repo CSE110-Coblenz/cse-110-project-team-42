@@ -57,6 +57,7 @@ export class RouletteScreenView implements View {
 			width: STAGE_WIDTH,
 			height: STAGE_HEIGHT,
 			listening: false,
+			image: undefined,
 		});
 		bgImage.onload = () => {
 			bg.image(bgImage);
@@ -73,6 +74,7 @@ export class RouletteScreenView implements View {
 			height: STAGE_HEIGHT,
 			opacity: 0.95,
 			listening: false,
+			image: undefined,
 		});
 		scrollImage.onload = () => {
 			scroll.image(scrollImage);
