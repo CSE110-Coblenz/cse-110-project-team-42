@@ -22,8 +22,15 @@ export class ResultsScreenController extends ScreenController {
   }
 
   private handleProceed(): void {
-    alert("Proceed clicked!");
-    // this.screenSwitcher.switchToScreen("menu");
+    if (this.model.userWon()) {
+      // User won - proceed to next screen (implement later)
+      alert("You won!");
+      // this.screenSwitcher.switchToScreen("menu");
+    } else {
+      // User lost - decrement hearts and go to try again screen
+      Hearts.decrement();
+      this.screenSwitcher.switchToScreen("tryagain");
+    }
   }
 
   /**

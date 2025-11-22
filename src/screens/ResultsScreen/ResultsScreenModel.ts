@@ -62,5 +62,15 @@ export class ResultsScreenModel {
 	setHearts(newHearts: number): void {
 		this.hearts = newHearts;
 	}
+
+	/**
+	 * Returns true if the user won (their selected option was the max profit).
+	 */
+	userWon(): boolean {
+		if (!this.resultsData) return false;
+		const [rNum, gNum, bNum] = this.resultsData.profits;
+		const maxIndex = [rNum, gNum, bNum].indexOf(Math.max(rNum, gNum, bNum));
+		return this.resultsData.selectedOption === maxIndex;
+	}
 }
 
