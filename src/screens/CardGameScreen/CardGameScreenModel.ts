@@ -1,4 +1,4 @@
-import { CARD_OPTIONS } from "../../constants";
+import { CARD_OPTIONS, ITERATIONS } from "../../constants";
 import type { CardGameOption, SimulationResult } from "../../types";
 
 export class CardGameScreenModel {
@@ -12,41 +12,27 @@ export class CardGameScreenModel {
     return this.options;
   }
 
-  /** Core simulation for a single option. */
-  simulate(option: CardGameOption, runs: number): SimulationResult {
-    const { faceCards, deckSize } = option;
+  /** Core simulation for a single option. Returns net profit/loss from one play. */
+  simulate(option: CardGameOption): number {
+    const { faceCards, deckSize, payoff, buyIn } = option;
     const winProbability = faceCards / deckSize;
 
-    let wins = 0;
-    for (let i = 0; i < runs; i++) {
-      if (Math.random() < winProbability) {
-        wins++;
-      }
+    // Run simulation once
+    const won = Math.random() < winProbability;
+    
+    if (won) {
+      return payoff;
+    } else {
+      return -buyIn;
     }
-
-    const losses = runs - wins;
-    const totalPayoff = wins * option.payoff;
-    const totalCost = losses * option.buyIn;
-    const netResult = totalPayoff - totalCost;
-    const expectedValue =
-      winProbability * option.payoff - (1 - winProbability) * option.buyIn;
-
-    return {
-      option,
-      runs,
-      profit: totalPayoff,
-      loss: totalCost,
-      netResult,
-      expectedValue,
-    };
   }
 
-  /** Index-based helper, roughly analogous to “simulateOp1/2/3”. */
-  simulateByIndex(index: number, runs: number): SimulationResult {
+  /** Index-based helper. Returns net profit/loss for the given option. */
+  simulateByIndex(index: number): number {
     const opt = this.options[index];
     if (!opt) {
       throw new Error(`No card game option at index ${index}`);
     }
-    return this.simulate(opt, runs);
+    return this.simulate(opt);
   }
 }
