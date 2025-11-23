@@ -3,6 +3,7 @@ import type { CardGameOption, SimulationResult } from "../../types";
 
 export class CardGameScreenModel {
   private options: CardGameOption[];
+  private selectedOption: number = -1;
 
   constructor() {
     this.options = CARD_OPTIONS;
@@ -34,5 +35,15 @@ export class CardGameScreenModel {
       throw new Error(`No card game option at index ${index}`);
     }
     return this.simulate(opt);
+  }
+
+  /** Set the user's selected option by index */
+  setSelectedOption(index: number): void {
+    this.selectedOption = index;
+  }
+
+  /** Get the user's selected option index */
+  getSelectedOption(): number {
+    return this.selectedOption;
   }
 }
