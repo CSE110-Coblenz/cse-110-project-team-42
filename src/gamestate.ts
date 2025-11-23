@@ -4,7 +4,7 @@ import { STAGE_WIDTH } from "./constants";
 export let currentLevel: number = 1;
 
 export class Hearts {
-  public static heartsCount = 3;
+  private static heartsCount = 3;
   private static heartsByGroup: Map<Konva.Group, Konva.Path[]> = new Map();
 
   /** Draws the hearts in the top-right corner */

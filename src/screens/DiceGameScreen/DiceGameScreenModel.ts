@@ -47,7 +47,7 @@ export class DiceGameScreenModel {
   }
   */
   getSet(): DiceChoiceSet {
-    this.currentSetIndex = Hearts.heartsCount;
+    this.currentSetIndex = Hearts.get();
     return [...this.sets[this.currentSetIndex]];
   }
 
