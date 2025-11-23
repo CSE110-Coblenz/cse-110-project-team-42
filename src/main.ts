@@ -62,7 +62,7 @@ class App implements ScreenSwitcher {
 		} else if (screen === "tryagain") {
             this.tryAgainController.showTryAgain();
         } else if (screen === "graph") {
-            this.graphController.getView().show();
+            this.graphController.show();
         } else if (screen === "roulette") {
             this.rouletteController.show();
         }
