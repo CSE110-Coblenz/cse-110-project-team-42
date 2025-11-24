@@ -19,17 +19,18 @@ export class WinScreenView implements View {
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
+      image: undefined,
     });
+    this.group.add(this.background); // Add the placeholder to the group immediately
 
-    // ✅ directly load win.png from /public
-    Konva.Image.fromURL("/win.jpg", (imgNode) => {
-      imgNode.setAttrs({
-        width: STAGE_WIDTH,
-        height: STAGE_HEIGHT,
-      });
-      this.background.image(imgNode.image());
-      this.group.draw(); // refresh after image loads
-    });
+    const bgImage = new Image();
+    bgImage.src = "/win.jpg"; // Set the source for the browser to start loading
+    bgImage.onload = () => {
+      // Once loaded, apply the image to our placeholder
+      this.background.image(bgImage);
+      // Redraw the layer to make the image appear
+      this.group.getLayer()?.draw();
+    };
 
     // === "Congratulations!" Text (upper middle) ===
     this.congratsText = new Konva.Text({
@@ -81,7 +82,6 @@ export class WinScreenView implements View {
     });
 
     // === Add all elements to group ===
-    this.group.add(this.background);
     this.group.add(this.congratsText);
     this.group.add(this.restartButton);
     this.group.add(this.restartText);

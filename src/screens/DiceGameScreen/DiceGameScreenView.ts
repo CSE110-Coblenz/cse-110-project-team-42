@@ -32,19 +32,25 @@ export class DiceGameScreenView implements View {
     this.onChoiceC = onChoiceC;
 
     // === BACKGROUND ===
-    Konva.Image.fromURL("/bg.png", (img) => {
-      img.setAttrs({
-        x: 0,
-        y: 0,
-        width: STAGE_WIDTH,
-        height: STAGE_HEIGHT,
-        listening: false,
-      });
-      this.group.add(img);
-      img.moveToBottom();
-      this.group.getLayer()?.draw();
-      Hearts.draw(this.group)
+    const background = new Konva.Image({
+      x: 0,
+      y: 0,
+      width: STAGE_WIDTH,
+      height: STAGE_HEIGHT,
+      listening: false,
+      image: undefined,
     });
+    this.group.add(background);
+    background.moveToBottom();
+
+    const bgImage = new Image();
+    bgImage.src = "/bg.png";
+    bgImage.onload = () => {
+      background.image(bgImage);
+      this.group.getLayer()?.draw();
+    };
+
+    Hearts.draw(this.group);
 
     // === TITLE (More elegant) ===
     const title = new Konva.Text({
@@ -82,24 +88,27 @@ export class DiceGameScreenView implements View {
     this.group.add(subtitle);
 
     // === DICE IMAGE — Bigger ===
-    Konva.Image.fromURL("/dice.jpg", (img) => {
-      const w = 210;
-      const h = 155;
-
-      img.setAttrs({
-        width: w,
-        height: h,
-        x: STAGE_WIDTH / 2 - w / 2,
-        y: STAGE_HEIGHT * 0.30,
-        listening: false,
-        shadowBlur: 18,
-        shadowColor: "black",
-        shadowOpacity: 0.35,
-      });
-
-      this.group.add(img);
-      this.group.getLayer()?.draw();
+    const w = 210;
+    const h = 155;
+    const diceImage = new Konva.Image({
+      width: w,
+      height: h,
+      x: STAGE_WIDTH / 2 - w / 2,
+      y: STAGE_HEIGHT * 0.30,
+      listening: false,
+      shadowBlur: 18,
+      shadowColor: "black",
+      shadowOpacity: 0.35,
+      image: undefined, // Start as an empty placeholder
     });
+    this.group.add(diceImage); // Add placeholder to the group to reserve its layer position
+
+    const img = new Image();
+    img.src = "/dice.jpg";
+    img.onload = () => {
+      diceImage.image(img); // Set the image content once it's loaded
+      this.group.getLayer()?.draw(); // Redraw the layer to show the image
+    };
 
     // === BUTTONS — Slightly Smaller ===
     const btnWidth = 185;
