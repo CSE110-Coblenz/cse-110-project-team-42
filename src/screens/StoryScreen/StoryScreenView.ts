@@ -61,15 +61,15 @@ export class StoryScreenView implements View {
 "Analyze every option carefully. Your survival depends on it. Good luck!"
 
     const textNode = new Konva.Text({
-        x: STAGE_WIDTH / 2 - 400,
-        y: 150,
-        width: 800,
+        x: STAGE_WIDTH / 2 - 500,
+        y: 120,
+        width: 1000,
         text: storyText,
         align: "center",
-        fontSize: 32,
+        fontSize: 24,
         fontFamily: "Georgia, serif",
         fill: "#e0e0e0",
-        lineHeight: 1.5,
+        lineHeight: 1.35,
         shadowColor: "black",
         shadowBlur: 5,
         shadowOffset: { x: 2, y: 2 },
