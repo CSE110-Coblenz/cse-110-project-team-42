@@ -24,7 +24,7 @@ describe("CardGameScreenModel", () => {
     const result = model.simulateByIndex(0);
 
     // Should return the payoff since we won
-    expect(result).toBe(option.payoff);
+    expect(result).toBe(option.payoff - option.buyIn);
   });
 
   it("simulateByIndex runs simulation once and returns negative buyIn on loss", () => {
