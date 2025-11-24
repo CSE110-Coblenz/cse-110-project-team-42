@@ -2,6 +2,8 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { TryAgainScreenView } from "./TryAgainScreenView";
 import { TryAgainScreenModel } from "./TryAgainScreenModel";
+import { currentLevel } from "../../gamestate";
+import { HINT_BY_LEVEL } from "../../constants";
 
 export class TryAgainController extends ScreenController {
   private view: TryAgainScreenView;
@@ -11,15 +13,15 @@ export class TryAgainController extends ScreenController {
     super();
 
     // default placeholder
-    this.model = new TryAgainScreenModel("Loading TryAgainScreen...", 0);
-    this.view = new TryAgainScreenView("Loading TryAgainScreen...", 0, () => this.handleRestart());
+    this.model = new TryAgainScreenModel("Loading TryAgainScreen...");
+    this.view = new TryAgainScreenView("Hint message will be displayed here", () => this.handleRestart());
   }
 
-  // Inject hearts and show the screen 
-  showTryAgain(message: string, hearts: number): void {
-    this.view.updateMessage(message);
-    this.model.updateHearts(hearts);
-    this.view.updateHearts(this.model.getHearts());
+  showTryAgain(): void {
+    const hint = 
+       HINT_BY_LEVEL[currentLevel] ?? "Hint not assigned correctly"
+    this.model.updateMessage(hint);
+    this.view.updateMessage(this.model.getMessage());
     this.view.show();
   }
 
@@ -31,7 +33,7 @@ export class TryAgainController extends ScreenController {
     return this.view;
   }
 
-  private handleRestart(): void {
+  private handleRestart(): void { 
     alert("Restart clicked!");
   }
 }
