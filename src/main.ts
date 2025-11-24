@@ -4,7 +4,6 @@ import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenCo
 import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
 import { MenuScreenController } from "./screens/MenuScreen/MenuScreenController";
 import { StoryScreenController } from "./screens/StoryScreen/StoryScreenController";
-import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT } from "./constants";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController";
 import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT, GAME1HINTMESSAGE } from "./constants"; 
