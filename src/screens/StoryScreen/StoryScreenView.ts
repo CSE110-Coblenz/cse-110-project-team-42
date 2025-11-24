@@ -52,12 +52,13 @@ export class StoryScreenView implements View {
 
     // 2. Story Text
     const storyText = 
-      "You are in a math dungeon and\n" +
-      "you have to get through 2 gates in order to escape.\n\n" +
-      "The gate keepers will try to play a game with you,\n" +
-      "and you should use your knowledge of statistics\n" +
-      "to choose the best odds.\n\n" +
-      "Good luck!";
+      "Welcome to the Math Dungeon.\n\n" +
+"To escape, you must conquer three challenges that will test your mind, not just your luck.\n" +
+"In each challenge, you must use your knowledge of Expected Value to choose the best odds and come out ahead.\n\n" +
+"You begin with a set number of lives. Be warned: failing a challenge will cost you one.\n" +
+"Should you lose a life, you'll get a chance to try the challenge again.\n" +
+"But if you run out of lives completely, your quest is over.\n\n" +
+"Analyze every option carefully. Your survival depends on it. Good luck!"
 
     const textNode = new Konva.Text({
         x: STAGE_WIDTH / 2 - 400,
