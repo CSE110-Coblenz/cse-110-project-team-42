@@ -22,7 +22,7 @@ export class CardGameScreenModel {
     const won = Math.random() < winProbability;
     
     if (won) {
-      return payoff;
+      return payoff - buyIn;
     } else {
       return -buyIn;
     }
