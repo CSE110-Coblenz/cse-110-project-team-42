@@ -18,9 +18,8 @@ class App implements ScreenSwitcher {
     private tryAgainController : TryAgainController;
     private graphController: GraphScreenController;
     private rouletteController: RouletteScreenController;
-
-  private diceController : DiceGameScreenController;
-  private winController : WinScreenController;
+    private diceController : DiceGameScreenController;
+    private winController : WinScreenController;
 
     constructor(container: string) {
         // Create stage
@@ -51,21 +50,19 @@ class App implements ScreenSwitcher {
         this.layer.add(this.diceController.getView().getGroup());
         this.layer.add(this.winController.getView().getGroup());
 
-        // Start with the card game
-        this.switchToScreen("cardGame");
+        // Start with the menu screen
+        this.switchToScreen("menu");
     }
-	}
 
 	switchToScreen(screen: string): void {
-		// Hide everything 
+		// Hide everything
 		this.resultsController.hide();
 		this.cardGameController.hide();
         this.graphController.hide();
         this.tryAgainController.hide();
         this.rouletteController.hide();
-
-    this.diceController.hide();
-    this.winController.hide();
+        this.diceController.hide();
+        this.winController.hide();
 
 		if (screen === "results") {
 			this.resultsController.getView().show();
@@ -73,18 +70,16 @@ class App implements ScreenSwitcher {
 			this.cardGameController.getView().show();
 		} else if (screen === "tryagain") {
             this.tryAgainController.showTryAgain();
-    } else if (screen === "graph") {
+        } else if (screen === "graph") {
             this.graphController.show();
-    } else if (screen === "roulette") {
+        } else if (screen === "roulette") {
             this.rouletteController.show();
-    } else if (screen === "graph") {
-      this.graphController.getView().show();
-    } else if (screen === "diceGame"){
-      this.diceController.start();
-    } else if (screen === "win"){
-      this.winController.getView().show();
+        } else if (screen === "diceGame"){
+            this.diceController.start();
+        } else if (screen === "win"){
+            this.winController.getView().show();
+        }
     }
-  }
 }
 
 new App("container");
