@@ -22,6 +22,26 @@ export interface ScreenSwitcher {
 	switchToScreen(screen: string): void;
 }
 
+export interface RouletteOption {
+  id: string;
+  label: string;
+  buyIn: number;
+  payoff: number;
+  slots: number;
+  total: number;
+  color?: string;
+}
+
+export interface SimulationResultRoullet{
+  option: RouletteOption;
+  runs: number;
+  wins: number;
+  losses: number;
+  netResult: number;
+  expectedValue: number;
+  verdict: string;
+}
+
 export interface CardGameOption {
   id: string;
   label: string;
