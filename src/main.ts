@@ -6,6 +6,8 @@ import { MenuScreenController } from "./screens/MenuScreen/MenuScreenController"
 import { StoryScreenController } from "./screens/StoryScreen/StoryScreenController";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController";
+import { DiceGameScreenController } from "./screens/DiceGameScreen/DiceGameScreenController";
+import { WinScreenController } from "./screens/WinScreen/WinScreenController";
 import { STAGE_WIDTH, STAGE_HEIGHT, GAME1RESULTSTEXT, GAME1HINTMESSAGE } from "./constants"; 
 import type { GraphDataConfig } from "./constants";
 
@@ -19,7 +21,8 @@ class App implements ScreenSwitcher {
 	private storyController: StoryScreenController;
   private tryAgainController : TryAgainController;
   private graphController: GraphScreenController;
-
+  private diceController : DiceGameScreenController;
+  private winController : WinScreenController;
 
   constructor(container: string) {
     // Create stage
@@ -50,6 +53,9 @@ class App implements ScreenSwitcher {
 		this.menuController = new MenuScreenController(this);
 		this.storyController = new StoryScreenController(this);
 
+    this.diceController = new DiceGameScreenController(this);
+    this.winController = new WinScreenController(this);
+
 		// Add view groups to the layer
 		this.layer.add(this.cardGameController.getView().getGroup());
 		this.layer.add(this.menuController.getView().getGroup());
@@ -57,6 +63,8 @@ class App implements ScreenSwitcher {
     this.layer.add(this.graphController.getView().getGroup());
     this.layer.add(this.resultsController.getView().getGroup());
 	  this.layer.add(this.tryAgainController.getView().getGroup());
+    this.layer.add(this.diceController.getView().getGroup());
+    this.layer.add(this.winController.getView().getGroup());
 
 		this.layer.draw();
 
@@ -73,6 +81,9 @@ class App implements ScreenSwitcher {
     this.graphController.hide();
 	  this.tryAgainController.hide();
 
+    this.diceController.hide();
+    this.winController.hide();
+
 		if (screen === "results") {
 			this.resultsController.getView().show();
 		} else if (screen === "cardGame") {
@@ -85,6 +96,10 @@ class App implements ScreenSwitcher {
       this.tryAgainController.showTryAgain();
     } else if (screen === "graph") {
       this.graphController.getView().show();
+    } else if (screen === "diceGame"){
+      this.diceController.start();
+    } else if (screen === "win"){
+      this.winController.getView().show();
     }
   }
 }
