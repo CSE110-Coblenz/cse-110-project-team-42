@@ -2,15 +2,17 @@ import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
 
-
 export class WinScreenView implements View {
   private group: Konva.Group;
   private background: Konva.Image;
+  private overlay: Konva.Rect;
   private congratsText: Konva.Text;
   private restartButton: Konva.Rect;
   private restartText: Konva.Text;
+  private onRestart: () => void;
 
-  constructor() {
+  constructor(onRestart: () => void) {
+    this.onRestart = onRestart;
     this.group = new Konva.Group();
 
     // === Background ===
@@ -21,73 +23,104 @@ export class WinScreenView implements View {
       height: STAGE_HEIGHT,
       image: undefined,
     });
-    this.group.add(this.background); // Add the placeholder to the group immediately
+    this.group.add(this.background);
 
-    const bgImage = new Image();
-    bgImage.src = "/win.jpg"; // Set the source for the browser to start loading
-    bgImage.onload = () => {
-      // Once loaded, apply the image to our placeholder
-      this.background.image(bgImage);
-      // Redraw the layer to make the image appear
+    const bg = new Image();
+    bg.src = "/win.jpg";
+    bg.onload = () => {
+      this.background.image(bg);
       this.group.getLayer()?.draw();
     };
 
-    // === "Congratulations!" Text (upper middle) ===
-    this.congratsText = new Konva.Text({
-      text: "Congratulations!",
-      fontSize: 48,
-      fill: "white",
+    // === Soft Dark Overlay (美化效果) ===
+    this.overlay = new Konva.Rect({
       x: 0,
-      y: STAGE_HEIGHT * 0.2,
+      y: 0,
+      width: STAGE_WIDTH,
+      height: STAGE_HEIGHT,
+      fill: "rgba(0,0,0,0.35)",
+    });
+    this.group.add(this.overlay);
+
+    // === Congratulations Text (金色渐变效果) ===
+    this.congratsText = new Konva.Text({
+      text: "🎉 Congratulations! 🎉",
+      fontSize: 54,
+      fillLinearGradientColorStops: [0, "#ffeb3b", 1, "#ff9800"],
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: 50 },
+      fontStyle: "bold",
       width: STAGE_WIDTH,
       align: "center",
-      fontStyle: "bold",
+      y: STAGE_HEIGHT * 0.22,
       shadowColor: "black",
-      shadowBlur: 10,
+      shadowBlur: 20,
     });
+    this.group.add(this.congratsText);
 
-    // === Restart Button (bottom middle) ===
-    const buttonWidth = 200;
-    const buttonHeight = 60;
+    // === Restart Button ===
+    const buttonWidth = 240;
+    const buttonHeight = 70;
 
     this.restartButton = new Konva.Rect({
       x: (STAGE_WIDTH - buttonWidth) / 2,
-      y: STAGE_HEIGHT * 0.75,
+      y: STAGE_HEIGHT * 0.70,
       width: buttonWidth,
       height: buttonHeight,
-      fill: "white",
-      cornerRadius: 12,
-      shadowBlur: 8,
+      cornerRadius: 16,
+      fillLinearGradientColorStops: [0, "#ffffff", 1, "#e0e0e0"],
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: buttonHeight },
+      shadowBlur: 15,
       shadowColor: "black",
+      shadowOpacity: 0.3,
     });
 
     this.restartText = new Konva.Text({
       text: "Restart",
-      fontSize: 24,
+      fontSize: 28,
       fill: "black",
+      fontStyle: "bold",
       width: STAGE_WIDTH,
       align: "center",
-      x: 0,
-      y: STAGE_HEIGHT * 0.75 + (buttonHeight - 24) / 2,
-      fontStyle: "bold",
+      y: STAGE_HEIGHT * 0.70 + (buttonHeight - 28) / 2,
     });
 
-    // === Button Interaction ===
-    this.restartButton.on("pointerdown", () => {
-      const newColor = this.restartButton.fill() === "white" ? "black" : "white";
-      const newTextColor = newColor === "white" ? "black" : "white";
-      this.restartButton.fill(newColor);
-      this.restartText.fill(newTextColor);
-      this.group.draw();
-    });
-
-    // === Add all elements to group ===
-    this.group.add(this.congratsText);
     this.group.add(this.restartButton);
     this.group.add(this.restartText);
+
+    // === Button Interaction ===
+    this.restartButton.on("pointerover", () => {
+      this.restartButton.scale({ x: 1.05, y: 1.05 });
+      this.group.getLayer()?.batchDraw();
+    });
+
+    this.restartButton.on("pointerout", () => {
+      this.restartButton.scale({ x: 1, y: 1 });
+      this.group.getLayer()?.batchDraw();
+    });
+
+    this.restartButton.on("pointerdown", () => {
+      this.restartButton.to({
+        scaleX: 0.92,
+        scaleY: 0.92,
+        duration: 0.05,
+      });
+    });
+
+    this.restartButton.on("pointerup", () => {
+      // Small click animation
+      this.restartButton.to({
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.1,
+      });
+
+      // Call user-provided callback
+      this.onRestart();
+    });
   }
 
-  // ===== View Interface Methods =====
   getGroup(): Konva.Group {
     return this.group;
   }

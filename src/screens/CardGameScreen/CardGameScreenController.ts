@@ -19,22 +19,18 @@ export class CardGameScreenController extends ScreenController {
   }
 
   private handleOptionClick(option: CardGameOption): void {
-    const result = this.model.simulate(option, 1000000);
+    // Find the index of the selected option
+    const index = this.model.getOptions().findIndex(opt => opt.id === option.id);
     
-    // For now, let's just log the result to the console.
-    // Integration with ResultsScreen will happen later.
-    console.log("Simulation Result:", result);
+    // Store the selection in the model
+    this.model.setSelectedOption(index);
+    
+    // Switch to graph screen
+    this.screenSwitcher.switchToScreen("graph");
+  }
 
-    alert(`
-      Simulation Complete for ${option.label.replace("\n", " -> ")}
-      - Profit: $${result.profit.toFixed(2)}
-      - Loss: $${result.loss.toFixed(2)}
-      - Net Result: $${result.netResult.toFixed(2)}
-      - Theoretical EV (per play): $${result.expectedValue.toFixed(2)}
-    `);
-
-    // Switch to results screen
-    this.screenSwitcher.switchToScreen("results");
+  getModel(): CardGameScreenModel {
+    return this.model;
   }
 
   hide(): void {

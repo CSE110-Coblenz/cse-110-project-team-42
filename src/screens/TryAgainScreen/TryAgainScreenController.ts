@@ -8,9 +8,11 @@ import { HINT_BY_LEVEL } from "../../constants";
 export class TryAgainController extends ScreenController {
   private view: TryAgainScreenView;
   private model: TryAgainScreenModel;
+  private screenSwitcher: ScreenSwitcher;
 
-  constructor(_screenSwitcher: ScreenSwitcher) {
+  constructor(screenSwitcher: ScreenSwitcher) {
     super();
+    this.screenSwitcher = screenSwitcher;
 
     // default placeholder
     this.model = new TryAgainScreenModel("Loading TryAgainScreen...");
@@ -34,6 +36,19 @@ export class TryAgainController extends ScreenController {
   }
 
   private handleRestart(): void { 
-    alert("Restart clicked!");
+    // Restart the current level
+    if (currentLevel === 1) {
+      // Game 1: Roulette
+      this.screenSwitcher.switchToScreen("roulette");
+    } else if (currentLevel === 2) {
+      // Game 2: Card Game
+      this.screenSwitcher.switchToScreen("cardGame");
+    } else if (currentLevel === 3) {
+      // Game 3: Dice Game
+      this.screenSwitcher.switchToScreen("diceGame");
+    } else {
+      // Default fallback
+      this.screenSwitcher.switchToScreen("roulette");
+    }
   }
 }

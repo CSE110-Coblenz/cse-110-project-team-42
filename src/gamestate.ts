@@ -3,6 +3,10 @@ import { STAGE_WIDTH } from "./constants";
 
 export let currentLevel: number = 1;
 
+export function setCurrentLevel(level: number): void {
+  currentLevel = level;
+}
+
 export class Hearts {
   private static heartsCount = 3;
   private static heartsByGroup: Map<Konva.Group, Konva.Path[]> = new Map();
@@ -52,6 +56,7 @@ export class Hearts {
     if (this.heartsCount > 0) {
       this.heartsCount--;
     }
+    if(this.heartsCount == 0 ) { this.heartsCount = 3;}  //perhaps change it to 0, when heart gets to 0.
     // Redraw hearts on all registered groups to reflect new count
     const groups = Array.from(this.heartsByGroup.keys());
     groups.forEach((group) => this.draw(group));

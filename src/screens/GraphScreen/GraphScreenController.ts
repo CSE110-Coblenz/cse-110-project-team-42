@@ -1,19 +1,50 @@
 import type { ScreenSwitcher } from "../../types";
 import { GraphScreenModel } from "./GraphScreenModel";
 import { GraphScreenView } from "./GraphScreenView";
-import type { GraphDataConfig } from "../../constants";
 import type { ResultsData } from "../ResultsScreen/ResultsScreenConstants";
+import { currentLevel } from "../../gamestate";
 
 export class GraphScreenController {
   private switcher: ScreenSwitcher;
   private model: GraphScreenModel;
   private view: GraphScreenView;
 
-  constructor(switcher: ScreenSwitcher, data: GraphDataConfig) {
+  constructor(switcher: ScreenSwitcher) {
     this.switcher = switcher;
-    this.model = new GraphScreenModel(data);
+    this.model = new GraphScreenModel();
     this.view = new GraphScreenView(() => this.handleNext());
-    this.view.updateGraph(this.model.getRunningAverages());
+  }
+
+  /** Called when graph screen is shown - runs simulation based on current game */
+  show(): void {
+    // Run simulation based on current game level
+    if (currentLevel === 1) {
+      // @ts-ignore - access rouletteController on the switcher
+      const rouletteModel = this.switcher["rouletteController"].getModel();
+      const selectedOption = rouletteModel.getSelectedOption();
+      
+      this.model.runSimulation(selectedOption, (index) => rouletteModel.simulateByIndex(index));
+      this.view.updateGraph(this.model.getRunningAverages());
+
+    } else if (currentLevel === 2) {
+      // @ts-ignore - access cardGameController on the switcher
+      const cardModel = this.switcher["cardGameController"].getModel();
+      const selectedOption = cardModel.getSelectedOption();
+      
+      // Run simulation and update view
+      this.model.runSimulation(selectedOption, (index) => cardModel.simulateByIndex(index));
+      this.view.updateGraph(this.model.getRunningAverages());
+
+    } else if (currentLevel === 3) {
+      // @ts-ignore - access diceController on the switcher
+      const diceModel = this.switcher["diceController"].getModel();
+      const selectedOption = diceModel.getSelectedOption();
+
+      this.model.runSimulation(selectedOption, (index) => diceModel.simulateByIndex(index));
+      this.view.updateGraph(this.model.getRunningAverages());
+    }
+    
+    this.view.show();
   }
 
   private handleNext(): void {
@@ -33,8 +64,7 @@ export class GraphScreenController {
       profits = [finalValues[0], finalValues[1], finalValues[2]];
     }
 
-    // Create structured results data (use actual selectedOption if available,
-    // otherwise pass a dummy - here we use selectedOption from model)
+    // Create structured results data
     const resultsData: ResultsData = {
       profits,
       selectedOption: selectedOption,
@@ -48,21 +78,11 @@ export class GraphScreenController {
     this.switcher.switchToScreen("results");
   }
 
-  updateData(newData: GraphDataConfig): void {
-    this.model.updateData(newData);
-    this.view.updateGraph(this.model.getRunningAverages());
-  }
-
   getView(): GraphScreenView {
     return this.view;
-  }
-
-  show(): void {
-    this.view.show();
   }
 
   hide(): void {
     this.view.hide();
   }
 }
-

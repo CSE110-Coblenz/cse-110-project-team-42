@@ -47,14 +47,17 @@ start(): void {
   // Simple handlers: right now they just highlight in the View.
   // Later you can add logic here (e.g., go to DiceExplainScreen, record answers, etc.)
   private handleChoiceA(): void {
+    this.model.setSelectedOption(0);
     this.screenSwitcher?.switchToScreen("graph");
   }
 
   private handleChoiceB(): void {
+    this.model.setSelectedOption(1);
     this.screenSwitcher?.switchToScreen("graph");
   }
 
   private handleChoiceC(): void {
+    this.model.setSelectedOption(2);
     this.screenSwitcher?.switchToScreen("graph");
   }
 
@@ -73,5 +76,9 @@ start(): void {
   // Required by ScreenController
   getView(): DiceGameScreenView {
     return this.view;
+  }
+
+  getModel(): DiceGameScreenModel {
+    return this.model;
   }
 }
