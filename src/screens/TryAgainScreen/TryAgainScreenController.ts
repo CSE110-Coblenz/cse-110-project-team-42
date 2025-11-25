@@ -37,11 +37,18 @@ export class TryAgainController extends ScreenController {
 
   private handleRestart(): void { 
     // Restart the current level
-    if (currentLevel === 2) {
+    if (currentLevel === 1) {
+      // Game 1: Roulette
+      this.screenSwitcher.switchToScreen("roulette");
+    } else if (currentLevel === 2) {
       // Game 2: Card Game
       this.screenSwitcher.switchToScreen("cardGame");
+    } else if (currentLevel === 3) {
+      // Game 3: Dice Game
+      this.screenSwitcher.switchToScreen("diceGame");
     } else {
-      alert("Restart clicked!");
+      // Default fallback
+      this.screenSwitcher.switchToScreen("roulette");
     }
   }
 }

@@ -70,4 +70,3 @@ export class ResultsScreenModel {
 		this.hearts = newHearts;
 	}
 }
-

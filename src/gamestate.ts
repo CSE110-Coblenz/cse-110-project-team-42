@@ -1,7 +1,7 @@
 import Konva from "konva";
 import { STAGE_WIDTH } from "./constants";
 
-export let currentLevel: number = 2;
+export let currentLevel: number = 1;
 
 export function setCurrentLevel(level: number): void {
   currentLevel = level;
