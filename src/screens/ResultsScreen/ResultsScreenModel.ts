@@ -9,6 +9,7 @@ export class ResultsScreenModel {
 	private message: string;
 	private hearts: number;
 	private resultsData?: ResultsData;
+	private hasWon: boolean = false;
 
 	constructor(message: string, hearts: number) {
 		this.message = message;
@@ -34,8 +35,10 @@ export class ResultsScreenModel {
 		const maxIndex = [rNum, gNum, bNum].indexOf(Math.max(rNum, gNum, bNum));
 		let winnerMessage = "";
 		if (data.selectedOption === maxIndex) {
+			this.hasWon = true;
 			winnerMessage = `Your choice of ${optionEmojis[data.selectedOption]} won!`;
 		} else {
+			this.hasWon = false;
 			winnerMessage = `You lost! ${optionEmojis[maxIndex]} won!`;
 		}
 		
@@ -45,6 +48,10 @@ export class ResultsScreenModel {
 			.replace("{1}", green)
 			.replace("{2}", blue)
 			.replace("{winnerMessage}", winnerMessage);
+	}
+
+	didPlayerWin(): boolean {
+		return this.hasWon;
 	}
 
 	getMessage(): string {
@@ -61,16 +68,6 @@ export class ResultsScreenModel {
 
 	setHearts(newHearts: number): void {
 		this.hearts = newHearts;
-	}
-
-	/**
-	 * Returns true if the user won (their selected option was the max profit).
-	 */
-	userWon(): boolean {
-		if (!this.resultsData) return false;
-		const [rNum, gNum, bNum] = this.resultsData.profits;
-		const maxIndex = [rNum, gNum, bNum].indexOf(Math.max(rNum, gNum, bNum));
-		return this.resultsData.selectedOption === maxIndex;
 	}
 }
 

@@ -27,9 +27,16 @@ export class RouletteScreenController extends ScreenController {
 	}
 
 	private handleSpin(): void {
-		// Placeholder action — hook up to game flow later.
-		this.screenSwitcher?.switchToScreen("results");
+        // For now, since there is no UI to select color, we default to Green (index 1)
+        // as a placeholder "user choice".
+        this.model.setSelectedOption(1);
+
+		this.screenSwitcher?.switchToScreen("graph");
 	}
+
+    getModel(): RouletteScreenModel {
+        return this.model;
+    }
 
 	/**
 	 * Allows developers to configure the wheel counts programmatically.

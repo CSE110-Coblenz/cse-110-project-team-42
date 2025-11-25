@@ -40,12 +40,8 @@ export class DiceGameScreenModel {
   ];
 
   private currentSetIndex = 0;
-  /*
-  getRandomSet(): DiceChoiceSet {
-    this.currentSetIndex = Math.floor(Math.random() * this.sets.length);
-    return [...this.sets[this.currentSetIndex]];
-  }
-  */
+  private selectedOption: number = -1;
+
   getSet(): DiceChoiceSet {
     this.currentSetIndex = Hearts.get();
     return [...this.sets[this.currentSetIndex]];
@@ -115,5 +111,17 @@ export class DiceGameScreenModel {
 
   simulateOpt3(): number {
     return this.simulate(this.currentSetIndex, 2);
+  }
+
+  simulateByIndex(index: number): number {
+      return this.simulate(this.currentSetIndex, index);
+  }
+
+  setSelectedOption(index: number): void {
+      this.selectedOption = index;
+  }
+
+  getSelectedOption(): number {
+      return this.selectedOption;
   }
 }

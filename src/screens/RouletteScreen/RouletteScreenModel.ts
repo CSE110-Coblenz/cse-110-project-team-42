@@ -11,6 +11,7 @@ export interface ColorCounts {
  */
 export class RouletteScreenModel {
 	private counts: ColorCounts;
+	private selectedOption: number = 0; // Default to 0 (Red) if not selected
 
 	constructor(initialCounts: ColorCounts = { blue: 3, green: 2, red: 2 }) {
 		this.counts = { ...initialCounts };
@@ -37,5 +38,47 @@ export class RouletteScreenModel {
 
 		this.counts = next;
 		return this.getCounts();
+	}
+
+	setSelectedOption(index: number): void {
+		this.selectedOption = index;
+	}
+
+	getSelectedOption(): number {
+		return this.selectedOption;
+	}
+
+	/**
+	 * Simulates a single spin for a given bet option.
+	 * 0 = Red, 1 = Green, 2 = Blue
+	 */
+	simulateByIndex(index: number): number {
+		const total = this.counts.blue + this.counts.green + this.counts.red;
+		if (total === 0) return -1;
+
+		let winningCount = 0;
+		let payoff = 0;
+		const buyIn = 1;
+
+		// Mapping: 0 -> Red, 1 -> Green, 2 -> Blue
+		if (index === 0) { // Red
+			winningCount = this.counts.red;
+			payoff = 6;
+		} else if (index === 1) { // Green
+			winningCount = this.counts.green;
+			payoff = 5;
+		} else if (index === 2) { // Blue
+			winningCount = this.counts.blue;
+			payoff = 1.4;
+		}
+
+		const probability = winningCount / total;
+		const won = Math.random() < probability;
+
+		if (won) {
+			return payoff - buyIn;
+		} else {
+			return -buyIn;
+		}
 	}
 }

@@ -18,13 +18,29 @@ export class GraphScreenController {
   /** Called when graph screen is shown - runs simulation based on current game */
   show(): void {
     // Run simulation based on current game level
-    if (currentLevel === 2) {
+    if (currentLevel === 1) {
+      // @ts-ignore - access rouletteController on the switcher
+      const rouletteModel = this.switcher["rouletteController"].getModel();
+      const selectedOption = rouletteModel.getSelectedOption();
+      
+      this.model.runSimulation(selectedOption, (index) => rouletteModel.simulateByIndex(index));
+      this.view.updateGraph(this.model.getRunningAverages());
+
+    } else if (currentLevel === 2) {
       // @ts-ignore - access cardGameController on the switcher
       const cardModel = this.switcher["cardGameController"].getModel();
       const selectedOption = cardModel.getSelectedOption();
       
       // Run simulation and update view
       this.model.runSimulation(selectedOption, (index) => cardModel.simulateByIndex(index));
+      this.view.updateGraph(this.model.getRunningAverages());
+
+    } else if (currentLevel === 3) {
+      // @ts-ignore - access diceController on the switcher
+      const diceModel = this.switcher["diceController"].getModel();
+      const selectedOption = diceModel.getSelectedOption();
+
+      this.model.runSimulation(selectedOption, (index) => diceModel.simulateByIndex(index));
       this.view.updateGraph(this.model.getRunningAverages());
     }
     
@@ -70,4 +86,3 @@ export class GraphScreenController {
     this.view.hide();
   }
 }
-

@@ -51,7 +51,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.winController.getView().getGroup());
 
         // Start with the menu screen
-        this.switchToScreen("menu");
+        this.switchToScreen("roulette");
     }
 
 	switchToScreen(screen: string): void {

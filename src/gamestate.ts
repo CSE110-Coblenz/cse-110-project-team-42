@@ -3,6 +3,10 @@ import { STAGE_WIDTH } from "./constants";
 
 export let currentLevel: number = 2;
 
+export function setCurrentLevel(level: number): void {
+  currentLevel = level;
+}
+
 export class Hearts {
   private static heartsCount = 3;
   private static heartsByGroup: Map<Konva.Group, Konva.Path[]> = new Map();
