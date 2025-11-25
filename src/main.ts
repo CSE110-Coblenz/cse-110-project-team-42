@@ -7,7 +7,9 @@ import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenContr
 import { RouletteScreenController } from "./screens/RouletteScreen/RouletteScreenController";
 import { DiceGameScreenController } from "./screens/DiceGameScreen/DiceGameScreenController";
 import { WinScreenController } from "./screens/WinScreen/WinScreenController";
+import { LoseScreenController } from "./screens/LoseScreen/LoseScreenController";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants";
+
 
 class App implements ScreenSwitcher {
     private stage: Konva.Stage;
@@ -20,6 +22,7 @@ class App implements ScreenSwitcher {
     private rouletteController: RouletteScreenController;
     private diceController : DiceGameScreenController;
     private winController : WinScreenController;
+    private loseController : LoseScreenController;
 
     constructor(container: string) {
         // Create stage
@@ -40,6 +43,7 @@ class App implements ScreenSwitcher {
         this.rouletteController = new RouletteScreenController(this);
         this.diceController = new DiceGameScreenController(this);
         this.winController = new WinScreenController(this);
+        this.loseController = new LoseScreenController(this);
 
         // Add view groups to the layer
         this.layer.add(this.cardGameController.getView().getGroup());
@@ -49,9 +53,10 @@ class App implements ScreenSwitcher {
         this.layer.add(this.rouletteController.getView().getGroup());
         this.layer.add(this.diceController.getView().getGroup());
         this.layer.add(this.winController.getView().getGroup());
+        this.layer.add(this.loseController.getView().getGroup());
 
         // Start with the menu screen
-        this.switchToScreen("roulette");
+        this.switchToScreen("lose");
     }
 
 	switchToScreen(screen: string): void {
@@ -63,6 +68,7 @@ class App implements ScreenSwitcher {
         this.rouletteController.hide();
         this.diceController.hide();
         this.winController.hide();
+        this.loseController.hide();
 
 		if (screen === "results") {
 			this.resultsController.getView().show();
@@ -78,6 +84,8 @@ class App implements ScreenSwitcher {
             this.diceController.start();
         } else if (screen === "win"){
             this.winController.getView().show();
+        } else if (screen === "lose"){
+            this.loseController.getView().show();
         }
     }
 }

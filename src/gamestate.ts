@@ -56,6 +56,7 @@ export class Hearts {
     if (this.heartsCount > 0) {
       this.heartsCount--;
     }
+    if(this.heartsCount == 0 ) { this.heartsCount = 3;}  //perhaps change it to 0, when heart gets to 0.
     // Redraw hearts on all registered groups to reflect new count
     const groups = Array.from(this.heartsByGroup.keys());
     groups.forEach((group) => this.draw(group));

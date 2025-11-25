@@ -2,8 +2,6 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { WinScreenView } from "./WinScreenView";
 
-
-
 export class WinScreenController extends ScreenController {
   private view: WinScreenView;
   private screenSwitcher: ScreenSwitcher;
@@ -11,7 +9,12 @@ export class WinScreenController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.view = new WinScreenView(); // no callback needed
+
+    this.view = new WinScreenView(() => this.handleRestart());
+  }
+
+  private handleRestart() {
+    this.screenSwitcher.switchToScreen("menu");
   }
 
   getView(): WinScreenView {
