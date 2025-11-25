@@ -34,7 +34,8 @@ export class ResultsScreenController extends ScreenController {
         this.screenSwitcher.switchToScreen("win");
       } else {
         // Fallback for any other state
-        this.screenSwitcher.switchToScreen("roulette");
+        alert("No more levels");
+        //this.screenSwitcher.switchToScreen("lose");
       }
     } else {
       // --- Player Lost ---
