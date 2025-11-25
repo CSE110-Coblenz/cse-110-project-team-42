@@ -37,14 +37,8 @@ export const CARD_OPTIONS = [
 ];
 
 // For simulation 
-export const ITERATIONS = 1000;
+export const ITERATIONS = 10000;
 
-// Type for Graph Screen input
-export interface GraphDataConfig {
-  currentGame: number;
-  selectedOption: number;
-  simulateFns: (() => number)[];
-}
 
 export const GAME1HINTMESSAGE =
   "Hint: Only ONE of these choices is actually good for you in the long run.\n\

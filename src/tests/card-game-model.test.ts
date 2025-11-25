@@ -16,15 +16,36 @@ describe("CardGameScreenModel", () => {
     expect(options.length).toBeGreaterThan(0);
   });
 
-  it("simulateByIndex respects deterministic random outcomes", () => {
-    // Force Math.random to always return 0 so every run is a win
+  it("simulateByIndex runs simulation once and returns payoff on win", () => {
+    // Force Math.random to always return 0 so the simulation wins
     vi.spyOn(Math, "random").mockReturnValue(0);
 
     const option = model.getOptions()[0];
-    const result = model.simulateByIndex(0, 5);
+    const result = model.simulateByIndex(0);
 
-    expect(result.loss).toBe(0);
-    expect(result.profit).toBe(option.payoff * 5);
+    // Should return the payoff since we won
+    expect(result).toBe(option.payoff - option.buyIn);
+  });
+
+  it("simulateByIndex runs simulation once and returns negative buyIn on loss", () => {
+    // Force Math.random to always return 1 so the simulation loses
+    vi.spyOn(Math, "random").mockReturnValue(1);
+
+    const option = model.getOptions()[0];
+    const result = model.simulateByIndex(0);
+
+    // Should return negative buyIn since we lost
+    expect(result).toBe(-option.buyIn);
+  });
+
+  it("selected option tracking works correctly", () => {
+    expect(model.getSelectedOption()).toBe(-1); // Initial value
+    
+    model.setSelectedOption(1);
+    expect(model.getSelectedOption()).toBe(1);
+    
+    model.setSelectedOption(2);
+    expect(model.getSelectedOption()).toBe(2);
   });
 });
 
