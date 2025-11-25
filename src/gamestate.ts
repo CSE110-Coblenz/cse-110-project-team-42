@@ -1,15 +1,21 @@
 import Konva from "konva";
 import { STAGE_WIDTH } from "./constants";
 
+export let currentLevel: number = 2;
+
+export function setCurrentLevel(level: number): void {
+  currentLevel = level;
+}
+
 export class Hearts {
   private static heartsCount = 3;
-  private static hearts: Konva.Path[] = [];
+  private static heartsByGroup: Map<Konva.Group, Konva.Path[]> = new Map();
 
   /** Draws the hearts in the top-right corner */
   static draw(group: Konva.Group): void {
-    // Remove existing
-    this.hearts.forEach((h) => h.destroy());
-    this.hearts = [];
+    // Remove existing heart nodes from this specific group only
+    const existing = this.heartsByGroup.get(group);
+    existing?.forEach((h) => h.destroy());
 
     const heartPath =
       "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 " +
@@ -26,6 +32,7 @@ export class Hearts {
     const startX = STAGE_WIDTH - totalWidth - margin;
     const heartY = margin;
 
+    const newHearts: Konva.Path[] = [];
     for (let i = 0; i < count; i++) {
       const heart = new Konva.Path({
         x: startX + i * (heartSize + spacing),
@@ -37,9 +44,10 @@ export class Hearts {
         strokeWidth: 1,
       });
       group.add(heart);
-      this.hearts.push(heart);
+      newHearts.push(heart);
     }
 
+    this.heartsByGroup.set(group, newHearts);
     group.getLayer()?.draw();
   }
 
@@ -48,6 +56,9 @@ export class Hearts {
     if (this.heartsCount > 0) {
       this.heartsCount--;
     }
+    // Redraw hearts on all registered groups to reflect new count
+    const groups = Array.from(this.heartsByGroup.keys());
+    groups.forEach((group) => this.draw(group));
     return this.heartsCount > 0;
   }
 

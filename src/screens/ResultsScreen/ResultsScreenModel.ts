@@ -1,3 +1,6 @@
+import { currentLevel } from "../../gamestate";
+import { RESULTS_TEMPLATES, type ResultsData } from "./ResultsScreenConstants";
+
 /**
  * ResultsScreenModel
  * Stores and manages the data for the Results screen.
@@ -5,10 +8,50 @@
 export class ResultsScreenModel {
 	private message: string;
 	private hearts: number;
+	private resultsData?: ResultsData;
+	private hasWon: boolean = false;
 
 	constructor(message: string, hearts: number) {
 		this.message = message;
 		this.hearts = hearts;
+	}
+
+	/**
+	 * Set results data and generate the formatted message based on current game.
+	 */
+	setResultsData(data: ResultsData): void {
+		this.resultsData = data;
+		const template = RESULTS_TEMPLATES[currentLevel] || RESULTS_TEMPLATES[1];
+		
+		// Format profits
+		// Keep numeric profits and format with three decimal places
+		const [rNum, gNum, bNum] = data.profits;
+		const red = rNum.toFixed(3);
+		const green = gNum.toFixed(3);
+		const blue = bNum.toFixed(3);
+
+		// Determine winner by numeric comparison
+		const optionEmojis = ["🔴Red", "🟢Green", "🔵Blue"];
+		const maxIndex = [rNum, gNum, bNum].indexOf(Math.max(rNum, gNum, bNum));
+		let winnerMessage = "";
+		if (data.selectedOption === maxIndex) {
+			this.hasWon = true;
+			winnerMessage = `Your choice of ${optionEmojis[data.selectedOption]} won!`;
+		} else {
+			this.hasWon = false;
+			winnerMessage = `You lost! ${optionEmojis[maxIndex]} won!`;
+		}
+		
+		// Replace placeholders
+		this.message = template
+			.replace("{0}", red)
+			.replace("{1}", green)
+			.replace("{2}", blue)
+			.replace("{winnerMessage}", winnerMessage);
+	}
+
+	didPlayerWin(): boolean {
+		return this.hasWon;
 	}
 
 	getMessage(): string {

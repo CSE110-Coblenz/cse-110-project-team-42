@@ -41,3 +41,21 @@ export interface SimulationResultRoullet{
   expectedValue: number;
   verdict: string;
 }
+
+export interface CardGameOption {
+  id: string;
+  label: string;
+  buyIn: number;
+  payoff: number;
+  faceCards: number;
+  deckSize: number;
+}
+
+export interface SimulationResult {
+  option: CardGameOption;
+  runs: number;
+  profit: number;
+  loss: number;
+  netResult: number;
+  expectedValue: number;
+}

@@ -8,10 +8,10 @@ export class TryAgainScreenModel {
   }
 
   getMessage(): string {
-	return this.message;
+    return this.message;
   }
 
   updateMessage(newMessage: string): void {
-	this.message = newMessage;
+    this.message = newMessage;
   }
 }
