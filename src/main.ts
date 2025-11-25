@@ -2,6 +2,8 @@ import Konva from "konva";
 import type { ScreenSwitcher } from "./types";
 import { ResultsScreenController } from "./screens/ResultsScreen/ResultsScreenController";
 import { CardGameScreenController } from "./screens/CardGameScreen/CardGameScreenController";
+import { MenuScreenController } from "./screens/MenuScreen/MenuScreenController";
+import { StoryScreenController } from "./screens/StoryScreen/StoryScreenController";
 import { GraphScreenController } from "./screens/GraphScreen/GraphScreenController";
 import { TryAgainController } from "./screens/TryAgainScreen/TryAgainScreenController";
 import { RouletteScreenController } from "./screens/RouletteScreen/RouletteScreenController";
@@ -15,8 +17,10 @@ class App implements ScreenSwitcher {
     private stage: Konva.Stage;
     private layer: Konva.Layer;
 
-	private resultsController: ResultsScreenController;
-	private cardGameController: CardGameScreenController;
+	  private resultsController: ResultsScreenController;
+	  private cardGameController: CardGameScreenController;
+    private menuController: MenuScreenController;
+	  private storyController: StoryScreenController;
     private tryAgainController : TryAgainController;
     private graphController: GraphScreenController;
     private rouletteController: RouletteScreenController;
@@ -37,6 +41,8 @@ class App implements ScreenSwitcher {
 
         // Initialize controllers
         this.graphController = new GraphScreenController(this);
+        this.menuController = new MenuScreenController(this);
+		    this.storyController = new StoryScreenController(this);
         this.resultsController = new ResultsScreenController(this);
         this.tryAgainController = new TryAgainController(this);
         this.cardGameController = new CardGameScreenController(this);
@@ -47,6 +53,8 @@ class App implements ScreenSwitcher {
 
         // Add view groups to the layer
         this.layer.add(this.cardGameController.getView().getGroup());
+        this.layer.add(this.menuController.getView().getGroup());
+		    this.layer.add(this.storyController.getView().getGroup());
         this.layer.add(this.graphController.getView().getGroup());
         this.layer.add(this.resultsController.getView().getGroup());
         this.layer.add(this.tryAgainController.getView().getGroup());
@@ -63,17 +71,23 @@ class App implements ScreenSwitcher {
 		// Hide everything
 		this.resultsController.hide();
 		this.cardGameController.hide();
-        this.graphController.hide();
-        this.tryAgainController.hide();
-        this.rouletteController.hide();
-        this.diceController.hide();
-        this.winController.hide();
-        this.loseController.hide();
+    this.menuController.hide();
+		this.storyController.hide();
+    this.graphController.hide();
+    this.tryAgainController.hide();
+    this.rouletteController.hide();
+    this.diceController.hide();
+    this.winController.hide();
+    this.loseController.hide();
 
 		if (screen === "results") {
 			this.resultsController.getView().show();
 		} else if (screen === "cardGame") {
 			this.cardGameController.getView().show();
+		} else if (screen === "menu") {
+			this.menuController.getView().show();
+		} else if (screen === "story") {
+			this.storyController.getView().show();
 		} else if (screen === "tryagain") {
             this.tryAgainController.showTryAgain();
         } else if (screen === "graph") {
