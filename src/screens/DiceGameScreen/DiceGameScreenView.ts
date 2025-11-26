@@ -2,7 +2,7 @@
 
 import Konva from "konva";
 import type { View } from "../../types.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants.ts";
 import { Hearts } from "../../gamestate";
 type ButtonRefs = {
   group: Konva.Group;
@@ -147,10 +147,9 @@ export class DiceGameScreenView implements View {
   }
 
   public resetColorsToDefault(): void {
-    const defaultFill = "#1e5631"; // deeper green
-    this.aButton.rect.fill(defaultFill);
-    this.bButton.rect.fill(defaultFill);
-    this.cButton.rect.fill(defaultFill);
+    this.aButton.rect.fill(OPTIONS_COLORS[0]);
+    this.bButton.rect.fill(OPTIONS_COLORS[1]);
+    this.cButton.rect.fill(OPTIONS_COLORS[2]);
     this.group.getLayer()?.draw();
   }
 
@@ -169,7 +168,7 @@ export class DiceGameScreenView implements View {
       width: 185,
       height: 115,
       cornerRadius: 14,
-      fill: "#1e5631",
+      fill: OPTIONS_COLORS[0],
       stroke: "#0f2d1c",
       strokeWidth: 2,
       shadowBlur: 12,
@@ -211,23 +210,23 @@ export class DiceGameScreenView implements View {
   // HIGHLIGHT COLORS
   // ------------------------------------------------------------
   public setAActive(): void {
-    this.aButton.rect.fill("#c62828");
-    this.bButton.rect.fill("#1e5631");
-    this.cButton.rect.fill("#1e5631");
+    this.aButton.rect.fill(OPTIONS_COLORS[0]);
+    this.bButton.rect.fill("#333333");
+    this.cButton.rect.fill("#333333");
     this.group.getLayer()?.draw();
   }
 
   public setBActive(): void {
-    this.bButton.rect.fill("#7cb342");
-    this.aButton.rect.fill("#1e5631");
-    this.cButton.rect.fill("#1e5631");
+    this.bButton.rect.fill(OPTIONS_COLORS[1]);
+    this.aButton.rect.fill("#333333");
+    this.cButton.rect.fill("#333333");
     this.group.getLayer()?.draw();
   }
 
   public setCActive(): void {
-    this.cButton.rect.fill("#1e88e5");
-    this.aButton.rect.fill("#1e5631");
-    this.bButton.rect.fill("#1e5631");
+    this.cButton.rect.fill(OPTIONS_COLORS[2]);
+    this.aButton.rect.fill("#333333");
+    this.bButton.rect.fill("#333333");
     this.group.getLayer()?.draw();
   }
 
