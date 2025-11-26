@@ -153,10 +153,12 @@ export class CardGameScreenView implements View {
       align: "center",
       text: opt.label,
       fontSize: 18,
-      fill: "#c93a32",
+      fill: "#ffffffff",
       fontFamily: "sans-serif",
       fontStyle: "bold",
       lineHeight: 1.4,
+      shadowColor: "black",
+      shadowBlur: 2
     });
 
     optionGroup.add(button, buttonText);
