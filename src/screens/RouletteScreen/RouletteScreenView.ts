@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_HEIGHT, STAGE_WIDTH } from "../../constants";
+import { STAGE_HEIGHT, STAGE_WIDTH, OPTIONS_COLORS } from "../../constants";
 import type { RouletteOption } from "./RouletteScreenModel";
 import { Hearts } from "../../gamestate";
 
@@ -160,7 +160,7 @@ export class RouletteScreenView implements View {
             const rect = new Konva.Rect({
                 width: btnWidth,
                 height: btnHeight,
-                fill: this.getColorForOption(opt.color),
+                fill: OPTIONS_COLORS[index],
                 cornerRadius: 10,
                 shadowColor: "black",
                 shadowBlur: 5,
@@ -222,7 +222,6 @@ export class RouletteScreenView implements View {
 			return;
 		}
 
-        const colors = ["#c62828", "#2e7d32", "#1565c0"]; 
         const countsArr = [counts.red, counts.green, counts.blue];
         
 		const singleAngle = 360 / total;
@@ -236,7 +235,7 @@ export class RouletteScreenView implements View {
                     radius: this.wheelRadius,
                     angle: singleAngle,
                     rotation,
-                    fill: colors[i],
+                    fill: OPTIONS_COLORS[i],
                     stroke: "#1b1206",
                     strokeWidth: 2,
                 });
