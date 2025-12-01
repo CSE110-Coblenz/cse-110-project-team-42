@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import type { LeaderboardEntry } from "./winScreenModel";
+import type { LeaderboardEntry } from "./WinScreenModel";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
 import { Timer } from "../../gamestate";
 

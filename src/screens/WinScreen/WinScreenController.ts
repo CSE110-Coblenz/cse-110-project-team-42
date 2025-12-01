@@ -2,7 +2,7 @@
 import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { Timer } from "../../gamestate";
-import { WinScreenModel, LeaderboardEntry,} from "./winScreenModel";
+import { WinScreenModel, LeaderboardEntry } from "./WinScreenModel";
 import { WinScreenView } from "./WinScreenView";
 
 const LEADERBOARD_KEY = "mathDungeonLeaderboard";

@@ -126,7 +126,7 @@ export class RouletteScreenView implements View {
 			fontFamily: "Georgia, 'Times New Roman', serif",
 			fill: "#fef6dc",
 			x: STAGE_WIDTH * 0.48,
-			y: 60,
+			y: STAGE_HEIGHT * 0.30,
 		});
 
 		const body = new Konva.Text({
@@ -136,7 +136,7 @@ export class RouletteScreenView implements View {
 			fontFamily: "Georgia, 'Times New Roman', serif",
 			fill: "#fef6dc",
 			x: STAGE_WIDTH * 0.48,
-			y: 110,
+			y: STAGE_HEIGHT * 0.37,
 		});
 
 		this.group.add(heading);
@@ -147,7 +147,7 @@ export class RouletteScreenView implements View {
         this.buttonsGroup.destroyChildren();
         
         const startX = STAGE_WIDTH * 0.48;
-        const startY = 150;
+        const startY = STAGE_HEIGHT * 0.50;
         const gap = 15;
         const btnWidth = 180;
         const btnHeight = 100;
