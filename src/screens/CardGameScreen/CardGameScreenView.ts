@@ -14,6 +14,7 @@ export class CardGameScreenView implements View {
     this.onOptionClick = onOptionClick;
     this.setupUI(options);
     Hearts.draw(this.group);
+    Timer.draw(this.group);
   }
 
   private setupUI(options: CardGameOption[]): void {
@@ -30,7 +31,7 @@ export class CardGameScreenView implements View {
     // 2. Add all other elements on top of it
     const title = new Konva.Text({
       x: 0,
-      y: 30,
+      y: 50,
       width: STAGE_WIDTH,
       align: "center",
       text: "Card Game Rules",

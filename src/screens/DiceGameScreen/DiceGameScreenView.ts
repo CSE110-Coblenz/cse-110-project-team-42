@@ -3,7 +3,7 @@
 import Konva from "konva";
 import type { View } from "../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants.ts";
-import { Hearts } from "../../gamestate";
+import { Hearts, Timer } from "../../gamestate";
 type ButtonRefs = {
   group: Konva.Group;
   rect: Konva.Rect;
@@ -51,11 +51,12 @@ export class DiceGameScreenView implements View {
     };
 
     Hearts.draw(this.group);
+    Timer.draw(this.group);
 
     // === TITLE (More elegant) ===
     const title = new Konva.Text({
       x: 0,
-      y: STAGE_HEIGHT * 0.04,
+      y: STAGE_HEIGHT * 0.08,
       width: STAGE_WIDTH,
       align: "center",
       text: "🎲 Dice Strategy Game",
@@ -72,7 +73,7 @@ export class DiceGameScreenView implements View {
     // === SUBTITLE (More elegant) ===
     const subtitle = new Konva.Text({
       x: 0,
-      y: STAGE_HEIGHT * 0.13,
+      y: STAGE_HEIGHT * 0.16,
       width: STAGE_WIDTH,
       align: "center",
       text:

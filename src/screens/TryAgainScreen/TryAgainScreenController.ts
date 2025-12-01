@@ -2,7 +2,7 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { TryAgainScreenView } from "./TryAgainScreenView";
 import { TryAgainScreenModel } from "./TryAgainScreenModel";
-import { currentLevel } from "../../gamestate";
+import { currentLevel, Timer } from "../../gamestate";
 import { HINT_BY_LEVEL } from "../../constants";
 
 export class TryAgainController extends ScreenController {
@@ -40,15 +40,21 @@ export class TryAgainController extends ScreenController {
     if (currentLevel === 1) {
       // Game 1: Roulette
       this.screenSwitcher.switchToScreen("roulette");
+      Timer.start();
     } else if (currentLevel === 2) {
       // Game 2: Card Game
       this.screenSwitcher.switchToScreen("cardGame");
+      Timer.start();
+
     } else if (currentLevel === 3) {
       // Game 3: Dice Game
       this.screenSwitcher.switchToScreen("diceGame");
+      Timer.start();
+
     } else {
-      // Default fallback
+      // Default fallback never should reach here 
       this.screenSwitcher.switchToScreen("roulette");
+      Timer.start();
     }
   }
 }

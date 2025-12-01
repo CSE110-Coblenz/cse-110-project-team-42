@@ -4,6 +4,7 @@ import { ScreenController } from "../../types.ts";
 import type { ScreenSwitcher } from "../../types.ts";
 import { DiceGameScreenModel } from "./DiceGameScreenModel.ts";
 import { DiceGameScreenView } from "./DiceGameScreenView.ts";
+import { Timer } from "../../gamestate.ts";
 
 /**
  * DiceGameScreenController
@@ -49,16 +50,21 @@ start(): void {
   private handleChoiceA(): void {
     this.model.setSelectedOption(0);
     this.screenSwitcher?.switchToScreen("graph");
+    Timer.stop(); //pauses timer while in graph/results/tryagain screens
   }
 
   private handleChoiceB(): void {
     this.model.setSelectedOption(1);
     this.screenSwitcher?.switchToScreen("graph");
+    Timer.stop(); //pauses timer while in graph/results/tryagain screens
+
   }
 
   private handleChoiceC(): void {
     this.model.setSelectedOption(2);
     this.screenSwitcher?.switchToScreen("graph");
+    Timer.stop(); //pauses timer while in graph/results/tryagain screens
+
   }
 
   simulateOpt1(): number {

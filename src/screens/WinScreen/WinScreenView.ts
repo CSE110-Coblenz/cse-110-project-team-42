@@ -1,135 +1,200 @@
 import Konva from "konva";
 import type { View } from "../../types";
+import type { LeaderboardEntry } from "./winScreenModel";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { Timer } from "../../gamestate";
 
+// helper for formatting seconds as MM:SS or HH:MM:SS
+function formatTime(secondsTotal: number): string {
+  const hours = Math.floor(secondsTotal / 3600);
+  const minutes = Math.floor((secondsTotal % 3600) / 60);
+  const seconds = secondsTotal % 60;
+
+  const mm = minutes.toString().padStart(2, "0");
+  const ss = seconds.toString().padStart(2, "0");
+
+  if (hours > 0) {
+    const hh = hours.toString().padStart(2, "0");
+    return `${hh}:${mm}:${ss}`;
+  }
+  return `${mm}:${ss}`;
+}
+
+/**
+ * WinScreenView - Renders the win screen
+ */
 export class WinScreenView implements View {
   private group: Konva.Group;
-  private background: Konva.Image;
-  private overlay: Konva.Rect;
+
   private congratsText: Konva.Text;
-  private restartButton: Konva.Rect;
-  private restartText: Konva.Text;
-  private onRestart: () => void;
+  private finalTimeText: Konva.Text;
+  private leaderboardText: Konva.Text;
+
+  private restartButtonGroup: Konva.Group;
 
   constructor(onRestart: () => void) {
-    this.onRestart = onRestart;
-    this.group = new Konva.Group();
+    this.group = new Konva.Group({ visible: false });
 
-    // === Background ===
-    this.background = new Konva.Image({
+    // === Background image ===
+    const background = new Konva.Image({
       x: 0,
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
       image: undefined,
     });
-    this.group.add(this.background);
+    this.group.add(background);
 
     const bg = new Image();
     bg.src = "/win.jpg";
     bg.onload = () => {
-      this.background.image(bg);
+      background.image(bg);
       this.group.getLayer()?.draw();
     };
 
-    // === Soft Dark Overlay (美化效果) ===
-    this.overlay = new Konva.Rect({
+    // === Soft overlay ===
+    const overlay = new Konva.Rect({
       x: 0,
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
       fill: "rgba(0,0,0,0.35)",
     });
-    this.group.add(this.overlay);
+    this.group.add(overlay);
 
-    // === Congratulations Text (金色渐变效果) ===
+    // === "Congratulations" title ===
     this.congratsText = new Konva.Text({
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT * 0.18,
       text: "🎉 Congratulations! 🎉",
-      fontSize: 54,
-      fillLinearGradientColorStops: [0, "#ffeb3b", 1, "#ff9800"],
-      fillLinearGradientStartPoint: { x: 0, y: 0 },
-      fillLinearGradientEndPoint: { x: 0, y: 50 },
+      fontSize: 48,
+      fontFamily: "Arial",
+      fill: "white",
       fontStyle: "bold",
-      width: STAGE_WIDTH,
       align: "center",
-      y: STAGE_HEIGHT * 0.22,
       shadowColor: "black",
-      shadowBlur: 20,
+      shadowBlur: 10,
     });
+    this.congratsText.offsetX(this.congratsText.width() / 2);
     this.group.add(this.congratsText);
 
-    // === Restart Button ===
+    // === Final time display ===
+    this.finalTimeText = new Konva.Text({
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT * 0.30,
+      text: "Final Time: 00:00",
+      fontSize: 32,
+      fontFamily: "Arial",
+      fill: "white",
+      align: "center",
+    });
+    this.finalTimeText.offsetX(this.finalTimeText.width() / 2);
+    this.group.add(this.finalTimeText);
+
+    // === Leaderboard text (multi-line) ===
+    this.leaderboardText = new Konva.Text({
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT * 0.40,
+      text: "Best Times:\n(Play to see your records!)",
+      fontSize: 20,
+      fontFamily: "Arial",
+      fill: "#f0f0f0",
+      align: "center",
+      lineHeight: 1.5,
+    });
+    this.leaderboardText.offsetX(this.leaderboardText.width() / 2);
+    this.group.add(this.leaderboardText);
+
+    // === Restart button (group) ===
+    this.restartButtonGroup = new Konva.Group();
+
     const buttonWidth = 240;
     const buttonHeight = 70;
+    const buttonY = STAGE_HEIGHT * 0.70;
 
-    this.restartButton = new Konva.Rect({
-      x: (STAGE_WIDTH - buttonWidth) / 2,
-      y: STAGE_HEIGHT * 0.70,
+    const restartRect = new Konva.Rect({
+      x: STAGE_WIDTH / 2 - buttonWidth / 2,
+      y: buttonY,
       width: buttonWidth,
       height: buttonHeight,
       cornerRadius: 16,
-      fillLinearGradientColorStops: [0, "#ffffff", 1, "#e0e0e0"],
-      fillLinearGradientStartPoint: { x: 0, y: 0 },
-      fillLinearGradientEndPoint: { x: 0, y: buttonHeight },
-      shadowBlur: 15,
+      fill: "white",
+      stroke: "#444",
+      strokeWidth: 2,
+      shadowBlur: 10,
       shadowColor: "black",
       shadowOpacity: 0.3,
     });
 
-    this.restartText = new Konva.Text({
+    const restartText = new Konva.Text({
+      x: STAGE_WIDTH / 2,
+      y: buttonY + (buttonHeight - 28) / 2,
       text: "Restart",
       fontSize: 28,
+      fontFamily: "Arial",
       fill: "black",
       fontStyle: "bold",
-      width: STAGE_WIDTH,
       align: "center",
-      y: STAGE_HEIGHT * 0.70 + (buttonHeight - 28) / 2,
     });
+    restartText.offsetX(restartText.width() / 2);
 
-    this.group.add(this.restartButton);
-    this.group.add(this.restartText);
+    this.restartButtonGroup.add(restartRect);
+    this.restartButtonGroup.add(restartText);
 
-    // === Button Interaction ===
-    this.restartButton.on("pointerover", () => {
-      this.restartButton.scale({ x: 1.05, y: 1.05 });
+    // Button interaction
+    this.restartButtonGroup.on("pointerover", () => {
+      this.restartButtonGroup.scale({ x: 1.01, y: 1.01 });
       this.group.getLayer()?.batchDraw();
     });
-
-    this.restartButton.on("pointerout", () => {
-      this.restartButton.scale({ x: 1, y: 1 });
+    this.restartButtonGroup.on("pointerout", () => {
+      this.restartButtonGroup.scale({ x: 1, y: 1 });
       this.group.getLayer()?.batchDraw();
     });
+    this.restartButtonGroup.on("click", onRestart);
 
-    this.restartButton.on("pointerdown", () => {
-      this.restartButton.to({
-        scaleX: 0.92,
-        scaleY: 0.92,
-        duration: 0.05,
-      });
-    });
+    this.group.add(this.restartButtonGroup);
 
-    this.restartButton.on("pointerup", () => {
-      // Small click animation
-      this.restartButton.to({
-        scaleX: 1,
-        scaleY: 1,
-        duration: 0.1,
-      });
-
-      // Call user-provided callback
-      this.onRestart();
-    });
+    // Optional: show timer text at top
+    Timer.draw(this.group);
   }
 
   getGroup(): Konva.Group {
     return this.group;
   }
 
+  /**
+   * Update the final time text (seconds -> formatted string)
+   */
+  updateFinalTime(timeSeconds: number): void {
+    this.finalTimeText.text(`Final Time: ${formatTime(timeSeconds)}`);
+    this.finalTimeText.offsetX(this.finalTimeText.width() / 2);
+    this.group.getLayer()?.draw();
+  }
+
+  /**
+   * Update the leaderboard multi-line text
+   */
+  updateLeaderboard(entries: LeaderboardEntry[]): void {
+    if (entries.length === 0) {
+      this.leaderboardText.text("Best Times:\n(No runs yet!)");
+    } else {
+      let text = "Best Times:\n";
+      entries.forEach((entry, index) => {
+        text += `${index + 1}. ${formatTime(entry.timeSeconds)} — ${entry.timestamp}\n`;
+      });
+      this.leaderboardText.text(text);
+    }
+    this.leaderboardText.offsetX(this.leaderboardText.width() / 2);
+    this.group.getLayer()?.draw();
+  }
+
   show(): void {
     this.group.visible(true);
+    this.group.getLayer()?.draw();
   }
 
   hide(): void {
     this.group.visible(false);
+    this.group.getLayer()?.draw();
   }
 }
