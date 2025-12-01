@@ -2,7 +2,7 @@ import type { ScreenSwitcher } from "../../types";
 import { GraphScreenModel } from "./GraphScreenModel";
 import { GraphScreenView } from "./GraphScreenView";
 import type { ResultsData } from "../ResultsScreen/ResultsScreenConstants";
-import { currentLevel } from "../../gamestate";
+import { Level } from "../../gamestate";
 
 export class GraphScreenController {
   private switcher: ScreenSwitcher;
@@ -18,7 +18,7 @@ export class GraphScreenController {
   /** Called when graph screen is shown - runs simulation based on current game */
   show(): void {
     // Run simulation based on current game level
-    if (currentLevel === 1) {
+    if (Level.get() === 1) {
       // @ts-ignore - access rouletteController on the switcher
       const rouletteModel = this.switcher["rouletteController"].getModel();
       const selectedOption = rouletteModel.getSelectedOption();
@@ -26,7 +26,7 @@ export class GraphScreenController {
       this.model.runSimulation(selectedOption, (index) => rouletteModel.simulateByIndex(index));
       this.view.updateGraph(this.model.getRunningAverages());
 
-    } else if (currentLevel === 2) {
+    } else if (Level.get() === 2) {
       // @ts-ignore - access cardGameController on the switcher
       const cardModel = this.switcher["cardGameController"].getModel();
       const selectedOption = cardModel.getSelectedOption();
@@ -35,7 +35,7 @@ export class GraphScreenController {
       this.model.runSimulation(selectedOption, (index) => cardModel.simulateByIndex(index));
       this.view.updateGraph(this.model.getRunningAverages());
 
-    } else if (currentLevel === 3) {
+    } else if (Level.get() === 3) {
       // @ts-ignore - access diceController on the switcher
       const diceModel = this.switcher["diceController"].getModel();
       const selectedOption = diceModel.getSelectedOption();

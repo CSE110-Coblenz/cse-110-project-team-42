@@ -2,7 +2,7 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
 import { TryAgainScreenView } from "./TryAgainScreenView";
 import { TryAgainScreenModel } from "./TryAgainScreenModel";
-import { currentLevel, Timer } from "../../gamestate";
+import { Level, Timer } from "../../gamestate";
 import { HINT_BY_LEVEL } from "../../constants";
 
 export class TryAgainController extends ScreenController {
@@ -21,7 +21,7 @@ export class TryAgainController extends ScreenController {
 
   showTryAgain(): void {
     const hint = 
-       HINT_BY_LEVEL[currentLevel] ?? "Hint not assigned correctly"
+       HINT_BY_LEVEL[Level.get()] ?? "Hint not assigned correctly"
     this.model.updateMessage(hint);
     this.view.updateMessage(this.model.getMessage());
     this.view.show();
@@ -37,16 +37,16 @@ export class TryAgainController extends ScreenController {
 
   private handleRestart(): void { 
     // Restart the current level
-    if (currentLevel === 1) {
+    if (Level.get() === 1) {
       // Game 1: Roulette
       this.screenSwitcher.switchToScreen("roulette");
       Timer.start();
-    } else if (currentLevel === 2) {
+    } else if (Level.get() === 2) {
       // Game 2: Card Game
       this.screenSwitcher.switchToScreen("cardGame");
       Timer.start();
 
-    } else if (currentLevel === 3) {
+    } else if (Level.get() === 3) {
       // Game 3: Dice Game
       this.screenSwitcher.switchToScreen("diceGame");
       Timer.start();

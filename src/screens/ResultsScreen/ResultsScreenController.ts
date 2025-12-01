@@ -3,7 +3,7 @@ import type { ScreenSwitcher } from "../../types";
 import { ResultsScreenView } from "./ResultsScreenView";
 import { ResultsScreenModel } from "./ResultsScreenModel";
 import type { ResultsData } from "./ResultsScreenConstants";
-import { Hearts, currentLevel, resetCurrentLevel, setCurrentLevel, Timer } from "../../gamestate";
+import { Hearts, Level, Timer } from "../../gamestate";
 
 export class ResultsScreenController extends ScreenController {
   private view: ResultsScreenView;
@@ -24,18 +24,18 @@ export class ResultsScreenController extends ScreenController {
   private handleProceed(): void {
     if (this.model.didPlayerWin()) {
       // --- Player Won ---
-      if (currentLevel === 1) { // Finished Roulette
-        setCurrentLevel(2);
+      if (Level.get() === 1) { // Finished Roulette
+        Level.set(2);
         this.screenSwitcher.switchToScreen("cardGame");
         Timer.start(); //restarts timer
-      } else if (currentLevel === 2) { // Finished Card Game
-        setCurrentLevel(3);
+      } else if (Level.get() === 2) { // Finished Card Game
+        Level.set(3);
         this.screenSwitcher.switchToScreen("diceGame");
         Timer.start(); //restarts timer
 
-      } else if (currentLevel === 3) { // Finished Dice Game
+      } else if (Level.get() === 3) { // Finished Dice Game
         this.screenSwitcher.switchToScreen("win");
-        resetCurrentLevel();
+        Level.reset();
         Hearts.reset();
 
       } else {
@@ -53,7 +53,7 @@ export class ResultsScreenController extends ScreenController {
       } else {
         // Note: A 'lose' screen needs to be created and handled in main.ts
         this.screenSwitcher.switchToScreen("lose");
-        resetCurrentLevel();
+        Level.reset();
         Hearts.reset();
       }
     }
