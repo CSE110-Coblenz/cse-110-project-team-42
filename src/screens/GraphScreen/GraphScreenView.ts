@@ -255,14 +255,11 @@ export class GraphScreenView {
       this.group.add(line);
       this.lines.push(line);
 
-      // Animate the line by transitioning dash from invisible to visible
-      const delay = idx * 1.5;
-      setTimeout(() => {
-        line.to({
-          dash: [totalLength, 0], // End fully visible
-          duration: 30,
-        });
-      }, delay * 1000);
+      // Animate all lines at the same time (no delay)
+      line.to({
+        dash: [totalLength, 0], // End fully visible
+        duration: 30,
+      });
     });
 
     this.group.getLayer()?.draw();
