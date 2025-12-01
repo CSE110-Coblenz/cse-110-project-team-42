@@ -2,6 +2,7 @@ import { ScreenController } from "../../types";
 import type { ScreenSwitcher, CardGameOption } from "../../types";
 import { CardGameScreenModel } from "./CardGameScreenModel";
 import { CardGameScreenView } from "./CardGameScreenView";
+import { Timer } from "../../gamestate";
 
 export class CardGameScreenController extends ScreenController {
   private view: CardGameScreenView;
@@ -27,6 +28,7 @@ export class CardGameScreenController extends ScreenController {
     
     // Switch to graph screen
     this.screenSwitcher.switchToScreen("graph");
+    Timer.stop(); //pauses timer while in graph/results/tryagain screens
   }
 
   getModel(): CardGameScreenModel {

@@ -64,7 +64,7 @@ class App implements ScreenSwitcher {
         this.layer.add(this.loseController.getView().getGroup());
 
         // Start with the menu screen
-        this.switchToScreen("lose");
+        this.switchToScreen("menu");
     }
 
 	switchToScreen(screen: string): void {
@@ -97,7 +97,7 @@ class App implements ScreenSwitcher {
         } else if (screen === "diceGame"){
             this.diceController.start();
         } else if (screen === "win"){
-            this.winController.getView().show();
+            this.winController.showWinScreen();
         } else if (screen === "lose"){
             this.loseController.getView().show();
         }

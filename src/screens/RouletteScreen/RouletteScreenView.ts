@@ -2,7 +2,7 @@ import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_HEIGHT, STAGE_WIDTH } from "../../constants";
 import type { RouletteOption } from "./RouletteScreenModel";
-import { Hearts } from "../../gamestate";
+import { Hearts, Timer } from "../../gamestate";
 
 type SelectHandler = (index: number) => void;
 
@@ -37,6 +37,7 @@ export class RouletteScreenView implements View {
 		
         this.drawWheel(counts, totalSlots);
 		Hearts.draw(this.group);
+		Timer.draw(this.group);
 	}
 
 	getGroup(): Konva.Group {
