@@ -129,6 +129,9 @@ export const CARD_OPTIONS = [
 // For simulation 
 export const ITERATIONS = 10000;
 
+// Graph line colors for the three options
+export const OPTIONS_COLORS = ["#FF4444", "#44FF44", "#4444FF"];
+
 
 export const GAME1HINTMESSAGE =
   "Hint: Only ONE of these choices is actually good for you in the long run.\n\
