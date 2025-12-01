@@ -1,7 +1,7 @@
 import Konva from "konva";
 import type { View, CardGameOption } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
-import { Hearts } from "../../gamestate";
+import { Hearts, Timer } from "../../gamestate";
 
 type OptionClickCallback = (option: CardGameOption) => void;
 
