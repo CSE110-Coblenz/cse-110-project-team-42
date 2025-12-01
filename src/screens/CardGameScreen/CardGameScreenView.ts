@@ -1,7 +1,7 @@
 import Konva from "konva";
 import type { View, CardGameOption } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import { Hearts, Timer } from "../../gamestate";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
+import { Hearts } from "../../gamestate";
 
 type OptionClickCallback = (option: CardGameOption) => void;
 
@@ -140,7 +140,7 @@ export class CardGameScreenView implements View {
       y: 0,
       width: 240,
       height: 100,
-      fill: "#26492b",
+      fill: OPTIONS_COLORS[index],
       cornerRadius: 8,
       shadowColor: "black",
       shadowBlur: 10,
@@ -154,10 +154,12 @@ export class CardGameScreenView implements View {
       align: "center",
       text: opt.label,
       fontSize: 18,
-      fill: "#c93a32",
+      fill: "#ffffffff",
       fontFamily: "sans-serif",
       fontStyle: "bold",
       lineHeight: 1.4,
+      shadowColor: "black",
+      shadowBlur: 2
     });
 
     optionGroup.add(button, buttonText);

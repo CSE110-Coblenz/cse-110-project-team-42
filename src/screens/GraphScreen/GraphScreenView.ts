@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
 import { Hearts } from "../../gamestate";
 
 export class GraphScreenView {
@@ -194,7 +194,6 @@ export class GraphScreenView {
     let minY = allVals.length ? Math.min(...allVals) : 0;
     let maxY = allVals.length ? Math.max(...allVals) : 1;
     const numPoints = data[0]?.length || 0;
-    const colors = ["red", "green", "blue"];
 
     this.lines.forEach((l) => l.destroy());
     this.lines = [];
@@ -246,9 +245,8 @@ export class GraphScreenView {
       const totalLength = scaled.length * 2;
       const line = new Konva.Line({
         points: scaled,
-        stroke: colors[idx],
+        stroke: OPTIONS_COLORS[idx],
         strokeWidth: 3,
-        lineCap: "round",
         lineJoin: "round",
         dashEnabled: true,
         dash: [0, totalLength], // Start fully invisible

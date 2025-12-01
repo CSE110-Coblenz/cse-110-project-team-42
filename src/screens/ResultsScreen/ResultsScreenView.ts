@@ -47,9 +47,9 @@ export class ResultsScreenView implements View {
 
 		// Message text (centered on scroll)
 		this.messageText = new Konva.Text({
-			x: STAGE_WIDTH / 2 - 300,
+			x: STAGE_WIDTH / 2 - 400,
 			y: STAGE_HEIGHT / 2 - 150,
-			width: 600,
+			width: 800,
 			text: message,
 			fontSize: 28,
 			fontFamily: "Georgia",
