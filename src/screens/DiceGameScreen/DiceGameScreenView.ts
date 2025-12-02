@@ -3,7 +3,7 @@
 import Konva from "konva";
 import type { View } from "../../types.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants.ts";
-import { Hearts, Timer } from "../../gamestate";
+import { Hearts } from "../../gamestate";
 type ButtonRefs = {
   group: Konva.Group;
   rect: Konva.Rect;
@@ -51,12 +51,11 @@ export class DiceGameScreenView implements View {
     };
 
     Hearts.draw(this.group);
-    Timer.draw(this.group);
 
     // === TITLE (More elegant) ===
     const title = new Konva.Text({
       x: 0,
-      y: STAGE_HEIGHT * 0.08,
+      y: STAGE_HEIGHT * 0.04,
       width: STAGE_WIDTH,
       align: "center",
       text: "🎲 Dice Strategy Game",
@@ -73,7 +72,7 @@ export class DiceGameScreenView implements View {
     // === SUBTITLE (More elegant) ===
     const subtitle = new Konva.Text({
       x: 0,
-      y: STAGE_HEIGHT * 0.16,
+      y: STAGE_HEIGHT * 0.13,
       width: STAGE_WIDTH,
       align: "center",
       text:
@@ -88,28 +87,32 @@ export class DiceGameScreenView implements View {
     });
     this.group.add(subtitle);
 
-    // === DICE IMAGE — Bigger ===
-    const w = 210;
-    const h = 155;
-    const diceImage = new Konva.Image({
-      width: w,
-      height: h,
-      x: STAGE_WIDTH / 2 - w / 2,
-      y: STAGE_HEIGHT * 0.30,
-      listening: false,
-      shadowBlur: 18,
-      shadowColor: "black",
-      shadowOpacity: 0.35,
-      image: undefined, // Start as an empty placeholder
-    });
-    this.group.add(diceImage); // Add placeholder to the group to reserve its layer position
-
-    const img = new Image();
-    img.src = "/dice.jpg";
-    img.onload = () => {
-      diceImage.image(img); // Set the image content once it's loaded
-      this.group.getLayer()?.draw(); // Redraw the layer to show the image
-    };
+    // === DICE GIF — Use HTML img element with canvas workaround ===
+    const w = 400;
+    const h = 293;
+    
+    // Create an HTML img element and add it directly to the DOM
+    const gifImg = document.createElement('img');
+    gifImg.src = '/dice.gif';
+    gifImg.style.position = 'absolute';
+    gifImg.style.left = '50%';
+    gifImg.style.top = '47%';
+    gifImg.style.transform = 'translate(-50%, -50%)';
+    gifImg.style.width = `${w}px`;
+    gifImg.style.height = `${h}px`;
+    gifImg.style.pointerEvents = 'none';
+    gifImg.style.filter = 'drop-shadow(0px 4px 18px rgba(0, 0, 0, 0.35))';
+    gifImg.style.zIndex = '10';
+    
+    // Store reference to remove later
+    (this as any).gifElement = gifImg;
+    
+    // Add to container
+    const container = document.getElementById('container');
+    if (container) {
+      container.appendChild(gifImg);
+      gifImg.style.display = 'none'; // Start hidden
+    }
 
     // === BUTTONS — Slightly Smaller ===
     const btnWidth = 185;
@@ -234,10 +237,20 @@ export class DiceGameScreenView implements View {
   // ------------------------------------------------------------
   public show(): void {
     this.group.visible(true);
+    // Show the GIF element
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'block';
+    }
   }
 
   public hide(): void {
     this.group.visible(false);
+    // Hide the GIF element
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'none';
+    }
   }
 
   public getGroup(): Konva.Group {
