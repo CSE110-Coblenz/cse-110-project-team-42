@@ -3,21 +3,31 @@ import type { View, CardGameOption } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
 import { Hearts, Timer } from "../../gamestate";
 
-type OptionClickCallback = (option: CardGameOption) => void;
+type OptionClickCallback = (index: number) => void;
 
 export class CardGameScreenView implements View {
   private group: Konva.Group;
+  private buttonsGroup: Konva.Group;
   private onOptionClick: OptionClickCallback;
+  private options: CardGameOption[];
 
   constructor(options: CardGameOption[], onOptionClick: OptionClickCallback) {
     this.group = new Konva.Group({ visible: false });
+    this.buttonsGroup = new Konva.Group();
+    this.options = options;
     this.onOptionClick = onOptionClick;
-    this.setupUI(options);
+    
+    this.setupUI();
+    this.group.add(this.buttonsGroup);
+    
+    // Initial build
+    this.buildOptionButtons();
+    
     Hearts.draw(this.group);
     Timer.draw(this.group);
   }
 
-  private setupUI(options: CardGameOption[]): void {
+  private setupUI(): void {
     // 1. Create and add the background image placeholder first
     const bg = new Konva.Image({
       x: 0,
@@ -70,6 +80,7 @@ export class CardGameScreenView implements View {
             height: scaledHeight,
         });
         this.group.add(deck);
+        deck.zIndex(1); // Above BG (0)
         this.group.getLayer()?.draw();
     };
 
@@ -96,6 +107,8 @@ export class CardGameScreenView implements View {
             rotation: 5,
         });
         this.group.add(leftMoney, rightMoney);
+        leftMoney.zIndex(2);
+        rightMoney.zIndex(2);
 
         const jiggle = (image: Konva.Image, rotation: number) => {
             image.to({
@@ -111,11 +124,6 @@ export class CardGameScreenView implements View {
 
         this.group.getLayer()?.draw();
     };
-
-    options.forEach((opt, i) => {
-      const optionGroup = this.createOptionPanel(opt, i);
-      this.group.add(optionGroup);
-    });
     
     // 3. Load the image and set it on the placeholder
     const bgImage = new Image();
@@ -126,69 +134,81 @@ export class CardGameScreenView implements View {
     };
   }
 
-  private createOptionPanel(opt: CardGameOption, index: number): Konva.Group {
+  // Follows RouletteScreenView pattern: destroy children and rebuild
+  private buildOptionButtons(): void {
+    this.buttonsGroup.destroyChildren();
+
     const groupWidth = 240;
     const spacing = 50;
     const totalWidth = groupWidth * 3 + spacing * 2;
     const startX = (STAGE_WIDTH - totalWidth) / 2;
-    const panelX = startX + index * (groupWidth + spacing);
 
-    const optionGroup = new Konva.Group({ x: panelX, y: 540 });
+    this.options.forEach((opt, index) => {
+        const panelX = startX + index * (groupWidth + spacing);
+        const optionGroup = new Konva.Group({ x: panelX, y: 540 });
 
-    const button = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: 240,
-      height: 100,
-      fill: OPTIONS_COLORS[index],
-      cornerRadius: 8,
-      shadowColor: "black",
-      shadowBlur: 10,
-      shadowOffsetY: 5,
+        const button = new Konva.Rect({
+          x: 0,
+          y: 0,
+          width: 240,
+          height: 100,
+          fill: OPTIONS_COLORS[index],
+          cornerRadius: 8,
+          shadowColor: "black",
+          shadowBlur: 10,
+          shadowOffsetY: 5,
+        });
+
+        const buttonText = new Konva.Text({
+          x: 0,
+          y: 15,
+          width: 240,
+          align: "center",
+          text: opt.label,
+          fontSize: 18,
+          fill: "#ffffffff",
+          fontFamily: "sans-serif",
+          fontStyle: "bold",
+          lineHeight: 1.4,
+          shadowColor: "black",
+          shadowBlur: 2
+        });
+
+        optionGroup.add(button, buttonText);
+        
+        // Interaction logic
+        optionGroup.on("click tap", () => {
+            this.onOptionClick(index);
+        });
+
+        optionGroup.on("mouseenter", () => {
+            this.group.getStage()!.container().style.cursor = "pointer";
+            button.to({
+                scaleX: 1.05,
+                scaleY: 1.05,
+                duration: 0.2,
+            });
+            optionGroup.getLayer()?.draw();
+        });
+
+        optionGroup.on("mouseleave", () => {
+            this.group.getStage()!.container().style.cursor = "default";
+            button.to({
+                scaleX: 1,
+                scaleY: 1,
+                duration: 0.2,
+            });
+            optionGroup.getLayer()?.draw();
+        });
+
+        this.buttonsGroup.add(optionGroup);
     });
+  }
 
-    const buttonText = new Konva.Text({
-      x: 0,
-      y: 15,
-      width: 240,
-      align: "center",
-      text: opt.label,
-      fontSize: 18,
-      fill: "#ffffffff",
-      fontFamily: "sans-serif",
-      fontStyle: "bold",
-      lineHeight: 1.4,
-      shadowColor: "black",
-      shadowBlur: 2
-    });
-
-    optionGroup.add(button, buttonText);
-
-    optionGroup.on("click", () => {
-      this.onOptionClick(opt);
-    });
-
-    optionGroup.on("mouseenter", () => {
-      this.group.getStage()!.container().style.cursor = "pointer";
-      button.to({
-        scaleX: 1.05,
-        scaleY: 1.05,
-        duration: 0.2,
-      });
-      optionGroup.getLayer()?.draw();
-    });
-
-    optionGroup.on("mouseleave", () => {
-      this.group.getStage()!.container().style.cursor = "default";
-      button.to({
-        scaleX: 1,
-        scaleY: 1,
-        duration: 0.2,
-      });
-      optionGroup.getLayer()?.draw();
-    });
-
-    return optionGroup;
+  updateOptions(options: CardGameOption[]): void {
+      this.options = options;
+      this.buildOptionButtons();
+      this.group.getLayer()?.batchDraw();
   }
 
   show(): void {
