@@ -20,6 +20,8 @@ export class RouletteScreenView implements View {
 	private wheelRadius = 140;
     private options: RouletteOption[];
     private onSelect: SelectHandler;
+	private spinAnimation: Konva.Animation | null = null;
+	private totalSlotsText: Konva.Text;
 
 	constructor(options: RouletteOption[], counts: WheelCounts, totalSlots: number, onSelect: SelectHandler) {
 		this.group = new Konva.Group({ visible: false });
@@ -32,6 +34,20 @@ export class RouletteScreenView implements View {
 		this.buildWheel();
 		this.buildInstructionText();
         
+		// Create total slots text
+		this.totalSlotsText = new Konva.Text({
+			x: STAGE_WIDTH * 0.28,
+			y: STAGE_HEIGHT * 0.5 + this.wheelRadius + 30,
+			text: `Total Slots: ${totalSlots}`,
+			fontSize: 20,
+			fontFamily: "Georgia, 'Times New Roman', serif",
+			fill: "#fef6dc",
+			shadowColor: "black",
+			shadowBlur: 3,
+		});
+		this.totalSlotsText.offsetX(this.totalSlotsText.width() / 2);
+		this.group.add(this.totalSlotsText);
+
         this.group.add(this.buttonsGroup);
 		this.buildOptionButtons();
 		
@@ -47,15 +63,20 @@ export class RouletteScreenView implements View {
 	show(): void {
 		this.group.visible(true);
 		this.group.getLayer()?.batchDraw();
+		this.startWheelSpin();
 	}
 
 	hide(): void {
 		this.group.visible(false);
 		this.group.getLayer()?.batchDraw();
+		this.stopWheelSpin();
 	}
 
 	updateWheel(counts: WheelCounts, totalSlots: number): void {
 		this.drawWheel(counts, totalSlots);
+		this.totalSlotsText.text(`Total Slots: ${totalSlots}`);
+		this.totalSlotsText.offsetX(this.totalSlotsText.width() / 2);
+		this.group.getLayer()?.batchDraw();
 	}
     
     updateOptions(options: RouletteOption[]): void {
@@ -254,5 +275,30 @@ export class RouletteScreenView implements View {
 		this.wheelGroup.add(hub);
 
 		this.group.getLayer()?.batchDraw();
+	}
+
+	private startWheelSpin(): void {
+		if (this.spinAnimation) {
+			this.spinAnimation.stop();
+		}
+
+		const layer = this.group.getLayer();
+		if (!layer) return;
+
+		this.spinAnimation = new Konva.Animation((frame) => {
+			if (!frame) return;
+			const rotationSpeed = 30; // degrees per second
+			const angleDelta = (rotationSpeed * frame.timeDiff) / 1000;
+			this.wheelGroup.rotate(angleDelta);
+		}, layer);
+
+		this.spinAnimation.start();
+	}
+
+	private stopWheelSpin(): void {
+		if (this.spinAnimation) {
+			this.spinAnimation.stop();
+			this.spinAnimation = null;
+		}
 	}
 }
