@@ -130,7 +130,7 @@ export const CARD_OPTIONS = [
 export const ITERATIONS = 10000;
 
 // Graph line colors for the three options
-export const OPTIONS_COLORS = ["#FF4444", "#44FF44", "#4444FF"];
+export const OPTIONS_COLORS = ["#CC3333", "#33CC33", "#3333CC"];
 
 
 export const GAME1HINTMESSAGE =
