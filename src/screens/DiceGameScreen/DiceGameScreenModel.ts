@@ -13,33 +13,33 @@ function roll3(): number[] {
 export class DiceGameScreenModel {
   private readonly sets: DiceChoiceSet[] = [
     [
-      "Roll 3 dice and you win if at least one die shows a 6.\n$5 Buy in → +$10 Payoff.",
-      "Roll 3 dice and you win if the total sum is 14 or higher.\n$2 Buy in → +$20 Payoff.",
-      "Roll 3 dice and you win if all three dice are even (2, 4, 6).\n$5 Buy in → +$30 Payoff.",
+      "Roll 3 dice and you win if at least one die shows a 6.\n\n$5 Buy in → +$10 Payoff.",
+      "Roll 3 dice and you win if the total sum is 14 or higher.\n\n$2 Buy in → +$20 Payoff.",
+      "Roll 3 dice and you win if all three dice are even (2, 4, 6).\n\n$5 Buy in → +$30 Payoff.",
     ],
 
     [
-      "Roll 3 dice and you win with exactly one 6.\n$3 Buy in → +$8 Payoff.",
-      "Roll 3 dice and you win if the total is 9, 10, or 11.\n$3 Buy in → +$10 Payoff.",
+      "Roll 3 dice and you win with exactly one 6.\n\n$3 Buy in → +$8 Payoff.",
+      "Roll 3 dice and you win if the total is 9, 10, or 11.\n\n$3 Buy in → +$10 Payoff.",
       "Roll 3 dice and you win only with triple 6.\n$2 Buy in → +$100 Payoff.",
     ],
 
     [
       "Roll 3 dice and you win if all dice show different numbers.\n$3 Buy in → +$4 Payoff.",
-      "Roll 3 dice and you win if the total is 15 or higher.\n$1 Buy in → +$20 Payoff.",
-      "Roll 3 dice and you win if at least two dice are even.\n$3 Buy in → +$5 Payoff.",
+      "Roll 3 dice and you win if the total is 15 or higher.\n\n$1 Buy in → +$20 Payoff.",
+      "Roll 3 dice and you win if at least two dice are even.\n\n$3 Buy in → +$5 Payoff.",
     ],
 
     [
-      "Roll 3 dice and you win if none of the dice show a 1.\n$3 Buy in → +$5 Payoff.",
-      "Roll 3 dice and you win if all dice are odd (1, 3, 5).\n$2 Buy in → +$30 Payoff.",
-      "Roll 3 dice and you win with exactly one pair.\n$4 Buy in → +$6 Payoff.",
+      "Roll 3 dice and you win if none of the dice show a 1.\n\n$3 Buy in → +$5 Payoff.",
+      "Roll 3 dice and you win if all dice are odd (1, 3, 5).\n\n$2 Buy in → +$30 Payoff.",
+      "Roll 3 dice and you win with exactly one pair.\n\n$4 Buy in → +$6 Payoff.",
     ],
 
     [
-      "Roll 3 dice and win if no die shows a 6.\n$3 Buy in → +$4 Payoff.",
-      "Roll 3 dice and win if the total is 10, 11, or 12.\n$3 Buy in → +$10 Payoff.",
-      "Roll 3 dice and win if the total is 5 or lower.\n$3 Buy in → +$40 Payoff.",
+      "Roll 3 dice and win if no die shows a 6.\n\n$3 Buy in → +$4 Payoff.",
+      "Roll 3 dice and win if the total is 10, 11, or 12.\n\n$3 Buy in → +$10 Payoff.",
+      "Roll 3 dice and win if the total is 5 or lower.\n\n$3 Buy in → +$40 Payoff.",
     ],
   ];
 
