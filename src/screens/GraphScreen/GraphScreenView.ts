@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS, FONT_PRIMARY, COLOR_MINIGAME_TEXT } from "../../constants";
 import { Hearts } from "../../gamestate";
 
 export class GraphScreenView {
@@ -9,7 +9,7 @@ export class GraphScreenView {
   private axes: Konva.Line[] = [];
   private legendItems: Konva.Text[] = [];
   private axisLabels: Konva.Text[] = [];
-  private nextButton: Konva.Rect;
+  private nextButton: Konva.Group;
   private nextText: Konva.Text;
   private axisTitles: Konva.Text[] = [];
 
@@ -36,45 +36,64 @@ export class GraphScreenView {
 
     const btnW = 180;
     const btnH = 50;
-    const btnX = STAGE_WIDTH / 2 - btnW / 2;
-    const btnY = STAGE_HEIGHT - 100;
+    const btnX = STAGE_WIDTH / 2;
+    const btnY = STAGE_HEIGHT - 100 + btnH / 2;
 
-    this.nextButton = new Konva.Rect({
+    this.nextButton = new Konva.Group({
       x: btnX,
       y: btnY,
+      offsetX: btnW / 2,
+      offsetY: btnH / 2,
+    });
+
+    const btnRect = new Konva.Rect({
       width: btnW,
       height: btnH,
-      fill: "#8b4513",
-      cornerRadius: 12,
+      fill: "#26492b", // Greenish
+      stroke: "#f7e3c3", // Cream
+      strokeWidth: 2,
+      cornerRadius: 10,
       shadowColor: "black",
       shadowBlur: 10,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.3,
+      shadowOffsetY: 5,
     });
 
     this.nextText = new Konva.Text({
-      x: btnX,
-      y: btnY + 12,
       width: btnW,
+      height: btnH,
+      y: (btnH - 22) / 2, // Center vertically
       align: "center",
-      text: "Next",
+      text: "NEXT",
       fontSize: 22,
-      fontFamily: "Arial",
-      fill: "white",
+      fontFamily: FONT_PRIMARY,
+      fill: "#f7e3c3",
+      fontStyle: "bold",
     });
 
+    this.nextButton.add(btnRect);
+    this.nextButton.add(this.nextText);
     this.group.add(this.nextButton);
-    this.group.add(this.nextText);
 
     this.nextButton.on("click", onNextClick);
-    this.nextText.on("click", onNextClick);
+    
+    // Hover effects
+    this.nextButton.on("mouseenter", () => {
+      this.group.getStage()!.container().style.cursor = "pointer";
+      btnRect.fill("#3a6b40");
+      this.nextButton.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
+    });
+    this.nextButton.on("mouseleave", () => {
+      this.group.getStage()!.container().style.cursor = "default";
+      btnRect.fill("#26492b");
+      this.nextButton.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
+    });
 
     // Draw hearts last so they appear above other UI elements
     Hearts.draw(this.group);
   }
 
   private drawAxes(): void {
-    const axisColor = "white";
+    const axisColor = COLOR_MINIGAME_TEXT;
     const margin = 60;
 
     // Placeholder axes, updated dynamically in updateGraph
@@ -107,7 +126,7 @@ export class GraphScreenView {
     this.axisLabels = [];
     this.axisTitles = [];
 
-    const labelColor = "white";
+    const labelColor = COLOR_MINIGAME_TEXT;
     const numXLabels = 10;
     const numYLabels = 10;
     const graphW = STAGE_WIDTH - margin * 2;
@@ -178,7 +197,7 @@ export class GraphScreenView {
         text: label,
         fontSize: 18,
         fontFamily: "Arial",
-        fill: "white",
+        fill: COLOR_MINIGAME_TEXT,
       });
       this.group.add(text);
       this.legendItems.push(text);
@@ -218,12 +237,12 @@ export class GraphScreenView {
     this.axes.forEach((a) => a.destroy());
     const xAxis = new Konva.Line({
       points: [margin, zeroY, STAGE_WIDTH - margin, zeroY],
-      stroke: "white",
+      stroke: COLOR_MINIGAME_TEXT,
       strokeWidth: 3,
     });
     const yAxis = new Konva.Line({
       points: [margin, 80, margin, STAGE_HEIGHT - 120],
-      stroke: "white",
+      stroke: COLOR_MINIGAME_TEXT,
       strokeWidth: 3,
     });
     this.group.add(xAxis);
