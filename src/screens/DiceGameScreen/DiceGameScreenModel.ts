@@ -13,31 +13,38 @@ function roll3(): number[] {
 export class DiceGameScreenModel {
   private readonly sets: DiceChoiceSet[] = [
     [
-      "Choice A:\nRoll 3 dice — any 6 pays $10.\nEntry $5.",
-      "Choice B:\nRoll 3 dice — sum ≥ 14 pays $20.\nEntry $2.",
-      "Choice C:\nRoll 3 dice — all even pays $30.\nEntry $5.",
+      "Roll 3 dice and you win if at least one die shows a 6.\nPays $10.\nEntry $5.",
+      "Roll 3 dice and you win if the total sum is 14 or higher.\nPays $20.\nEntry $2.",
+      "Roll 3 dice and you win if all three dice are even (2, 4, 6).\nPays $30.\nEntry $5.",
     ],
+
     [
-      "Choice A:\nRoll 3 dice — exactly one 6 pays $8.\nEntry $3.",
-      "Choice B:\nRoll 3 dice — sum = 9, 10 or 11 pays $10.\nEntry $3.",
-      "Choice C:\nRoll 3 dice — triple 6 pays $100.\nEntry $2.",
+      "Roll 3 dice and you win with exactly one 6.\nPays $8.\nEntry $3.",
+      "Roll 3 dice and you win if the total is 9, 10, or 11.\nPays $10.\nEntry $3.",
+      "Roll 3 dice and you win only with triple 6.\nPays $100.\nEntry $2.",
     ],
+
     [
-      "Choice A:\nRoll 3 dice — all different pays $4.\nEntry $3.",
-      "Choice B:\nRoll 3 dice — sum ≥ 15 pays $20.\nEntry $1.",
-      "Choice C:\nRoll 3 dice — at least two even pays $5.\nEntry $3.",
+      "Roll 3 dice and you win if all dice show different numbers.\nPays $4.\nEntry $3.",
+      "Roll 3 dice and you win if the total is 15 or higher.\nPays $20.\nEntry $1.",
+      "Roll 3 dice and you win if at least two dice are even.\nPays $5.\nEntry $3.",
     ],
+
     [
-      "Choice A:\nRoll 3 dice — any 1 pays $5.\nEntry $3.",
-      "Choice B:\nRoll 3 dice — all odd pays $30.\nEntry $2.",
-      "Choice C:\nRoll 3 dice — exactly a pair pays $6.\nEntry $4.",
+      "Roll 3 dice and you win if none of the dice show a 1.\nPays $5.\nEntry $3.",
+      "Roll 3 dice and you win if all dice are odd (1, 3, 5).\nPays $30.\nEntry $2.",
+      "Roll 3 dice and you win with exactly one pair.\nPays $6.\nEntry $4.",
     ],
+
     [
-      "Choice A:\nRoll 3 dice — no 6 pays $4.\nEntry $3.",
-      "Choice B:\nRoll 3 dice — sum = 10, 11 or 12 pays $10.\nEntry $3.",
-      "Choice C:\nRoll 3 dice — sum ≤ 5 pays $40.\nEntry $3.",
+      "Roll 3 dice and win if no die shows a 6.\nPays $4.\nEntry $3.",
+      "Roll 3 dice and win if the total is 10, 11, or 12.\nPays $10.\nEntry $3.",
+      "Roll 3 dice and win if the total is 5 or lower.\nPays $40.\nEntry $3.",
     ],
   ];
+
+
+
 
   private currentSetIndex = 0;
   private selectedOption: number = -1;

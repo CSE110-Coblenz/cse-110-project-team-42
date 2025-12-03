@@ -43,19 +43,19 @@ export const ROULLET_OPTIONS1 = [
 export const ROULLET_OPTIONS2 = [
   {
     id: "r2_opt1",
-    label: "$1 Buy in\n+$6 Payoff",
+    label: "$1 Buy in\n+$1.5 Payoff",
     buyIn: 1,
-    payoff: 6,
-    slots: 2,
+    payoff: 1.5,
+    slots: 4,
     total: 12,
     color: "Yellow"
   },
   {
     id: "r2_opt2",
-    label: "$1 Buy in\n+$1.5 Payoff",
+    label: "$1 Buy in\n+$6 Payoff",
     buyIn: 1,
-    payoff: 1.5,
-    slots: 4,
+    payoff: 6,
+    slots: 2,
     total: 12,
     color: "Blue"
   },
