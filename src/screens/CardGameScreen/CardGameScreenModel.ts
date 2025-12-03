@@ -1,16 +1,20 @@
-import { CARD_OPTIONS, ITERATIONS } from "../../constants";
-import type { CardGameOption, SimulationResult } from "../../types";
+import { CARD_OPTIONS1, CARD_OPTIONS2, CARD_OPTIONS3} from "../../constants";
+import type { CardGameOption} from "../../types";
+import { Hearts } from "../../gamestate";
 
 export class CardGameScreenModel {
-  private options: CardGameOption[];
   private selectedOption: number = -1;
 
   constructor() {
-    this.options = CARD_OPTIONS;
+    // No static initialization needed
   }
 
   getOptions(): CardGameOption[] {
-    return this.options;
+    const lives = Hearts.get();
+    if (lives === 3) return CARD_OPTIONS1;
+    if (lives === 2) return CARD_OPTIONS2;
+    // Fallback or level 3 (hardest)
+    return CARD_OPTIONS3;
   }
 
   /** Core simulation for a single option. Returns net profit/loss from one play. */
@@ -30,7 +34,8 @@ export class CardGameScreenModel {
 
   /** Index-based helper. Returns net profit/loss for the given option. */
   simulateByIndex(index: number): number {
-    const opt = this.options[index];
+    const options = this.getOptions();
+    const opt = options[index];
     if (!opt) {
       throw new Error(`No card game option at index ${index}`);
     }

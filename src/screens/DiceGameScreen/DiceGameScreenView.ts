@@ -114,6 +114,10 @@ export class DiceGameScreenView implements View {
       gifImg.style.display = 'none'; // Start hidden
     }
 
+    // defer until the group is actually on a layer
+    setTimeout(startDiceAnimation, 0);
+
+
     // === BUTTONS — Slightly Smaller ===
     const btnWidth = 185;
     const btnHeight = 115;
@@ -183,7 +187,7 @@ export class DiceGameScreenView implements View {
     const label = new Konva.Text({
       text: textValue,
       fontFamily: "Arial",
-      fontSize: 13.5,
+      fontSize: 16,
       fill: "white",
       align: "center",
       width: rect.width() - 14,

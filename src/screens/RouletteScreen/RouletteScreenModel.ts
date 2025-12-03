@@ -1,5 +1,5 @@
 import { Hearts } from "../../gamestate";
-import { ROULLET_OPTIONS1, ROULLET_OPTIONS2, ROULLET_OPTIONS3 } from "../../constants";
+import { ROULETTE_OPTIONS1, ROULETTE_OPTIONS2, ROULETTE_OPTIONS3 } from "../../constants";
 
 export interface RouletteOption {
     id: string;
@@ -19,9 +19,9 @@ export class RouletteScreenModel {
 
     getOptions(): RouletteOption[] {
         const lives = Hearts.get();
-        if (lives === 3) return ROULLET_OPTIONS1;
-        if (lives === 2) return ROULLET_OPTIONS2;
-        return ROULLET_OPTIONS3;
+        if (lives === 3) return ROULETTE_OPTIONS1;
+        if (lives === 2) return ROULETTE_OPTIONS2;
+        return ROULETTE_OPTIONS3;
     }
 
     setSelectedOption(index: number): void {

@@ -83,7 +83,7 @@ class App implements ScreenSwitcher {
 		if (screen === "results") {
 			this.resultsController.getView().show();
 		} else if (screen === "cardGame") {
-			this.cardGameController.getView().show();
+			this.cardGameController.show();
 		} else if (screen === "menu") {
 			this.menuController.getView().show();
 		} else if (screen === "story") {

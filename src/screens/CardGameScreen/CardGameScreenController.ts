@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types";
-import type { ScreenSwitcher, CardGameOption } from "../../types";
+import type { ScreenSwitcher } from "../../types";
 import { CardGameScreenModel } from "./CardGameScreenModel";
 import { CardGameScreenView } from "./CardGameScreenView";
 import { Timer } from "../../gamestate";
@@ -15,14 +15,19 @@ export class CardGameScreenController extends ScreenController {
     this.model = new CardGameScreenModel();
     this.view = new CardGameScreenView(
       this.model.getOptions(),
-      this.handleOptionClick.bind(this)
+      (index) => this.handleOptionClick(index)
     );
   }
 
-  private handleOptionClick(option: CardGameOption): void {
-    // Find the index of the selected option
-    const index = this.model.getOptions().findIndex(opt => opt.id === option.id);
-    
+  // Called when the screen is shown
+  show(): void {
+      // Refresh options from the model in case game state (hearts) has changed
+      const currentOptions = this.model.getOptions();
+      this.view.updateOptions(currentOptions);
+      this.view.show();
+  }
+
+  private handleOptionClick(index: number): void {
     // Store the selection in the model
     this.model.setSelectedOption(index);
     
