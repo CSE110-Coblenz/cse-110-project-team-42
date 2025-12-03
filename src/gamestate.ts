@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { STAGE_WIDTH } from "./constants";
+import { STAGE_WIDTH, FONT_UI } from "./constants";
 
 export class Level {
   private static currentLevel: number = 1;
@@ -138,8 +138,8 @@ export class Timer {
       y: timerY,
       text: this.formatTime(seconds),
       fontSize: 24,
-      fontFamily: "Calibri",
-      fill: "white",
+      fontFamily: FONT_UI,
+      fill: "#fef6dc",
       align: "center",
     });
 

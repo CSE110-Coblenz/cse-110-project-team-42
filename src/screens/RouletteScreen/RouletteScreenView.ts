@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_HEIGHT, STAGE_WIDTH, OPTIONS_COLORS } from "../../constants";
+import { STAGE_HEIGHT, STAGE_WIDTH, OPTIONS_COLORS, FONT_TITLE, FONT_PRIMARY, COLOR_MINIGAME_TEXT, FONT_SIZE_BUTTON } from "../../constants";
 import type { RouletteOption } from "./RouletteScreenModel";
 import { Hearts, Timer } from "../../gamestate";
 
@@ -123,8 +123,9 @@ export class RouletteScreenView implements View {
 		const heading = new Konva.Text({
 			text: "Roulette Strategy",
 			fontSize: 36,
-			fontFamily: "Georgia, 'Times New Roman', serif",
-			fill: "#fef6dc",
+			fontFamily: FONT_TITLE,
+			fontStyle: "bold",
+			fill: COLOR_MINIGAME_TEXT,
 			x: STAGE_WIDTH * 0.48,
 			y: STAGE_HEIGHT * 0.30,
 		});
@@ -133,8 +134,8 @@ export class RouletteScreenView implements View {
 			text: "Choose an option to spin.",
 			fontSize: 24,
 			lineHeight: 1.3,
-			fontFamily: "Georgia, 'Times New Roman', serif",
-			fill: "#fef6dc",
+			fontFamily: FONT_PRIMARY,
+			fill: COLOR_MINIGAME_TEXT,
 			x: STAGE_WIDTH * 0.48,
 			y: STAGE_HEIGHT * 0.37,
 		});
@@ -175,9 +176,10 @@ export class RouletteScreenView implements View {
                 padding: 10,
                 align: "center",
                 verticalAlign: "middle",
-                fontSize: 18,
-                fontFamily: "Arial",
-                fill: "white",
+                fontSize: FONT_SIZE_BUTTON,
+                fontFamily: FONT_PRIMARY,
+                fontStyle: "bold",
+                fill: COLOR_MINIGAME_TEXT,
                 shadowColor: "black",
                 shadowBlur: 2
             });

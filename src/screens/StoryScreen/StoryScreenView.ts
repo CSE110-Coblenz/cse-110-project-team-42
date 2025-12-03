@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_PRIMARY } from "../../constants";
 import { Hearts } from "../../gamestate";
 
 type ContinueCallback = () => void;
@@ -67,8 +67,8 @@ export class StoryScreenView implements View {
         text: storyText,
         align: "center",
         fontSize: 24,
-        fontFamily: "Georgia, serif",
-        fill: "#e0e0e0",
+        fontFamily: FONT_PRIMARY,
+        fill: "#f7e3c3",//"#ffcc00",
         lineHeight: 1.35,
         shadowColor: "black",
         shadowBlur: 5,
@@ -100,7 +100,7 @@ export class StoryScreenView implements View {
       align: "center",
       verticalAlign: "middle",
       fontSize: 24,
-      fontFamily: "serif",
+      fontFamily: FONT_PRIMARY,
       fill: "#f7e3c3",
       fontStyle: "bold",
     });
