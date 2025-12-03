@@ -114,10 +114,6 @@ export class DiceGameScreenView implements View {
       gifImg.style.display = 'none'; // Start hidden
     }
 
-    // defer until the group is actually on a layer
-    setTimeout(startDiceAnimation, 0);
-
-
     // === BUTTONS — Slightly Smaller ===
     const btnWidth = 185;
     const btnHeight = 115;
