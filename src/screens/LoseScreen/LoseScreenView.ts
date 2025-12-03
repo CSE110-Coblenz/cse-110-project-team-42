@@ -119,6 +119,27 @@ export class LoseScreenView implements View {
       // Call user-provided callback
       this.onRestart();
     });
+
+    // === LOSE GIF ===
+    const gifImg = document.createElement('img');
+    gifImg.src = '/lose.gif';
+    gifImg.style.position = 'absolute';
+    gifImg.style.left = '50%';
+    gifImg.style.top = '50%';
+    gifImg.style.transform = 'translate(-50%, -50%)';
+    gifImg.style.width = '300px';
+    gifImg.style.height = 'auto';
+    gifImg.style.pointerEvents = 'none';
+    gifImg.style.filter = 'drop-shadow(0px 4px 18px rgba(0, 0, 0, 0.5))';
+    gifImg.style.zIndex = '10';
+    
+    (this as any).gifElement = gifImg;
+    
+    const container = document.getElementById('container');
+    if (container) {
+      container.appendChild(gifImg);
+      gifImg.style.display = 'none';
+    }
   }
 
   getGroup(): Konva.Group {
@@ -127,9 +148,17 @@ export class LoseScreenView implements View {
 
   show(): void {
     this.group.visible(true);
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'block';
+    }
   }
 
   hide(): void {
     this.group.visible(false);
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'none';
+    }
   }
 }

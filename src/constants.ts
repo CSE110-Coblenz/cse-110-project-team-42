@@ -223,20 +223,20 @@ export const OPTIONS_COLORS = ["#CC3333", "#2F7A2F", "#3333CC"];
 export const GAME1HINTMESSAGE =
   "Hint: Only ONE of these choices is actually good for you in the long run.\n\
 For each option:\n\
-- The buy-in is what you always pay.\n\
+- The buy-in is the cost of playing. You have no choice but to play the game.\n\
 - The payoff is what you get only if you hit a winning slot.\n\
-- The 'slots / total' tells you the chance to win.\n\n\
-Try to pick the option where:\n\
-(chance to win x payoff) is bigger than the buy-in.";
+- The '# slots of your chosen color / total slots' tells you the chance to win.\n\n\
+Remember how we calculate the expected return for each option:\n\
+EV(profit per round) = Profit_win_scenario * Win_chance - Profit_loss_scenario * Loss_chance";
 
 export const GAME2HINTMESSAGE =
   "Hint: Your goal is to draw a face card.\n\
 Look at:\n\
-- How many face cards are in the deck (your chance)\n\
+- How many face cards are in the deck compared to the total number of cards\n\
 - The buy-in cost\n\
-- The payoff if you hit\n\n\
-The best choice is the one where:\n\
-(chance x payoff) is greater than the buy-in.";
+- The payoff if you hit a face card\n\n\
+Remember how we calculate the expected return for each option:\n\
+EV(profit per round) = Profit_win_scenario * Win_chance - Profit_loss_scenario * Loss_chance";
 
 export const GAME3HINTMESSAGE =
   "Hint: Every dice choice trades entry cost for a chance at a prize.\n\

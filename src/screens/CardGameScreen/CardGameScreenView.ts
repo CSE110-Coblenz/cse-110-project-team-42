@@ -25,6 +25,29 @@ export class CardGameScreenView implements View {
     
     Hearts.draw(this.group);
     Timer.draw(this.group);
+
+    // === DEALER GIF ===
+    const gifImg = document.createElement('img');
+    gifImg.src = '/dealer.gif';
+    gifImg.style.position = 'absolute';
+    gifImg.style.left = '50%';
+    gifImg.style.top = '50%';
+    gifImg.style.transform = 'translate(-50%, -50%)';
+    gifImg.style.width = '320px';
+    gifImg.style.height = 'auto';
+    gifImg.style.pointerEvents = 'none';
+    gifImg.style.filter = 'drop-shadow(0px 4px 18px rgba(0, 0, 0, 0.35))';
+    gifImg.style.zIndex = '10';
+    gifImg.style.border = '3px solid #fef6dc';
+    gifImg.style.borderRadius = '7px';
+    
+    (this as any).gifElement = gifImg;
+    
+    const container = document.getElementById('container');
+    if (container) {
+      container.appendChild(gifImg);
+      gifImg.style.display = 'none';
+    }
   }
 
   private setupUI(): void {
@@ -57,7 +80,7 @@ export class CardGameScreenView implements View {
       y: 90,
       width: STAGE_WIDTH,
       align: "center",
-      text: "Draw a card from the deck.\nIf you get a face card, you win!\nChoose one option to run 1000 times.",
+      text: "Draw a card from the deck.\nIf you get a face card, you win!\nWhich game setup would you choose to play 10,000 rounds?.",
       fontSize: 26,
       fontFamily: FONT_PRIMARY,
       fill: COLOR_MINIGAME_TEXT,
@@ -65,25 +88,6 @@ export class CardGameScreenView implements View {
     });
     this.group.add(rules);
 
-    // Add the new deck spread image
-    const deckImage = new Image();
-    deckImage.src = "/deck-spread.png";
-    deckImage.onload = () => {
-        const desiredWidth = 350;
-        const scale = desiredWidth / deckImage.naturalWidth;
-        const scaledHeight = deckImage.naturalHeight * scale;
-
-        const deck = new Konva.Image({
-            image: deckImage,
-            x: STAGE_WIDTH / 2 - desiredWidth / 2,
-            y: 240,
-            width: desiredWidth,
-            height: scaledHeight,
-        });
-        this.group.add(deck);
-        deck.zIndex(1); // Above BG (0)
-        this.group.getLayer()?.draw();
-    };
 
     // Add decorative money images
     const moneyImage = new Image();
@@ -215,11 +219,19 @@ export class CardGameScreenView implements View {
   show(): void {
     this.group.show();
     this.group.getLayer()?.batchDraw();
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'block';
+    }
   }
 
   hide(): void {
     this.group.hide();
     this.group.getLayer()?.batchDraw();
+    const gifElement = (this as any).gifElement as HTMLImageElement;
+    if (gifElement) {
+      gifElement.style.display = 'none';
+    }
   }
 
   getGroup(): Konva.Group {

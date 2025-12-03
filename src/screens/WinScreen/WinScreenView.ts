@@ -66,7 +66,7 @@ export class WinScreenView implements View {
     this.congratsText = new Konva.Text({
       x: STAGE_WIDTH / 2,
       y: STAGE_HEIGHT * 0.18,
-      text: "🎉 Congratulations! 🎉",
+      text: "Congratulations!",
       fontSize: 48,
       fontFamily: "Arial",
       fill: "white",
@@ -78,10 +78,26 @@ export class WinScreenView implements View {
     this.congratsText.offsetX(this.congratsText.width() / 2);
     this.group.add(this.congratsText);
 
+    // === Motivational message ===
+    const motivationalText = new Konva.Text({
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT * 0.28,
+      text: "You're the best at EV calculations! But are you the fastest?",
+      fontSize: 22,
+      fontFamily: "Arial",
+      fill: "#f0f0f0",
+      fontStyle: "italic",
+      align: "center",
+      shadowColor: "black",
+      shadowBlur: 5,
+    });
+    motivationalText.offsetX(motivationalText.width() / 2);
+    this.group.add(motivationalText);
+
     // === Final time display ===
     this.finalTimeText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: STAGE_HEIGHT * 0.30,
+      y: STAGE_HEIGHT * 0.38,
       text: "Final Time: 00:00",
       fontSize: 32,
       fontFamily: "Arial",
@@ -94,7 +110,7 @@ export class WinScreenView implements View {
     // === Leaderboard text (multi-line) ===
     this.leaderboardText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: STAGE_HEIGHT * 0.40,
+      y: STAGE_HEIGHT * 0.48,
       text: "Best Times:\n(Play to see your records!)",
       fontSize: 20,
       fontFamily: "Arial",
@@ -110,7 +126,7 @@ export class WinScreenView implements View {
 
     const buttonWidth = 240;
     const buttonHeight = 70;
-    const buttonY = STAGE_HEIGHT * 0.70;
+    const buttonY = STAGE_HEIGHT * 0.78;
 
     const restartRect = new Konva.Rect({
       x: STAGE_WIDTH / 2 - buttonWidth / 2,
