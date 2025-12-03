@@ -32,16 +32,6 @@ export interface RouletteOption {
   color?: string;
 }
 
-export interface SimulationResultRoullet{
-  option: RouletteOption;
-  runs: number;
-  wins: number;
-  losses: number;
-  netResult: number;
-  expectedValue: number;
-  verdict: string;
-}
-
 export interface CardGameOption {
   id: string;
   label: string;
@@ -49,13 +39,4 @@ export interface CardGameOption {
   payoff: number;
   faceCards: number;
   deckSize: number;
-}
-
-export interface SimulationResult {
-  option: CardGameOption;
-  runs: number;
-  profit: number;
-  loss: number;
-  netResult: number;
-  expectedValue: number;
 }
