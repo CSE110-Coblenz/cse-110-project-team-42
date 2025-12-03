@@ -1,13 +1,13 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_PRIMARY, COLOR_MINIGAME_TEXT } from "../../constants";
 import { Hearts as GameHearts } from "../../gamestate";
 
 export class ResultsScreenView implements View {
 	private group: Konva.Group;
 	private messageText: Konva.Text;
 	
-	private proceedButton: Konva.Rect;
+	private proceedButton: Konva.Group;
 	private buttonText: Konva.Text;
 
 	constructor(message: string, onProceedClick: () => void) {
@@ -53,7 +53,7 @@ export class ResultsScreenView implements View {
 			text: message,
 			fontSize: 28,
 			fontFamily: "Georgia",
-			fill: "#FFFFFF",
+			fill: COLOR_MINIGAME_TEXT,
 			align: "center",
 		});
 		this.group.add(this.messageText);
@@ -64,39 +64,58 @@ export class ResultsScreenView implements View {
 		// Proceed button
 		const btnWidth = 180;
 		const btnHeight = 50;
-		const btnX = STAGE_WIDTH / 2 - btnWidth / 2;
-		const btnY = STAGE_HEIGHT - 175;
+		const btnX = STAGE_WIDTH / 2;
+		const btnY = STAGE_HEIGHT - 175 + btnHeight / 2;
 
-		this.proceedButton = new Konva.Rect({
+		this.proceedButton = new Konva.Group({
 			x: btnX,
 			y: btnY,
+			offsetX: btnWidth / 2,
+			offsetY: btnHeight / 2,
+		});
+
+		const btnRect = new Konva.Rect({
 			width: btnWidth,
 			height: btnHeight,
-			fill: "#8b4513",
-			cornerRadius: 12,
+			fill: "#26492b", // Greenish
+			stroke: "#f7e3c3", // Cream
+			strokeWidth: 2,
+			cornerRadius: 10,
 			shadowColor: "black",
 			shadowBlur: 10,
-			shadowOffsetY: 3,
-			shadowOpacity: 0.3,
+			shadowOffsetY: 5,
 		});
 
 		this.buttonText = new Konva.Text({
-			x: btnX,
-			y: btnY + 12,
 			width: btnWidth,
+			height: btnHeight,
+			y: (btnHeight - 22) / 2, // Center vertically
 			align: "center",
-			text: "Proceed",
+			text: "PROCEED",
 			fontSize: 22,
-			fontFamily: "Arial",
-			fill: "white",
+			fontFamily: FONT_PRIMARY,
+			fill: "#f7e3c3",
+			fontStyle: "bold",
 		});
 
+		this.proceedButton.add(btnRect);
+		this.proceedButton.add(this.buttonText);
 		this.group.add(this.proceedButton);
-		this.group.add(this.buttonText);
 
 		// Controller handles this callback
 		this.proceedButton.on("click", onProceedClick);
-		this.buttonText.on("click", onProceedClick);
+		
+		// Hover effects
+		this.proceedButton.on("mouseenter", () => {
+			this.group.getStage()!.container().style.cursor = "pointer";
+			btnRect.fill("#3a6b40");
+			this.proceedButton.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
+		});
+		this.proceedButton.on("mouseleave", () => {
+			this.group.getStage()!.container().style.cursor = "default";
+			btnRect.fill("#26492b");
+			this.proceedButton.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
+		});
 	}
 
 	// Hearts are drawn by gamestate. Local heart array kept for compatibility but

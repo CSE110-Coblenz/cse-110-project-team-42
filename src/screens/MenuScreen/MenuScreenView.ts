@@ -75,21 +75,25 @@ export class MenuScreenView implements View {
     this.group.add(title);
 
     // 3. Start Button
+    const buttonWidth = 240;
+    const buttonHeight = 80;
+
     const buttonGroup = new Konva.Group({ 
-        x: STAGE_WIDTH / 2 - 120, 
-        y: STAGE_HEIGHT * 0.7 
+        x: STAGE_WIDTH / 2, 
+        y: STAGE_HEIGHT * 0.7 + buttonHeight / 2,
+        offsetX: buttonWidth / 2,
+        offsetY: buttonHeight / 2
     });
 
     const buttonRect = new Konva.Rect({
-      width: 240,
-      height: 80,
-      fill: "#5c2626", // Dark red/brown
-      stroke: "#ffcc00", // Gold border
-      strokeWidth: 4,
-      cornerRadius: 15,
+      width: buttonWidth,
+      height: buttonHeight,
+      fill: "#26492b", // Greenish
+      stroke: "#f7e3c3", // Cream
+      strokeWidth: 2,
+      cornerRadius: 10,
       shadowColor: "black",
-      shadowBlur: 15,
-      shadowOffsetY: 5,
+      shadowBlur: 10,
     });
 
     const buttonText = new Konva.Text({
@@ -98,9 +102,9 @@ export class MenuScreenView implements View {
       height: 80,
       align: "center",
       verticalAlign: "middle",
-      fontSize: 32,
+      fontSize: 24,
       fontFamily: FONT_PRIMARY,
-      fill: "#ffcc00",
+      fill: "#f7e3c3",
       fontStyle: "bold",
     });
 
@@ -110,13 +114,13 @@ export class MenuScreenView implements View {
     
     buttonGroup.on("mouseenter", () => {
       this.group.getStage()!.container().style.cursor = "pointer";
-      buttonRect.fill("#7a3333"); // Lighter red
+      buttonRect.fill("#3a6b40"); // Lighter green
       buttonGroup.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
     });
 
     buttonGroup.on("mouseleave", () => {
       this.group.getStage()!.container().style.cursor = "default";
-      buttonRect.fill("#5c2626"); // Original color
+      buttonRect.fill("#26492b"); // Original green
       buttonGroup.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
     });
 

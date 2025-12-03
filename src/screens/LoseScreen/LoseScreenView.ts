@@ -1,14 +1,13 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_TITLE, FONT_PRIMARY } from "../../constants";
 
 export class LoseScreenView implements View {
   private group: Konva.Group;
   private background: Konva.Image;
   private overlay: Konva.Rect;
   private congratsText: Konva.Text;
-  private restartButton: Konva.Rect;
-  private restartText: Konva.Text;
+  private restartButton: Konva.Group; // Changed to Group
   private onRestart: () => void;
 
   constructor(onRestart: () => void) {
@@ -42,13 +41,14 @@ export class LoseScreenView implements View {
     });
     this.group.add(this.overlay);
 
-    // === Congratulations Text (金色渐变效果) ===
+    // === "You Lost" Text ===
     this.congratsText = new Konva.Text({
       text: "You Lost",
-      fontSize: 54,
-      fillLinearGradientColorStops: [0, "#ffeb3b", 1, "#ff9800"],
-      fillLinearGradientStartPoint: { x: 0, y: 0 },
-      fillLinearGradientEndPoint: { x: 0, y: 50 },
+      fontSize: 64,
+      fill: "#ffcc00", // Gold color
+      stroke: "black",
+      strokeWidth: 1,
+      fontFamily: FONT_TITLE,
       fontStyle: "bold",
       width: STAGE_WIDTH,
       align: "center",
@@ -58,66 +58,59 @@ export class LoseScreenView implements View {
     });
     this.group.add(this.congratsText);
 
-    // === Restart Button ===
+    // === Restart Button (Group) ===
     const buttonWidth = 240;
-    const buttonHeight = 70;
+    const buttonHeight = 80;
+    
+    this.restartButton = new Konva.Group({
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT * 0.70 + buttonHeight / 2,
+      offsetX: buttonWidth / 2,
+      offsetY: buttonHeight / 2,
+    });
 
-    this.restartButton = new Konva.Rect({
-      x: (STAGE_WIDTH - buttonWidth) / 2,
-      y: STAGE_HEIGHT * 0.70,
+    const buttonRect = new Konva.Rect({
       width: buttonWidth,
       height: buttonHeight,
-      cornerRadius: 16,
-      fillLinearGradientColorStops: [0, "#ffffff", 1, "#e0e0e0"],
-      fillLinearGradientStartPoint: { x: 0, y: 0 },
-      fillLinearGradientEndPoint: { x: 0, y: buttonHeight },
-      shadowBlur: 15,
+      fill: "#26492b", // Greenish
+      stroke: "#f7e3c3", // Cream
+      strokeWidth: 2,
+      cornerRadius: 10,
       shadowColor: "black",
-      shadowOpacity: 0.3,
+      shadowBlur: 10,
+      shadowOffsetY: 5,
     });
 
-    this.restartText = new Konva.Text({
-      text: "Restart",
-      fontSize: 28,
-      fill: "black",
-      fontStyle: "bold",
-      width: STAGE_WIDTH,
+    const buttonText = new Konva.Text({
+      text: "RESTART",
+      width: 240,
+      height: 80,
       align: "center",
-      y: STAGE_HEIGHT * 0.70 + (buttonHeight - 28) / 2,
+      verticalAlign: "middle",
+      fontSize: 24,
+      fontFamily: FONT_PRIMARY,
+      fill: "#f7e3c3",
+      fontStyle: "bold",
     });
 
+    this.restartButton.add(buttonRect, buttonText);
     this.group.add(this.restartButton);
-    this.group.add(this.restartText);
 
     // === Button Interaction ===
-    this.restartButton.on("pointerover", () => {
-      this.restartButton.scale({ x: 1.05, y: 1.05 });
-      this.group.getLayer()?.batchDraw();
+    this.restartButton.on("mouseenter", () => {
+      this.group.getStage()!.container().style.cursor = "pointer";
+      buttonRect.fill("#3a6b40");
+      this.restartButton.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
     });
 
-    this.restartButton.on("pointerout", () => {
-      this.restartButton.scale({ x: 1, y: 1 });
-      this.group.getLayer()?.batchDraw();
+    this.restartButton.on("mouseleave", () => {
+      this.group.getStage()!.container().style.cursor = "default";
+      buttonRect.fill("#26492b");
+      this.restartButton.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
     });
 
-    this.restartButton.on("pointerdown", () => {
-      this.restartButton.to({
-        scaleX: 0.92,
-        scaleY: 0.92,
-        duration: 0.05,
-      });
-    });
-
-    this.restartButton.on("pointerup", () => {
-      // Small click animation
-      this.restartButton.to({
-        scaleX: 1,
-        scaleY: 1,
-        duration: 0.1,
-      });
-
-      // Call user-provided callback
-      this.onRestart();
+    this.restartButton.on("click tap", () => {
+        this.onRestart();
     });
 
     // === LOSE GIF ===

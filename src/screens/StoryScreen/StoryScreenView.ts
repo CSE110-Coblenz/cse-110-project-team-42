@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT, FONT_PRIMARY } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_TITLE, FONT_PRIMARY, COLOR_MINIGAME_TEXT } from "../../constants";
 import { Hearts } from "../../gamestate";
 
 type ContinueCallback = () => void;
@@ -68,7 +68,7 @@ export class StoryScreenView implements View {
         align: "center",
         fontSize: 24,
         fontFamily: FONT_PRIMARY,
-        fill: "#f7e3c3",//"#ffcc00",
+        fill: COLOR_MINIGAME_TEXT,
         lineHeight: 1.35,
         shadowColor: "black",
         shadowBlur: 5,
@@ -77,16 +77,21 @@ export class StoryScreenView implements View {
     this.group.add(textNode);
 
     // 3. Continue Button
+    const buttonWidth = 240;
+    const buttonHeight = 80;
+
     const buttonGroup = new Konva.Group({ 
-        x: STAGE_WIDTH / 2 - 100, 
-        y: STAGE_HEIGHT - 150 
+        x: STAGE_WIDTH / 2, 
+        y: STAGE_HEIGHT - 150 + buttonHeight / 2,
+        offsetX: buttonWidth / 2,
+        offsetY: buttonHeight / 2
     });
 
     const buttonRect = new Konva.Rect({
-      width: 200,
-      height: 60,
+      width: buttonWidth,
+      height: buttonHeight,
       fill: "#26492b", // Greenish
-      stroke: "#f7e3c3",
+      stroke: "#f7e3c3", // Cream
       strokeWidth: 2,
       cornerRadius: 10,
       shadowColor: "black",
@@ -95,8 +100,8 @@ export class StoryScreenView implements View {
 
     const buttonText = new Konva.Text({
       text: "CONTINUE",
-      width: 200,
-      height: 60,
+      width: 240,
+      height: 80,
       align: "center",
       verticalAlign: "middle",
       fontSize: 24,

@@ -227,7 +227,7 @@ For each option:\n\
 - The payoff is what you get only if you hit a winning slot.\n\
 - The '# slots of your chosen color / total slots' tells you the chance to win.\n\n\
 Remember how we calculate the expected return for each option:\n\
-EV(profit per round) = Profit_win_scenario * Win_chance - Profit_loss_scenario * Loss_chance";
+EV(profit per round) = Profit_win * Win_chance - Profit_loss * Loss_chance";
 
 export const GAME2HINTMESSAGE =
   "Hint: Your goal is to draw a face card.\n\
@@ -236,7 +236,7 @@ Look at:\n\
 - The buy-in cost\n\
 - The payoff if you hit a face card\n\n\
 Remember how we calculate the expected return for each option:\n\
-EV(profit per round) = Profit_win_scenario * Win_chance - Profit_loss_scenario * Loss_chance";
+EV(profit per round) = Profit_win * Win_chance - Profit_loss * Loss_chance";
 
 export const GAME3HINTMESSAGE =
   "Hint: Every dice choice trades entry cost for a chance at a prize.\n\

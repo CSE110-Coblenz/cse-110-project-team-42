@@ -20,6 +20,7 @@ vi.mock("konva", () => {
   class Group {
     private _v = false;
     children: any[] = [];
+    handlers: Record<string, Function[]> = {};
     constructor(_: any = {}) {}
     add(c: any) {
       this.children.push(c);
@@ -31,6 +32,13 @@ vi.mock("konva", () => {
     getLayer() { return undefined; }
     getStage() {
       return { container: () => ({ style: { cursor: "default" } }) };
+    }
+    on(ev: string, fn: Function) {
+      (this.handlers[ev] ||= []).push(fn);
+    }
+    to(cfg: any) { /* mock animation */ }
+    simulateClick() {
+      (this.handlers["click"] || []).forEach((h) => h());
     }
   }
 
@@ -81,6 +89,9 @@ vi.mock("../constants", () => ({
   HINT_BY_LEVEL: { 1: "Hint1", 2: "Hint2" },
   STAGE_WIDTH: 1024,
   STAGE_HEIGHT: 768,
+  FONT_TITLE: "Arial",
+  FONT_PRIMARY: "Arial",
+  COLOR_MINIGAME_TEXT: "#FFFFFF",
 }));
 
 import { TryAgainScreenModel } from "../screens/TryAgainScreen/TryAgainScreenModel";

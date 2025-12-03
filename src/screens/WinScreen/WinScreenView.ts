@@ -1,7 +1,7 @@
 import Konva from "konva";
 import type { View } from "../../types";
 import type { LeaderboardEntry } from "./WinScreenModel";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_TITLE, FONT_PRIMARY, COLOR_MINIGAME_TEXT } from "../../constants";
 import { Timer } from "../../gamestate";
 
 // helper for formatting seconds as MM:SS or HH:MM:SS
@@ -65,11 +65,13 @@ export class WinScreenView implements View {
     // === "Congratulations" title ===
     this.congratsText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: STAGE_HEIGHT * 0.18,
+      y: STAGE_HEIGHT * 0.12,
       text: "Congratulations!",
-      fontSize: 48,
-      fontFamily: "Arial",
-      fill: "white",
+      fontSize: 64,
+      fontFamily: FONT_TITLE,
+      fill: "#ffcc00",
+      stroke: "black",
+      strokeWidth: 1,
       fontStyle: "bold",
       align: "center",
       shadowColor: "black",
@@ -84,8 +86,8 @@ export class WinScreenView implements View {
       y: STAGE_HEIGHT * 0.28,
       text: "You're the best at EV calculations! But are you the fastest?",
       fontSize: 22,
-      fontFamily: "Arial",
-      fill: "#f0f0f0",
+      fontFamily: FONT_PRIMARY,
+      fill: COLOR_MINIGAME_TEXT,
       fontStyle: "italic",
       align: "center",
       shadowColor: "black",
@@ -100,9 +102,12 @@ export class WinScreenView implements View {
       y: STAGE_HEIGHT * 0.38,
       text: "Final Time: 00:00",
       fontSize: 32,
-      fontFamily: "Arial",
-      fill: "white",
+      fontFamily: FONT_PRIMARY,
+      fill: "#ffcc00",
       align: "center",
+      fontStyle: "bold",
+      shadowColor: "black",
+      shadowBlur: 5,
     });
     this.finalTimeText.offsetX(this.finalTimeText.width() / 2);
     this.group.add(this.finalTimeText);
@@ -113,58 +118,64 @@ export class WinScreenView implements View {
       y: STAGE_HEIGHT * 0.48,
       text: "Best Times:\n(Play to see your records!)",
       fontSize: 20,
-      fontFamily: "Arial",
-      fill: "#f0f0f0",
+      fontFamily: FONT_PRIMARY,
+      fill: COLOR_MINIGAME_TEXT,
       align: "center",
       lineHeight: 1.5,
+      shadowColor: "black",
+      shadowBlur: 5,
     });
     this.leaderboardText.offsetX(this.leaderboardText.width() / 2);
     this.group.add(this.leaderboardText);
 
     // === Restart button (group) ===
-    this.restartButtonGroup = new Konva.Group();
-
     const buttonWidth = 240;
-    const buttonHeight = 70;
+    const buttonHeight = 80;
     const buttonY = STAGE_HEIGHT * 0.78;
 
+    this.restartButtonGroup = new Konva.Group({
+      x: STAGE_WIDTH / 2,
+      y: buttonY + buttonHeight / 2,
+      offsetX: buttonWidth / 2,
+      offsetY: buttonHeight / 2,
+    });
+
     const restartRect = new Konva.Rect({
-      x: STAGE_WIDTH / 2 - buttonWidth / 2,
-      y: buttonY,
       width: buttonWidth,
       height: buttonHeight,
-      cornerRadius: 16,
-      fill: "white",
-      stroke: "#444",
+      cornerRadius: 10,
+      fill: "#26492b", // Greenish
+      stroke: "#f7e3c3", // Cream
       strokeWidth: 2,
-      shadowBlur: 10,
       shadowColor: "black",
-      shadowOpacity: 0.3,
+      shadowBlur: 10,
     });
 
     const restartText = new Konva.Text({
-      x: STAGE_WIDTH / 2,
-      y: buttonY + (buttonHeight - 28) / 2,
-      text: "Restart",
-      fontSize: 28,
-      fontFamily: "Arial",
-      fill: "black",
+      width: buttonWidth,
+      height: buttonHeight,
+      y: (buttonHeight - 24) / 2, // Center based on fontSize 24
+      text: "RESTART",
+      fontSize: 24,
+      fontFamily: FONT_PRIMARY,
+      fill: "#f7e3c3",
       fontStyle: "bold",
       align: "center",
     });
-    restartText.offsetX(restartText.width() / 2);
 
     this.restartButtonGroup.add(restartRect);
     this.restartButtonGroup.add(restartText);
 
     // Button interaction
-    this.restartButtonGroup.on("pointerover", () => {
-      this.restartButtonGroup.scale({ x: 1.01, y: 1.01 });
-      this.group.getLayer()?.batchDraw();
+    this.restartButtonGroup.on("mouseenter", () => {
+      this.group.getStage()!.container().style.cursor = "pointer";
+      restartRect.fill("#3a6b40");
+      this.restartButtonGroup.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
     });
-    this.restartButtonGroup.on("pointerout", () => {
-      this.restartButtonGroup.scale({ x: 1, y: 1 });
-      this.group.getLayer()?.batchDraw();
+    this.restartButtonGroup.on("mouseleave", () => {
+      this.group.getStage()!.container().style.cursor = "default";
+      restartRect.fill("#26492b");
+      this.restartButtonGroup.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
     });
     this.restartButtonGroup.on("click", onRestart);
 

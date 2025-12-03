@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_PRIMARY, FONT_TITLE, COLOR_MINIGAME_TEXT } from "../../constants";
 import { Hearts } from "../../gamestate"; 
 
 export class TryAgainScreenView implements View {
@@ -8,7 +8,7 @@ export class TryAgainScreenView implements View {
   private titleText: Konva.Text;
   private subtitleText: Konva.Text;
   private hintText: Konva.Text;
-  private restartButton: Konva.Rect;
+  private restartButton: Konva.Group;
   private buttonText: Konva.Text;
 
   constructor(message: string, onRestartClick: () => void) {
@@ -52,9 +52,11 @@ export class TryAgainScreenView implements View {
       y: STAGE_HEIGHT * 0.30 - 40,
       width: 640,
       text: "OOPS! Try Again!",
-      fontSize: 40,
-      fontFamily: "Georgia",
-      fill: "#ff3e3eff",
+      fontSize: 48,
+      fontFamily: FONT_TITLE,
+      fill: "#ffcc00",
+      stroke: "black",
+      strokeWidth: 1,
       align: "center",
       shadowColor: "#2b1d0e",
       shadowBlur: 4,
@@ -69,8 +71,8 @@ export class TryAgainScreenView implements View {
       width: 640,
       text: "You chose the wrong option and lost money!",
       fontSize: 24,
-      fontFamily: "Georgia",
-      fill: "#db5757ff",
+      fontFamily: FONT_PRIMARY,
+      fill: COLOR_MINIGAME_TEXT,
       align: "center",
     });
     this.group.add(this.subtitleText);
@@ -82,8 +84,8 @@ export class TryAgainScreenView implements View {
       width: 680,
       text: message, 
       fontSize: 20,
-      fontFamily: "Georgia",
-      fill: "#f6fa1cff",
+      fontFamily: FONT_PRIMARY,
+      fill: COLOR_MINIGAME_TEXT,
       align: "left",
       lineHeight: 1.35,
     });
@@ -95,47 +97,58 @@ export class TryAgainScreenView implements View {
     // Restart button
     const btnWidth = 180;
     const btnHeight = 50;
-    const btnX = STAGE_WIDTH / 2 - btnWidth / 2;
-    const btnY = STAGE_HEIGHT - 175;
+    const btnX = STAGE_WIDTH / 2;
+    const btnY = STAGE_HEIGHT - 175 + btnHeight / 2;
 
-    this.restartButton = new Konva.Rect({
+    this.restartButton = new Konva.Group({
       x: btnX,
       y: btnY,
+      offsetX: btnWidth / 2,
+      offsetY: btnHeight / 2,
+    });
+
+    const btnRect = new Konva.Rect({
       width: btnWidth,
       height: btnHeight,
-      fill: "#8b4513",
-      cornerRadius: 12,
+      fill: "#26492b", // Greenish
+      stroke: "#f7e3c3", // Cream
+      strokeWidth: 2,
+      cornerRadius: 10,
       shadowColor: "black",
       shadowBlur: 10,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.3,
+      shadowOffsetY: 5,
     });
 
     this.buttonText = new Konva.Text({
-      x: btnX,
-      y: btnY + 12,
       width: btnWidth,
+      height: btnHeight,
+      y: (btnHeight - 22) / 2, // Center vertically
       align: "center",
-      text: "Restart",
+      text: "RESTART",
       fontSize: 22,
-      fontFamily: "Arial",
-      fill: "white",
+      fontFamily: FONT_PRIMARY,
+      fill: "#f7e3c3",
+      fontStyle: "bold",
     });
 
+    this.restartButton.add(btnRect);
+    this.restartButton.add(this.buttonText);
     this.group.add(this.restartButton);
-    this.group.add(this.buttonText);
 
     const click = onRestartClick;
     this.restartButton.on("click", click);
-    this.buttonText.on("click", click);
 
-    // nicer cursor on hover (limit side-effects to the stage container)
-    const pointerOn = () => this.group.getStage()?.container().style && (this.group.getStage()!.container().style.cursor = "pointer");
-    const pointerOff = () => this.group.getStage()?.container().style && (this.group.getStage()!.container().style.cursor = "default");
-    this.restartButton.on("mouseover", pointerOn);
-    this.restartButton.on("mouseout", pointerOff);
-    this.buttonText.on("mouseover", pointerOn);
-    this.buttonText.on("mouseout", pointerOff);
+    // Hover effects
+    this.restartButton.on("mouseenter", () => {
+      this.group.getStage()!.container().style.cursor = "pointer";
+      btnRect.fill("#3a6b40");
+      this.restartButton.to({ scaleX: 1.05, scaleY: 1.05, duration: 0.1 });
+    });
+    this.restartButton.on("mouseleave", () => {
+      this.group.getStage()!.container().style.cursor = "default";
+      btnRect.fill("#26492b");
+      this.restartButton.to({ scaleX: 1, scaleY: 1, duration: 0.1 });
+    });
   }
   
   
