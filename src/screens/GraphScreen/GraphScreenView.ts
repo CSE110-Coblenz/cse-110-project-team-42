@@ -198,9 +198,11 @@ export class GraphScreenView {
     this.lines.forEach((l) => l.destroy());
     this.lines = [];
 
+    // Cap the y-axis range to ±5
+    let adjustedMinY = Math.max(minY, -5);
+    let adjustedMaxY = Math.min(maxY, 5);
+    
     // Guard against flat range
-    let adjustedMinY = minY;
-    let adjustedMaxY = maxY;
     if (adjustedMaxY === adjustedMinY) {
       adjustedMaxY = adjustedMinY + 1;
       adjustedMinY = adjustedMinY - 1;
@@ -238,7 +240,9 @@ export class GraphScreenView {
       const scaled: number[] = [];
       for (let i = 0; i < points.length; i++) {
         const x = margin + (i / (points.length - 1)) * graphW;
-        const y = scaleY(points[i]);
+        // Clamp y values to the -5 to 5 range before scaling
+        const clampedValue = Math.max(-5, Math.min(5, points[i]));
+        const y = scaleY(clampedValue);
         scaled.push(x, y);
       }
 
