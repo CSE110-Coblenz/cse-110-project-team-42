@@ -2,8 +2,8 @@
 
 import Konva from "konva";
 import type { View } from "../../types.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants.ts";
-import { Hearts } from "../../gamestate";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS, FONT_TITLE, FONT_PRIMARY, COLOR_MINIGAME_TEXT, FONT_SIZE_BUTTON } from "../../constants.ts";
+import { Hearts, Timer } from "../../gamestate";
 type ButtonRefs = {
   group: Konva.Group;
   rect: Konva.Rect;
@@ -59,9 +59,9 @@ export class DiceGameScreenView implements View {
       width: STAGE_WIDTH,
       align: "center",
       text: "🎲 Dice Strategy Game",
-      fontFamily: "Georgia",
+      fontFamily: FONT_TITLE,
       fontSize: 46,
-      fill: "#ffffff",
+      fill: COLOR_MINIGAME_TEXT,
       shadowColor: "black",
       shadowBlur: 18,
       shadowOffsetY: 3,
@@ -77,9 +77,9 @@ export class DiceGameScreenView implements View {
       align: "center",
       text:
         "Choose the best option using probability, intuition, and EV.\nSmall differences matter.",
-      fontFamily: "Georgia",
+      fontFamily: FONT_PRIMARY,
       fontSize: 22,
-      fill: "#f6f6f6",
+      fill: COLOR_MINIGAME_TEXT,
       lineHeight: 1.35,
       shadowColor: "black",
       shadowBlur: 10,
@@ -114,10 +114,10 @@ export class DiceGameScreenView implements View {
       gifImg.style.display = 'none'; // Start hidden
     }
 
-    // === BUTTONS — Slightly Smaller ===
-    const btnWidth = 185;
-    const btnHeight = 115;
-    const gap = 34;
+    // === BUTTONS ===
+    const btnWidth = 210;
+    const btnHeight = 125;
+    const gap = 30;
     const totalW = btnWidth * 3 + gap * 2;
     const startX = (STAGE_WIDTH - totalW) / 2;
     const btnY = STAGE_HEIGHT * 0.72;
@@ -169,8 +169,8 @@ export class DiceGameScreenView implements View {
     const group = new Konva.Group({ x, y, listening: true });
 
     const rect = new Konva.Rect({
-      width: 185,
-      height: 115,
+      width: 210,
+      height: 125,
       cornerRadius: 14,
       fill: OPTIONS_COLORS[0],
       stroke: "#0f2d1c",
@@ -182,14 +182,15 @@ export class DiceGameScreenView implements View {
 
     const label = new Konva.Text({
       text: textValue,
-      fontFamily: "Arial",
-      fontSize: 16,
-      fill: "white",
+      fontFamily: FONT_PRIMARY,
+      fontSize: FONT_SIZE_BUTTON,
+      fontStyle: "bold",
+      fill: COLOR_MINIGAME_TEXT,
       align: "center",
-      width: rect.width() - 14,
-      x: 7,
-      y: 8,
-      lineHeight: 1.2,
+      width: rect.width() - 10,
+      x: 5,
+      y: 10,
+      lineHeight: 1.3,
       shadowColor: "black",
       shadowBlur: 2,
     });

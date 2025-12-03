@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONT_TITLE, FONT_PRIMARY } from "../../constants";
 import { Hearts } from "../../gamestate";
 
 type StartCallback = () => void;
@@ -65,7 +65,8 @@ export class MenuScreenView implements View {
       fill: "#ffcc00", // Gold color
       stroke: "black",
       strokeWidth: 2,
-      fontFamily: "Impact, serif",
+      fontFamily: FONT_TITLE,
+      fontStyle: "bold",
       shadowColor: "black",
       shadowBlur: 10,
       shadowOffset: { x: 5, y: 5 },
@@ -98,7 +99,7 @@ export class MenuScreenView implements View {
       align: "center",
       verticalAlign: "middle",
       fontSize: 32,
-      fontFamily: "serif",
+      fontFamily: FONT_PRIMARY,
       fill: "#ffcc00",
       fontStyle: "bold",
     });

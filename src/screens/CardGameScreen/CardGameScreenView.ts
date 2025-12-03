@@ -1,6 +1,6 @@
 import Konva from "konva";
 import type { View, CardGameOption } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS } from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, OPTIONS_COLORS, FONT_TITLE, FONT_PRIMARY, COLOR_MINIGAME_TEXT, FONT_SIZE_BUTTON } from "../../constants";
 import { Hearts, Timer } from "../../gamestate";
 
 type OptionClickCallback = (index: number) => void;
@@ -46,8 +46,9 @@ export class CardGameScreenView implements View {
       align: "center",
       text: "Card Game Rules",
       fontSize: 32,
-      fontFamily: "serif",
-      fill: "#f7e3c3",
+      fontFamily: FONT_TITLE,
+      fontStyle: "bold",
+      fill: COLOR_MINIGAME_TEXT,
     });
     this.group.add(title);
 
@@ -58,8 +59,8 @@ export class CardGameScreenView implements View {
       align: "center",
       text: "Draw a card from the deck.\nIf you get a face card, you win!\nChoose one option to run 1000 times.",
       fontSize: 26,
-      fontFamily: "serif",
-      fill: "#f7e3c3",
+      fontFamily: FONT_PRIMARY,
+      fill: COLOR_MINIGAME_TEXT,
       lineHeight: 1.5,
     });
     this.group.add(rules);
@@ -165,9 +166,9 @@ export class CardGameScreenView implements View {
           width: 240,
           align: "center",
           text: opt.label,
-          fontSize: 18,
-          fill: "#ffffffff",
-          fontFamily: "sans-serif",
+          fontSize: FONT_SIZE_BUTTON,
+          fill: COLOR_MINIGAME_TEXT,
+          fontFamily: FONT_PRIMARY,
           fontStyle: "bold",
           lineHeight: 1.4,
           shadowColor: "black",

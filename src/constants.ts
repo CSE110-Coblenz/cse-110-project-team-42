@@ -2,6 +2,27 @@
 export const STAGE_WIDTH = 1200;
 export const STAGE_HEIGHT = 700;
 
+// ============================================================
+// FONT CONSTANTS
+// ============================================================
+// Title font - used for main screen titles and headings
+export const FONT_TITLE = "Haettenschweiler";
+
+// Primary font - used for descriptions, rules, buttons, and general text
+export const FONT_PRIMARY = "Lora";
+
+// UI font - used for timer, scores, and other UI elements
+export const FONT_UI = "'Roboto Mono', monospace";
+
+// Font size for option buttons across minigames
+export const FONT_SIZE_BUTTON = 18;
+
+// ============================================================
+// COLOR CONSTANTS
+// ============================================================
+// Text color for minigame screens (Roulette, CardGame, DiceGame)
+export const COLOR_MINIGAME_TEXT = "#fef6dc";
+
 export const GAME1RESULTSTEXT =
 	"RESULTS\n\n\n\n\
 	🔴Red ➡️ {0}\n\
@@ -197,8 +218,7 @@ export const CARD_OPTIONS3 = [
 export const ITERATIONS = 10000;
 
 // Graph line colors for the three options
-export const OPTIONS_COLORS = ["#CC3333", "#33CC33", "#3333CC"];
-
+export const OPTIONS_COLORS = ["#CC3333", "#2F7A2F", "#3333CC"];
 
 export const GAME1HINTMESSAGE =
   "Hint: Only ONE of these choices is actually good for you in the long run.\n\
