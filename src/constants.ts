@@ -73,9 +73,9 @@ export const ROULETTE_OPTIONS2 = [
   },
   {
     id: "r2_opt2",
-    label: "$1 Buy in\n+$6 Payoff",
+    label: "$1 Buy in\n+$7 Payoff",
     buyIn: 1,
-    payoff: 6,
+    payoff: 7,
     slots: 2,
     total: 12,
     color: "Blue"
