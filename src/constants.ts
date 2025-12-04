@@ -37,9 +37,9 @@ export const GAME1RESULTSTEXT =
 export const ROULETTE_OPTIONS1 = [
   { 
     id: "r1_opt1", 
-    label: "$12 Payoff", 
+    label: "$9 Payoff", 
     buyIn: 1, 
-    payoff: 12, 
+    payoff: 9, 
     slots: 2, 
     total: 10, 
     color: "Red"
@@ -80,9 +80,9 @@ export const ROULETTE_OPTIONS2 = [
   },
   {
     id: "r2_opt2",
-    label: "$7 Payoff",
+    label: "$6 Payoff",
     buyIn: 1,
-    payoff: 7,
+    payoff: 6,
     slots: 2,
     total: 12,
     color: "Blue"
@@ -178,7 +178,7 @@ export const CARD_OPTIONS2 = [
   },
   { 
     id: "opt2_2", 
-    label: "Standard Deck (52 Cards)\n13 Hearts\n$5 Buy-in → +$22 Payoff", 
+    label: "Standard Deck (52 Cards)\n13 Face Cards\n$5 Buy-in → +$22 Payoff", 
     buyIn: 5, 
     payoff: 22, 
     faceCards: 13, 
