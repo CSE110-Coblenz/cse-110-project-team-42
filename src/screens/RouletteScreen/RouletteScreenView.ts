@@ -152,7 +152,7 @@ export class RouletteScreenView implements View {
 		});
 
 		const body = new Konva.Text({
-			text: "Choose an option to spin.",
+			text: "It costs $1 to spin the roulette.\nWhat color would you bet on for the best returns?\n",
 			fontSize: 24,
 			lineHeight: 1.3,
 			fontFamily: FONT_PRIMARY,

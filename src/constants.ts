@@ -30,50 +30,57 @@ export const GAME1RESULTSTEXT =
 	🔵Blue ➡️ {2}\n\n\
 	Your choice of green won!";
 
+// ROULETTE_OPTIONS1 (Easy - 3 hearts): Total 10 slots
+// Red:   1/10 slots, $12 payoff → EV = 12×0.10 - 1 = +$0.20 ✓ WINNER
+// Black: 3/10 slots, $3 payoff  → EV = 3×0.30 - 1 = -$0.10
+// Blue:  5/10 slots, $1.80 payoff → EV = 1.8×0.50 - 1 = -$0.10
 export const ROULETTE_OPTIONS1 = [
   { 
     id: "r1_opt1", 
-    label: "$1 Buy in\n+$10 Payoff", 
+    label: "$12 Payoff", 
     buyIn: 1, 
-    payoff: 10, 
-    slots: 1, 
+    payoff: 12, 
+    slots: 2, 
     total: 10, 
-	color: "Red"
+    color: "Red"
   },
   { 
     id: "r1_opt2", 
-    label: "$1 Buy in\n+$2 Payoff", 
+    label: "$3 Payoff", 
     buyIn: 1, 
-    payoff: 2, 
+    payoff: 3, 
     slots: 3, 
     total: 10, 
-	color: "Black"
+    color: "Black"
   },
   { 
     id: "r1_opt3", 
-    label: "$1 Buy in\n+$0.5 Payoff", 
+    label: "$1.80 Payoff", 
     buyIn: 1, 
-    payoff: 0.5, 
-    slots: 6, 
+    payoff: 1.8, 
+    slots: 5, 
     total: 10, 
-	color: "Blue"
+    color: "Blue"
   },
 ];
 
-
+// ROULETTE_OPTIONS2 (Medium - 2 hearts): Total 12 slots
+// Yellow: 4/12 slots, $2.50 payoff → EV = 2.5×0.333 - 1 = -$0.17
+// Blue:   2/12 slots, $7 payoff   → EV = 7×0.167 - 1 = +$0.17 ✓ WINNER
+// Green:  6/12 slots, $1.50 payoff → EV = 1.5×0.50 - 1 = -$0.25
 export const ROULETTE_OPTIONS2 = [
   {
     id: "r2_opt1",
-    label: "$1 Buy in\n+$1.5 Payoff",
+    label: "$2.50 Payoff",
     buyIn: 1,
-    payoff: 1.5,
+    payoff: 2.5,
     slots: 4,
     total: 12,
     color: "Yellow"
   },
   {
     id: "r2_opt2",
-    label: "$1 Buy in\n+$7 Payoff",
+    label: "$7 Payoff",
     buyIn: 1,
     payoff: 7,
     slots: 2,
@@ -82,42 +89,46 @@ export const ROULETTE_OPTIONS2 = [
   },
   {
     id: "r2_opt3",
-    label: "$1 Buy in\n+$0.5 Payoff",
+    label: "$1.50 Payoff",
     buyIn: 1,
-    payoff: 0.5,
+    payoff: 1.5,
     slots: 6,
     total: 12,
-    color: "Brown"
+    color: "Green"
   }
 ];
 
+// ROULETTE_OPTIONS3 (Hard - 1 heart): Total 8 slots
+// Orange: 1/8 slots, $10 payoff   → EV = 10×0.125 - 1 = +$0.25 ✓ WINNER
+// Green:  3/8 slots, $2.50 payoff → EV = 2.5×0.375 - 1 = -$0.06 (close!)
+// Red:    4/8 slots, $2 payoff    → EV = 2×0.50 - 1 = $0.00 (break-even trap)
 export const ROULETTE_OPTIONS3 = [
   {
     id: "r3_opt1",
-    label: "$1 Buy in\n+$8 Payoff",
+    label: "$10 Payoff",
     buyIn: 1,
-    payoff: 8,
+    payoff: 10,
     slots: 1,
     total: 8,
     color: "Orange"
   },
   {
     id: "r3_opt2",
-    label: "$1 Buy in\n+$1.5 Payoff",
+    label: "$2.50 Payoff",
     buyIn: 1,
-    payoff: 1.5,
+    payoff: 2.5,
     slots: 3,
     total: 8,
     color: "Green"
   },
   {
     id: "r3_opt3",
-    label: "$1 Buy in\n+$0.6 Payoff",
+    label: "$2 Payoff",
     buyIn: 1,
-    payoff: 0.6,
+    payoff: 2,
     slots: 4,
     total: 8,
-    color: "REd"
+    color: "Red"
   }
 ];
 
